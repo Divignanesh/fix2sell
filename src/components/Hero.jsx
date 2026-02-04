@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import './Hero.css'
 
+const DEFAULT_LOCATION_TEXT = 'in Toronto & GTA'
+
 const badgeTexts = [
   'Reno',
   'Listing & Selling',
@@ -18,12 +20,51 @@ const listItems = [
 
 export default function Hero() {
   const [badgeIndex, setBadgeIndex] = useState(0)
+  const [locationText, setLocationText] = useState(DEFAULT_LOCATION_TEXT)
 
   useEffect(() => {
     const interval = setInterval(() => {
       setBadgeIndex((prev) => (prev + 1) % badgeTexts.length)
     }, 3000)
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    let abortController = null
+    if (!navigator.geolocation) return
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        if (cancelled) return
+        const { latitude, longitude } = position.coords
+        abortController = new AbortController()
+        fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+          {
+            signal: abortController.signal,
+            headers: { Accept: 'application/json', 'User-Agent': 'Fix2Sell-Hero-Location/1.0' },
+          }
+        )
+          .then((res) => (res.ok ? res.json() : null))
+          .then((data) => {
+            if (cancelled || !data?.address) return
+            const { country_code, state, city } = data.address
+            if (country_code?.toLowerCase() === 'ca') {
+              const region = state || city || 'Canada'
+              setLocationText(`in ${region}`)
+            }
+          })
+          .catch(() => {})
+      },
+      () => { /* permission denied or error: keep default */ },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+    )
+
+    return () => {
+      cancelled = true
+      if (abortController) abortController.abort()
+    }
   }, [])
 
   return (
@@ -61,7 +102,7 @@ export default function Hero() {
             Sell Your Home for{' '}
             <span className="hero__title-highlight">8-10% More Than</span>{' '}
             Current Market Price{' '}
-            <span className="hero__title-highlight">in Toronto & GTA</span>
+            <span className="hero__title-highlight">{locationText}</span>
           </motion.h1>
           <motion.p
             className="hero__desc"

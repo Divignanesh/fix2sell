@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
@@ -21,8 +21,50 @@ export default function Testimonials() {
   const { testimonials: dataTestimonials } = useData()
   const testimonials = Array.isArray(dataTestimonials) && dataTestimonials.length > 0 ? dataTestimonials : defaultTestimonials
   const scrollRef = useRef(null)
+  const loadedKeysRef = useRef(new Set())
+  const quoteWrapRefs = useRef([])
   const [failedImages, setFailedImages] = useState(() => new Set())
-  const markImageFailed = (idx) => setFailedImages((s) => new Set(s).add(idx))
+  const [loadedImages, setLoadedImages] = useState(() => new Set())
+  const [overflowIndices, setOverflowIndices] = useState(() => new Set())
+  const [scrollableIndices, setScrollableIndices] = useState(() => new Set())
+
+  const markImageFailed = (idx) =>
+    setFailedImages((s) => new Set(s).add(idx))
+  const markImageLoaded = (idx, url) => {
+    const key = `${idx}-${url}`
+    loadedKeysRef.current.add(key)
+    setLoadedImages((s) => new Set(s).add(idx))
+  }
+
+  const checkOverflow = useCallback(() => {
+    const next = new Set()
+    quoteWrapRefs.current.forEach((el, i) => {
+      if (el && el.scrollHeight > el.clientHeight) next.add(i)
+    })
+    setOverflowIndices((prev) =>
+      prev.size === next.size && [...prev].every((i) => next.has(i)) ? prev : next
+    )
+  }, [])
+
+  useEffect(() => {
+    const t = setTimeout(checkOverflow, 100)
+    return () => clearTimeout(t)
+  }, [testimonials, checkOverflow])
+
+  useEffect(() => {
+    const ro = new ResizeObserver(checkOverflow)
+    quoteWrapRefs.current.forEach((el) => el && ro.observe(el))
+    return () => ro.disconnect()
+  }, [testimonials, checkOverflow])
+
+  const toggleScrollable = (idx) => {
+    setScrollableIndices((s) => {
+      const next = new Set(s)
+      if (next.has(idx)) next.delete(idx)
+      else next.add(idx)
+      return next
+    })
+  }
 
   // Scroll 2 cards at a time (card width 290px + gap 20px = 310px each, 2 cards = 620px)
   const scrollAmount = 620
@@ -75,7 +117,9 @@ export default function Testimonials() {
         <div className="testimonials__cards" ref={scrollRef}>
           {testimonials.map((item, idx) => {
             const imageUrl = item.image && isValidImageUrl(item.image) ? item.image.trim() : null
-            const showImg = imageUrl && !failedImages.has(idx)
+            const loadKey = imageUrl ? `${idx}-${imageUrl}` : ''
+            const alreadyLoaded = loadKey && loadedKeysRef.current.has(loadKey)
+            const showImg = imageUrl && (alreadyLoaded || !failedImages.has(idx))
             return (
             <article key={item.id ?? idx} className="testimonials__card">
               <div className="testimonials__card-photo">
@@ -83,14 +127,31 @@ export default function Testimonials() {
                   <img
                     src={imageUrl}
                     alt={item.name || 'Testimonial'}
-                    onError={() => markImageFailed(idx)}
+                    onLoad={() => markImageLoaded(idx, imageUrl)}
+                    onError={() => {
+                      if (!loadedKeysRef.current.has(loadKey)) markImageFailed(idx)
+                    }}
                   />
                 ) : (
                   <div className="testimonials__card-photo-placeholder" aria-hidden />
                 )}
               </div>
-              <p className="testimonials__card-quote">{item.quote}</p>
-              <a href="#" className="testimonials__card-readmore">Read more</a>
+              <div
+                className={`testimonials__card-quote-wrap ${scrollableIndices.has(idx) ? 'testimonials__card-quote-wrap--scrollable' : ''}`}
+                ref={(el) => { quoteWrapRefs.current[idx] = el }}
+              >
+                <p className="testimonials__card-quote">{item.quote}</p>
+              </div>
+              {overflowIndices.has(idx) && (
+                <button
+                  type="button"
+                  className="testimonials__card-readmore"
+                  onClick={() => toggleScrollable(idx)}
+                  aria-expanded={scrollableIndices.has(idx)}
+                >
+                  {scrollableIndices.has(idx) ? 'Show less' : 'Read more'}
+                </button>
+              )}
               <div className="testimonials__card-author">
                 <span className="testimonials__card-name">{item.name}</span>
                 <span className="testimonials__card-location">{item.location}</span>
