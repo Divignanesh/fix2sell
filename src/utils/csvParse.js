@@ -48,7 +48,8 @@ export function csvToObjects(text) {
   return rows.map((row) => {
     const obj = {}
     headers.forEach((h, i) => {
-      obj[h.trim()] = row[i] !== undefined ? String(row[i]).trim() : ''
+      const key = h.trim().toLowerCase()
+      if (key) obj[key] = row[i] !== undefined ? String(row[i]).trim() : ''
     })
     return obj
   })

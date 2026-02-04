@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
@@ -11,10 +11,18 @@ const defaultTestimonials = [
   { id: 4, quote: "\"I was skeptical at first, but the team delivered beyond my expectations. The renovation suggestions were spot-on and the ROI was amazing.\"", name: "Michael Chen", location: "Sold in San Francisco, CA", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&h=200&q=80" },
 ]
 
+function isValidImageUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim()
+  return u.startsWith('http://') || u.startsWith('https://')
+}
+
 export default function Testimonials() {
   const { testimonials: dataTestimonials } = useData()
   const testimonials = Array.isArray(dataTestimonials) && dataTestimonials.length > 0 ? dataTestimonials : defaultTestimonials
   const scrollRef = useRef(null)
+  const [failedImages, setFailedImages] = useState(() => new Set())
+  const markImageFailed = (idx) => setFailedImages((s) => new Set(s).add(idx))
 
   // Scroll 2 cards at a time (card width 290px + gap 20px = 310px each, 2 cards = 620px)
   const scrollAmount = 620
@@ -65,10 +73,21 @@ export default function Testimonials() {
         </div>
         
         <div className="testimonials__cards" ref={scrollRef}>
-          {testimonials.map((item, idx) => (
+          {testimonials.map((item, idx) => {
+            const imageUrl = item.image && isValidImageUrl(item.image) ? item.image.trim() : null
+            const showImg = imageUrl && !failedImages.has(idx)
+            return (
             <article key={item.id ?? idx} className="testimonials__card">
               <div className="testimonials__card-photo">
-                <img src={item.image} alt={item.name} />
+                {showImg ? (
+                  <img
+                    src={imageUrl}
+                    alt={item.name || 'Testimonial'}
+                    onError={() => markImageFailed(idx)}
+                  />
+                ) : (
+                  <div className="testimonials__card-photo-placeholder" aria-hidden />
+                )}
               </div>
               <p className="testimonials__card-quote">{item.quote}</p>
               <a href="#" className="testimonials__card-readmore">Read more</a>
@@ -77,7 +96,7 @@ export default function Testimonials() {
                 <span className="testimonials__card-location">{item.location}</span>
               </div>
             </article>
-          ))}
+          )})}
         </div>
       </div>
     </AnimatedSection>
