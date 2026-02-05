@@ -1,0 +1,387 @@
+/* RenoGrade form section */
+.reno-grade-form {
+  padding: var(--section-padding);
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.reno-grade-form__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.reno-grade-form__form-wrap {
+  width: 100%;
+}
+
+.reno-grade-form__form-box {
+  width: 100%;
+  background: #f2f2f2;
+  border-radius: 14px;
+  padding: 32px 28px;
+}
+
+.reno-grade-form__form-title {
+  margin: 0 0 24px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+/* Scrollable iframe container */
+.reno-grade-form__iframe-wrap {
+  width: 100%;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.reno-grade-form__iframe {
+  width: 100%;
+  min-height: 480px;
+  border: none;
+  display: block;
+}
+
+.reno-grade-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reno-grade-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reno-grade-form__field label {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.reno-grade-form__field input,
+.reno-grade-form__field select,
+.reno-grade-form__field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  background: var(--color-white);
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+}
+
+.reno-grade-form__field input::placeholder,
+.reno-grade-form__field textarea::placeholder {
+  color: #9ca3af;
+}
+
+.reno-grade-form__field textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.reno-grade-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.reno-grade-form__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reno-grade-form__search-icon {
+  position: absolute;
+  left: 14px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.reno-grade-form__input-wrap input {
+  padding-left: 42px;
+}
+
+.reno-grade-form__select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reno-grade-form__select-wrap select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.reno-grade-form__select-wrap svg {
+  position: absolute;
+  right: 12px;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.reno-grade-form__checkbox-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.reno-grade-form__checkbox-wrap input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--color-navy);
+}
+
+.reno-grade-form__checkbox-text {
+  font-size: 0.76rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.reno-grade-form__submit {
+  align-self: center;
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-white);
+  background: var(--color-orange);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.reno-grade-form__submit:hover {
+  background: #e07a00;
+  transform: translateY(-1px);
+}
+
+.reno-grade-form__legal {
+  margin-top: 16px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.reno-grade-form__legal a {
+  font-size: 0.78rem;
+  color: #4b5563;
+  text-decoration: underline;
+}
+
+.reno-grade-form__legal a:hover {
+  color: var(--color-navy);
+}
+
+/* Right column content */
+.reno-grade-form__content {
+  width: 100%;
+  text-align: left;
+}
+
+.reno-grade-form__content .reno-grade-form__decide {
+  justify-content: flex-start;
+}
+
+.reno-grade-form__main-heading {
+  margin: 0 0 14px;
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #1a1a1a;
+}
+
+.reno-grade-form__highlight {
+  color: var(--color-orange);
+}
+
+.reno-grade-form__main-subtitle {
+  margin: 0 0 32px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.reno-grade-form__block {
+  margin-bottom: 24px;
+}
+
+.reno-grade-form__block-title {
+  margin: 0 0 14px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.reno-grade-form__block-title--bold {
+  font-weight: 700;
+}
+
+.reno-grade-form__subsection-title {
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.reno-grade-form__block-intro {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  color: #4b5563;
+}
+
+.reno-grade-form__decide {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.reno-grade-form__decide-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #374151;
+}
+
+.reno-grade-form__decide-item svg {
+  flex-shrink: 0;
+}
+
+.reno-grade-form__benefit-list,
+.reno-grade-form__plan-list,
+.reno-grade-form__rank-list {
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.reno-grade-form__benefit-item,
+.reno-grade-form__plan-item,
+.reno-grade-form__rank-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.reno-grade-form__benefit-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(249, 140, 31, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.reno-grade-form__benefit-icon .reno-grade-form__benefit-icon-inner,
+.reno-grade-form__benefit-icon .reno-grade-form__check-circle-svg {
+  color: #e07a00;
+}
+
+.reno-grade-form__benefit-icon-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reno-grade-form__block-outro {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #4b5563;
+}
+
+.reno-grade-form__divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 28px 0;
+}
+
+.reno-grade-form__divider--orange {
+  border-top-color: var(--color-orange);
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+.reno-grade-form__grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+
+.reno-grade-form__grid-2col .reno-grade-form__benefit-item,
+.reno-grade-form__grid-2col .reno-grade-form__plan-item,
+.reno-grade-form__grid-2col .reno-grade-form__rank-item {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1100px) {
+  .reno-grade-form {
+    padding: var(--section-padding-tablet);
+  }
+}
+
+@media (max-width: 1024px) {
+  .reno-grade-form__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .reno-grade-form__grid-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .reno-grade-form {
+    padding: var(--section-padding-mobile);
+  }
+  .reno-grade-form__form-box {
+    padding: 24px 20px;
+  }
+  .reno-grade-form__row {
+    grid-template-columns: 1fr;
+  }
+  .reno-grade-form__iframe-wrap {
+    max-height: 60vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .reno-grade-form {
+    padding: var(--section-padding-small);
+  }
+  .reno-grade-form__form-title {
+    font-size: 1.2rem;
+  }
+  .reno-grade-form__iframe {
+    min-height: 400px;
+  }
+}
