@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useData } from '../context/DataContext'
 import './Hero.css'
 
 const DEFAULT_LOCATION_TEXT = 'in Toronto & GTA'
@@ -18,7 +19,15 @@ const listItems = [
   { label: 'Stress', accent: 'ZERO' },
 ]
 
+function isValidIframeUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim()
+  return u.startsWith('http://') || u.startsWith('https://')
+}
+
 export default function Hero() {
+  const { global: globalData } = useData()
+  const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
   const [badgeIndex, setBadgeIndex] = useState(0)
   const [locationText, setLocationText] = useState(DEFAULT_LOCATION_TEXT)
 
@@ -150,17 +159,25 @@ export default function Hero() {
           <div className="hero__card-inner">
             <h3 className="hero__card-title">Inquire Now</h3>
             <p className="hero__card-subtitle">Get your free home evaluation today</p>
-            <form className="hero__form" onSubmit={(e) => e.preventDefault()}>
-              <input type="text" placeholder="Full Name" className="hero__input" aria-label="Full name" />
-              <input type="email" placeholder="Email Address" className="hero__input" aria-label="Email" />
-              <input type="tel" placeholder="Phone Number" className="hero__input" aria-label="Phone" />
-              <button type="submit" className="hero__submit">
-                Get My Estimate
-              </button>
-              <p className="hero__form-note">
-                By submitting, you agree to our <a href="#privacy">Privacy Policy</a> and <a href="#terms">Terms of Service</a>.
-              </p>
-            </form>
+            {isValidIframeUrl(formIframeUrl) ? (
+              <iframe
+                src={formIframeUrl}
+                className="hero__form-iframe"
+                title="Inquiry form"
+              />
+            ) : (
+              <form className="hero__form" onSubmit={(e) => e.preventDefault()}>
+                <input type="text" placeholder="Full Name" className="hero__input" aria-label="Full name" />
+                <input type="email" placeholder="Email Address" className="hero__input" aria-label="Email" />
+                <input type="tel" placeholder="Phone Number" className="hero__input" aria-label="Phone" />
+                <button type="submit" className="hero__submit">
+                  Get My Estimate
+                </button>
+                <p className="hero__form-note">
+                  By submitting, you agree to our <a href="#privacy">Privacy Policy</a> and <a href="#terms">Terms of Service</a>.
+                </p>
+              </form>
+            )}
           </div>
         </motion.div>
       </div>

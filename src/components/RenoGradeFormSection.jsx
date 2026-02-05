@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useData } from '../context/DataContext'
 import './RenoGradeFormSection.css'
+
+function isValidIframeUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim()
+  return u.startsWith('http://') || u.startsWith('https://')
+}
 
 const planItems = [
   'Your RenoGrade score',
@@ -107,15 +114,24 @@ function BenefitIcon({ name }) {
 }
 
 export default function RenoGradeFormSection() {
+  const { global: globalData } = useData()
+  const formIframeUrl = (globalData && globalData.renogradeFormIframeUrl) ? globalData.renogradeFormIframeUrl.trim() : (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
   const [agreed, setAgreed] = useState(false)
 
   return (
     <section className="reno-grade-form">
       <div className="reno-grade-form__inner">
-        {/* Left: Form */}
+        {/* Left: Form or iframe */}
         <div className="reno-grade-form__form-wrap">
           <div className="reno-grade-form__form-box">
             <h2 className="reno-grade-form__form-title">Please provide these information</h2>
+            {isValidIframeUrl(formIframeUrl) ? (
+              <iframe
+                src={formIframeUrl}
+                className="reno-grade-form__iframe"
+                title="RenoGrade form"
+              />
+            ) : (
             <form className="reno-grade-form__form" onSubmit={(e) => e.preventDefault()}>
               <div className="reno-grade-form__field reno-grade-form__field--search">
                 <label>Address *</label>
@@ -223,6 +239,7 @@ export default function RenoGradeFormSection() {
                 Proceed To Unlock Potential
               </button>
             </form>
+            )}
             <div className="reno-grade-form__legal">
               <a href="#">Privacy Policy</a>
               <a href="#">Terms of Service</a>
