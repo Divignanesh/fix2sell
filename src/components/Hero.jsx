@@ -160,11 +160,13 @@ export default function Hero() {
             <h3 className="hero__card-title">Inquire Now</h3>
             <p className="hero__card-subtitle">Get your free home evaluation today</p>
             {isValidIframeUrl(formIframeUrl) ? (
-              <iframe
-                src={formIframeUrl}
-                className="hero__form-iframe"
-                title="Inquiry form"
-              />
+              <div className="hero__form-iframe-wrap">
+                <iframe
+                  src={formIframeUrl}
+                  className="hero__form-iframe"
+                  title="Inquiry form"
+                />
+              </div>
             ) : (
               <form className="hero__form" onSubmit={(e) => e.preventDefault()}>
                 <input type="text" placeholder="Full Name" className="hero__input" aria-label="Full name" />
