@@ -1,11 +1,37 @@
 /**
  * Minimal CSV parser for Node (no deps).
- * Handles quoted fields and commas inside quotes.
- * @param {string} text - Raw CSV string
- * @returns {{ headers: string[], rows: string[][] }}
+ * Handles quoted fields, commas inside quotes, newlines inside quoted fields,
+ * and skips the comma after a closing quote so quoted values don't produce extra empty cells.
  */
+
+function splitCsvRows(text) {
+  const rows = []
+  let current = ''
+  let inQuotes = false
+  let i = 0
+  while (i < text.length) {
+    const c = text[i]
+    if (c === '"') {
+      inQuotes = !inQuotes
+      current += c
+      i += 1
+    } else if (!inQuotes && (c === '\n' || c === '\r')) {
+      if (c === '\r' && text[i + 1] === '\n') i += 1
+      rows.push(current)
+      current = ''
+      i += 1
+    } else {
+      current += c
+      i += 1
+    }
+  }
+  if (current.length > 0) rows.push(current)
+  return rows
+}
+
 function parseCsv(text) {
-  const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '')
+  const normalized = typeof text === 'string' && text.charCodeAt(0) === 0xfeff ? text.slice(1) : text
+  const lines = splitCsvRows(normalized).filter((line) => line.trim() !== '')
   if (lines.length === 0) return { headers: [], rows: [] }
 
   const parseRow = (line) => {
@@ -28,6 +54,7 @@ function parseCsv(text) {
           }
         }
         out.push(cell.trim())
+        if (i < line.length && line[i] === ',') i += 1
       } else {
         let cell = ''
         while (i < line.length && line[i] !== ',') {
@@ -46,18 +73,28 @@ function parseCsv(text) {
   return { headers, rows }
 }
 
-/**
- * Convert rows to array of objects using first row as keys.
- * @param {string} text - Raw CSV string
- * @returns {Record<string, string>[]}
- */
+function normalizeKey(h) {
+  return h.trim().toLowerCase().replace(/\s+/g, '')
+}
+
+function normalizeRowLength(row, headerCount) {
+  let r = row.slice()
+  for (let k = 0; k < r.length - headerCount; k++) {
+    const i = 1 + k
+    r = r.slice(0, i).concat([r[i] + r[i + 1]]).concat(r.slice(i + 2))
+  }
+  return r
+}
+
 function csvToObjects(text) {
   const { headers, rows } = parseCsv(text)
+  const headerCount = headers.length
   return rows.map((row) => {
+    const normalized = normalizeRowLength(row, headerCount)
     const obj = {}
     headers.forEach((h, i) => {
-      const key = h.trim().toLowerCase()
-      if (key) obj[key] = row[i] !== undefined ? String(row[i]).trim() : ''
+      const key = normalizeKey(h)
+      if (key) obj[key] = normalized[i] !== undefined ? String(normalized[i]).trim() : ''
     })
     return obj
   })

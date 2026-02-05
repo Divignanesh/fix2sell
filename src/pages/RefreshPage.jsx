@@ -14,34 +14,39 @@ const GIDS = {
   global: '0',
 }
 
+/** Get cell value; sheet headers must be lowercase, no spaces. */
+function get(r, key) {
+  const v = r[key]
+  return v !== undefined && v !== null ? String(v).trim() : ''
+}
+
 function mapTransformation(rows) {
   return rows
-    .filter((r) => r.label || r.beforeImage || r.afterImage)
+    .filter((r) => get(r, 'label') || get(r, 'beforeimage') || get(r, 'afterimage'))
     .map((r) => ({
-      label: r.label || '',
-      before: r.beforeImage || r.before || '',
-      after: r.afterImage || r.after || '',
+      label: get(r, 'label'),
+      before: get(r, 'beforeimage'),
+      after: get(r, 'afterimage'),
       stats: [
-        { value: r.stat1Value || '', label: r.stat1Label || '' },
-        { value: r.stat2Value || '', label: r.stat2Label || '' },
-        { value: r.stat3Value || '', label: r.stat3Label || '' },
+        { value: get(r, 'stat1value'), label: get(r, 'stat1label') },
+        { value: get(r, 'stat2value'), label: get(r, 'stat2label') },
+        { value: get(r, 'stat3value'), label: get(r, 'stat3label') },
       ].filter((s) => s.value || s.label),
     }))
 }
 
 function mapThousandsGained(rows) {
   return rows
-    .filter((r) => r.image || r.renovation || r.location)
+    .filter((r) => get(r, 'image') || get(r, 'renovation') || get(r, 'location') || get(r, 'profit'))
     .map((r) => ({
-      image: r.image || '',
-      renovation: r.renovation || '',
-      profit: r.profit || '',
-      location: r.location || '',
+      image: get(r, 'image'),
+      renovation: get(r, 'renovation'),
+      profit: get(r, 'profit'),
+      location: get(r, 'location'),
     }))
 }
 
 function mapTestimonials(rows) {
-  const get = (r, key) => r[key] ?? r[key.charAt(0).toUpperCase() + key.slice(1)] ?? ''
   return rows
     .filter((r) => get(r, 'quote') || get(r, 'name'))
     .map((r, i) => ({
@@ -55,18 +60,18 @@ function mapTestimonials(rows) {
 
 function mapFaq(rows) {
   return rows
-    .filter((r) => r.question || r.answer)
+    .filter((r) => get(r, 'question') || get(r, 'answer'))
     .map((r) => ({
-      q: r.question || r.q || '',
-      a: r.answer || r.a || '',
+      q: get(r, 'question'),
+      a: get(r, 'answer'),
     }))
 }
 
 function mapGlobal(rows) {
   const obj = {}
   rows.forEach((r) => {
-    const key = (r.key || '').trim()
-    if (key) obj[key] = (r.value || '').trim()
+    const key = get(r, 'key')
+    if (key) obj[key] = get(r, 'value')
   })
   return obj
 }
