@@ -25,9 +25,16 @@ function isValidIframeUrl(url) {
   return u.startsWith('http://') || u.startsWith('https://')
 }
 
+function isValidVideoUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim()
+  return u.startsWith('http://') || u.startsWith('https://')
+}
+
 export default function Hero() {
   const { global: globalData } = useData()
   const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
+  const heroBackgroundVideoUrl = (globalData && globalData.heroBackgroundVideoUrl) ? globalData.heroBackgroundVideoUrl.trim() : ''
   const [badgeIndex, setBadgeIndex] = useState(0)
   const [locationText, setLocationText] = useState(DEFAULT_LOCATION_TEXT)
 
@@ -78,6 +85,22 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero">
+      {isValidVideoUrl(heroBackgroundVideoUrl) && (
+        <>
+          <div className="hero__video-wrap">
+            <video
+              className="hero__video"
+              src={heroBackgroundVideoUrl}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden
+            />
+          </div>
+          <div className="hero__video-overlay" aria-hidden />
+        </>
+      )}
       <div className="hero__inner">
         <div className="hero__content">
           <motion.div
