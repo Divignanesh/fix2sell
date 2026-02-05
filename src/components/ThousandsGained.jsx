@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useData } from '../context/DataContext'
+import { MediaAsset } from './MediaAsset'
 import './ThousandsGained.css'
 
 const defaultCards = [
@@ -73,8 +74,9 @@ export default function ThousandsGained() {
           {cards.map((card, i) => (
             <article key={i} className="thousands-gained__card">
               <div className="thousands-gained__card-image-wrap">
-                <img
-                  src={card.image}
+                <MediaAsset
+                  url={card.image}
+                  type={card.imageType}
                   alt=""
                   className="thousands-gained__card-image"
                 />

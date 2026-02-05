@@ -141,6 +141,11 @@
   border-radius: 14px;
 }
 
+.thousands-gained__card-image-wrap iframe.thousands-gained__card-image {
+  border: none;
+  object-fit: none;
+}
+
 .thousands-gained__card-overlay {
   position: absolute;
   bottom: 0;

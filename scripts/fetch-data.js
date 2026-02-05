@@ -10,7 +10,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { csvToObjects } from './parseCsv.js'
-import { convertDriveLinksInObject } from './utils/gdriveLink.js'
+import { convertDriveLinksInObject, toPreviewDriveUrl } from './utils/gdriveLink.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -64,6 +64,11 @@ function get(r, key) {
   return v !== undefined && v !== null ? String(v).trim() : ''
 }
 
+function mediaType(r, key) {
+  const v = get(r, key)
+  return (v && String(v).toLowerCase() === 'video') ? 'video' : 'image'
+}
+
 function mapTransformation(rows) {
   return rows
     .filter((r) => get(r, 'label') || get(r, 'beforeimage') || get(r, 'afterimage'))
@@ -71,6 +76,8 @@ function mapTransformation(rows) {
       label: get(r, 'label'),
       before: get(r, 'beforeimage'),
       after: get(r, 'afterimage'),
+      beforeType: mediaType(r, 'beforeimagetype'),
+      afterType: mediaType(r, 'afterimagetype'),
       stats: [
         { value: get(r, 'stat1value'), label: get(r, 'stat1label') },
         { value: get(r, 'stat2value'), label: get(r, 'stat2label') },
@@ -84,6 +91,7 @@ function mapThousandsGained(rows) {
     .filter((r) => get(r, 'image') || get(r, 'renovation') || get(r, 'location') || get(r, 'profit'))
     .map((r) => ({
       image: get(r, 'image'),
+      imageType: mediaType(r, 'imagetype'),
       renovation: get(r, 'renovation'),
       profit: get(r, 'profit'),
       location: get(r, 'location'),
@@ -99,6 +107,7 @@ function mapTestimonials(rows) {
       name: get(r, 'name'),
       location: get(r, 'location'),
       image: get(r, 'image'),
+      imageType: mediaType(r, 'imagetype'),
     }))
 }
 
@@ -143,6 +152,28 @@ async function main() {
   }
 
   const withDriveLinks = convertDriveLinksInObject(data)
+
+  // Convert Drive video URLs to preview format (for iframe); images stay as uc?id=
+  if (withDriveLinks.global && withDriveLinks.global.heroBackgroundVideoUrl) {
+    withDriveLinks.global.heroBackgroundVideoUrl = toPreviewDriveUrl(withDriveLinks.global.heroBackgroundVideoUrl)
+  }
+  if (Array.isArray(withDriveLinks.transformation)) {
+    withDriveLinks.transformation.forEach((item) => {
+      if (item.beforeType === 'video' && item.before) item.before = toPreviewDriveUrl(item.before)
+      if (item.afterType === 'video' && item.after) item.after = toPreviewDriveUrl(item.after)
+    })
+  }
+  if (Array.isArray(withDriveLinks.thousandsGained)) {
+    withDriveLinks.thousandsGained.forEach((item) => {
+      if (item.imageType === 'video' && item.image) item.image = toPreviewDriveUrl(item.image)
+    })
+  }
+  if (Array.isArray(withDriveLinks.testimonials)) {
+    withDriveLinks.testimonials.forEach((item) => {
+      if (item.imageType === 'video' && item.image) item.image = toPreviewDriveUrl(item.image)
+    })
+  }
+
   if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true })
   fs.writeFileSync(DATA_JSON, JSON.stringify(withDriveLinks, null, 2), 'utf8')
   console.log('Wrote', DATA_JSON)

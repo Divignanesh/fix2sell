@@ -31,6 +31,13 @@ function isValidVideoUrl(url) {
   return u.startsWith('http://') || u.startsWith('https://')
 }
 
+/** Drive preview URL is for iframe; direct MP4 etc. use <video> */
+function isDrivePreviewUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim()
+  return u.includes('drive.google.com') && u.includes('/preview')
+}
+
 export default function Hero() {
   const { global: globalData } = useData()
   const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
@@ -88,15 +95,24 @@ export default function Hero() {
       {isValidVideoUrl(heroBackgroundVideoUrl) && (
         <>
           <div className="hero__video-wrap">
-            <video
-              className="hero__video"
-              src={heroBackgroundVideoUrl}
-              autoPlay
-              muted
-              loop
-              playsInline
-              aria-hidden
-            />
+            {isDrivePreviewUrl(heroBackgroundVideoUrl) ? (
+              <iframe
+                src={heroBackgroundVideoUrl}
+                className="hero__video hero__video--iframe"
+                title=""
+                aria-hidden
+              />
+            ) : (
+              <video
+                className="hero__video"
+                src={heroBackgroundVideoUrl}
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-hidden
+              />
+            )}
           </div>
           <div className="hero__video-overlay" aria-hidden />
         </>

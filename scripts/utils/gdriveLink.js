@@ -1,6 +1,7 @@
 /**
- * Converts various Google Drive URLs to the direct image format:
- * https://drive.google.com/uc?id=FILE_ID
+ * Converts Google Drive URLs:
+ * - Images / direct: https://drive.google.com/uc?id=FILE_ID
+ * - Videos (embed): https://drive.google.com/file/d/FILE_ID/preview
  *
  * Supported input formats:
  * - https://drive.google.com/file/d/FILE_ID/view?...
@@ -15,33 +16,42 @@ const DRIVE_UC_ID_REGEX = /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/
 const DRIVE_THUMBNAIL_ID_REGEX = /drive\.google\.com\/thumbnail\?id=([a-zA-Z0-9_-]+)/
 
 const DIRECT_PREFIX = 'https://drive.google.com/uc?id='
+const PREVIEW_PREFIX = 'https://drive.google.com/file/d/'
+const PREVIEW_SUFFIX = '/preview'
+
+function getDriveFileId(url) {
+  if (!url || typeof url !== 'string') return null
+  const trimmed = url.trim()
+  const m1 = trimmed.match(DRIVE_FILE_D_REGEX)
+  if (m1) return m1[1]
+  const m2 = trimmed.match(DRIVE_OPEN_ID_REGEX)
+  if (m2) return m2[1]
+  const m3 = trimmed.match(DRIVE_UC_ID_REGEX)
+  if (m3) return m3[1]
+  const m4 = trimmed.match(DRIVE_THUMBNAIL_ID_REGEX)
+  if (m4) return m4[1]
+  return null
+}
 
 /**
  * @param {string} url - Any Google Drive URL or plain string
  * @returns {string} - https://drive.google.com/uc?id=FILE_ID or original string if no match
  */
 function toDirectDriveUrl(url) {
-  if (!url || typeof url !== 'string') return url
-  const trimmed = url.trim()
-  let fileId = null
-
-  const m1 = trimmed.match(DRIVE_FILE_D_REGEX)
-  if (m1) fileId = m1[1]
-  if (!fileId) {
-    const m2 = trimmed.match(DRIVE_OPEN_ID_REGEX)
-    if (m2) fileId = m2[1]
-  }
-  if (!fileId) {
-    const m3 = trimmed.match(DRIVE_UC_ID_REGEX)
-    if (m3) fileId = m3[1]
-  }
-  if (!fileId) {
-    const m4 = trimmed.match(DRIVE_THUMBNAIL_ID_REGEX)
-    if (m4) fileId = m4[1]
-  }
-
+  const fileId = getDriveFileId(url)
   if (fileId) return `${DIRECT_PREFIX}${fileId}`
-  return trimmed
+  return url && typeof url === 'string' ? url.trim() : url
+}
+
+/**
+ * Video embed format for iframe: https://drive.google.com/file/d/FILE_ID/preview
+ * @param {string} url - Any Google Drive URL or plain string
+ * @returns {string} - preview URL or original string if no match
+ */
+function toPreviewDriveUrl(url) {
+  const fileId = getDriveFileId(url)
+  if (fileId) return `${PREVIEW_PREFIX}${fileId}${PREVIEW_SUFFIX}`
+  return url && typeof url === 'string' ? url.trim() : url
 }
 
 /**
@@ -63,4 +73,4 @@ function convertDriveLinksInObject(obj) {
   return obj
 }
 
-export { toDirectDriveUrl, convertDriveLinksInObject }
+export { toDirectDriveUrl, toPreviewDriveUrl, convertDriveLinksInObject }

@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
+import { MediaAsset } from './MediaAsset'
 import './Testimonials.css'
 
 const defaultTestimonials = [
@@ -117,13 +118,16 @@ export default function Testimonials() {
         <div className="testimonials__cards" ref={scrollRef}>
           {testimonials.map((item, idx) => {
             const imageUrl = item.image && isValidImageUrl(item.image) ? item.image.trim() : null
+            const isVideo = (item.imageType && String(item.imageType).toLowerCase()) === 'video'
             const loadKey = imageUrl ? `${idx}-${imageUrl}` : ''
             const alreadyLoaded = loadKey && loadedKeysRef.current.has(loadKey)
-            const showImg = imageUrl && (alreadyLoaded || !failedImages.has(idx))
+            const showImg = imageUrl && !isVideo && (alreadyLoaded || !failedImages.has(idx))
             return (
             <article key={item.id ?? idx} className="testimonials__card">
               <div className="testimonials__card-photo">
-                {showImg ? (
+                {isVideo && imageUrl ? (
+                  <MediaAsset url={imageUrl} type="video" alt={item.name || 'Testimonial'} />
+                ) : showImg ? (
                   <img
                     src={imageUrl}
                     alt={item.name || 'Testimonial'}

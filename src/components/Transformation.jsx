@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
+import { MediaAsset } from './MediaAsset'
 import './Transformation.css'
 
 const AUTO_SCROLL_INTERVAL_MS = 3000
@@ -106,11 +107,11 @@ export default function Transformation() {
             >
               <div className="transformation__images">
                 <div className="transformation__image-card transformation__image-card--before">
-                  <img src={slide.before} alt="Before" />
+                  <MediaAsset url={slide.before} type={slide.beforeType} alt="Before" />
                   <span className="transformation__image-label">Before</span>
                 </div>
                 <div className="transformation__image-card transformation__image-card--after">
-                  <img src={slide.after} alt="After" />
+                  <MediaAsset url={slide.after} type={slide.afterType} alt="After" />
                   <span className="transformation__image-label">After</span>
                 </div>
               </div>

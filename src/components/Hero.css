@@ -27,6 +27,11 @@
   display: block;
 }
 
+.hero__video--iframe {
+  border: none;
+  object-fit: cover;
+}
+
 /* Dark overlay on top of video */
 .hero__video-overlay {
   position: absolute;

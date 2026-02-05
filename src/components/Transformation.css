@@ -102,11 +102,19 @@
   min-height: 0;
 }
 
-.transformation__image-card img {
+.transformation__image-card img,
+.transformation__image-card video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.transformation__image-card iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
 }
 
 .transformation__image-label {
