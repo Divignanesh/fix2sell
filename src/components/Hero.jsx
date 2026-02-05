@@ -38,6 +38,14 @@ function isDrivePreviewUrl(url) {
   return u.includes('drive.google.com') && u.includes('/preview')
 }
 
+/** Append autoplay param for Drive embed (no button, muted in embed) */
+function drivePreviewUrlWithAutoplay(url) {
+  if (!url || typeof url !== 'string') return url
+  const u = url.trim()
+  const sep = u.includes('?') ? '&' : '?'
+  return u.includes('autoplay') ? u : `${u}${sep}autoplay=1`
+}
+
 export default function Hero() {
   const { global: globalData } = useData()
   const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
@@ -97,10 +105,11 @@ export default function Hero() {
           <div className="hero__video-wrap">
             {isDrivePreviewUrl(heroBackgroundVideoUrl) ? (
               <iframe
-                src={heroBackgroundVideoUrl}
+                src={drivePreviewUrlWithAutoplay(heroBackgroundVideoUrl)}
                 className="hero__video hero__video--iframe"
                 title=""
                 aria-hidden
+                allow="autoplay; encrypted-media"
               />
             ) : (
               <video

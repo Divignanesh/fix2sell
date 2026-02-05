@@ -17,13 +17,14 @@ export function MediaAsset({ url, type = 'image', alt = '', className, ...props 
 
   if (isVideo) {
     if (isDrivePreviewUrl(u)) {
+      const srcWithAutoplay = u.includes('autoplay') ? u : `${u}${u.includes('?') ? '&' : '?'}autoplay=1`
       return (
         <iframe
-          src={u}
+          src={srcWithAutoplay}
           title={alt || 'Video'}
           className={className}
           frameBorder="0"
-          allow="autoplay"
+          allow="autoplay; encrypted-media"
           allowFullScreen
           {...props}
         />

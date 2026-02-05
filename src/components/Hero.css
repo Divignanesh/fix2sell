@@ -18,7 +18,7 @@
   background: var(--color-navy);
 }
 
-/* Covers full section; keeps aspect ratio, crops overflow. Different aspect ratios = different crop. */
+/* Full section, centered, no controls – autoplay muted. */
 .hero__video {
   width: 100%;
   height: 100%;
@@ -27,9 +27,13 @@
   display: block;
 }
 
+/* Native video: no controls so it autoplays without a play button; ignore clicks */
+.hero__video:not(.hero__video--iframe) {
+  pointer-events: none;
+}
+
 .hero__video--iframe {
   border: none;
-  object-fit: cover;
 }
 
 /* Dark overlay on top of video */
