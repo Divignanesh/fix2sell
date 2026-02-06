@@ -56,9 +56,21 @@ export default function Hero() {
     const s = String(v).trim().toLowerCase()
     return s === 'true' || s === '1' || s === 'yes'
   })()
+  const collectUserLocation = (() => {
+    const v = globalData && globalData.collectUserLocation
+    if (v === undefined || v === null) return false
+    const s = String(v).trim().toLowerCase()
+    return s === 'true' || s === '1' || s === 'yes'
+  })()
+  const defaultLocation = (globalData && globalData.heroLocationDefault) ? String(globalData.heroLocationDefault).trim() : DEFAULT_LOCATION_TEXT
   const [badgeIndex, setBadgeIndex] = useState(0)
-  const [locationText, setLocationText] = useState(DEFAULT_LOCATION_TEXT)
+  const [locationText, setLocationText] = useState(defaultLocation || DEFAULT_LOCATION_TEXT)
   const [isMobile, setIsMobile] = useState(true)
+
+  useEffect(() => {
+    if (!defaultLocation) return
+    setLocationText((prev) => (prev === DEFAULT_LOCATION_TEXT ? defaultLocation : prev))
+  }, [defaultLocation])
 
   useEffect(() => {
     const mql = window.matchMedia('(min-width: 769px)')
@@ -76,6 +88,7 @@ export default function Hero() {
   }, [])
 
   useEffect(() => {
+    if (!collectUserLocation) return
     let cancelled = false
     let abortController = null
     if (!navigator.geolocation) return
@@ -111,7 +124,7 @@ export default function Hero() {
       cancelled = true
       if (abortController) abortController.abort()
     }
-  }, [])
+  }, [collectUserLocation])
 
   const showBackgroundVideo = isValidVideoUrl(heroBackgroundVideoUrl) && (!isMobile || heroVideoOnMobile)
 

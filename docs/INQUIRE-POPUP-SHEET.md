@@ -18,6 +18,8 @@ Add these rows to your **Global** tab (or edit existing ones):
 | ----------------------- | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | **showScrollPopup**     | true / false | **true** (or 1 or yes) = show popup after scrolling 85%. **false** or empty = no scroll popup.              |
 | **showExitIntentPopup** | true / false | **true** (or 1 or yes) = show popup on exit intent (mouse leaving top). **false** or empty = no exit popup. |
+| **heroLocationDefault**   | text         | Default location text in the hero headline (e.g. `in Toronto & GTA`). Used when **collectUserLocation** is false or user is outside Canada. |
+| **collectUserLocation**  | true / false | **true** (or 1 or yes) = request browser location and show region in hero when user is in Canada. **false** or empty = do not collect location; only show **heroLocationDefault**. |
 
 
 - Values are case-insensitive; **true**, **1**, **yes** = enabled. Anything else = disabled.
