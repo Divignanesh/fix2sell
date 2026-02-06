@@ -12,6 +12,7 @@ import CTA from './components/CTA'
 import RenoGrader from './components/RenoGrader'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
+import InquirePopup from './components/InquirePopup'
 import RenoGradePage from './pages/RenoGradePage'
 import RefreshPage from './pages/RefreshPage'
 import { initCenteredNavigation } from './utils/scrollToCenter'
@@ -26,6 +27,7 @@ function HomePage() {
   return (
     <div className="app">
       <Header />
+      <InquirePopup />
       <main>
         <section id="home">
           <Hero />

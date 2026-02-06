@@ -201,6 +201,8 @@
     "unlockPotentialLabel": "UNLOCK YOUR HOME POTENTIAL",
     "formIframeUrl": "",
     "renogradeFormIframeUrl": "https://docs.google.com/forms/d/e/1FAIpQLSckZ6NkD_eemdYXwv-aIgM26kbLQZv3xfE8HioYtxSeVsR9CQ/viewform?embedded=true",
-    "heroBackgroundVideoUrl": "/downloaded-videos/hero-bg.mp4"
+    "heroBackgroundVideoUrl": "/downloaded-videos/hero-bg.mp4",
+    "showScrollPopup": "true",
+    "showExitIntentPopup": "true"
   }
 }
