@@ -28,7 +28,7 @@ function isValidIframeUrl(url) {
 function isValidVideoUrl(url) {
   if (!url || typeof url !== 'string') return false
   const u = url.trim()
-  return u.startsWith('http://') || u.startsWith('https://')
+  return u.startsWith('http://') || u.startsWith('https://') || u.startsWith('/')
 }
 
 /** Drive preview URL is for iframe; direct MP4 etc. use <video> */
@@ -52,6 +52,15 @@ export default function Hero() {
   const heroBackgroundVideoUrl = (globalData && globalData.heroBackgroundVideoUrl) ? globalData.heroBackgroundVideoUrl.trim() : ''
   const [badgeIndex, setBadgeIndex] = useState(0)
   const [locationText, setLocationText] = useState(DEFAULT_LOCATION_TEXT)
+  const [isMobile, setIsMobile] = useState(true)
+
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 769px)')
+    const update = () => setIsMobile(!mql.matches)
+    update()
+    mql.addEventListener('change', update)
+    return () => mql.removeEventListener('change', update)
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -98,9 +107,11 @@ export default function Hero() {
     }
   }, [])
 
+  const showBackgroundVideo = isValidVideoUrl(heroBackgroundVideoUrl) && !isMobile
+
   return (
     <section id="home" className="hero">
-      {isValidVideoUrl(heroBackgroundVideoUrl) && (
+      {showBackgroundVideo && (
         <>
           <div className="hero__video-wrap">
             {isDrivePreviewUrl(heroBackgroundVideoUrl) ? (
