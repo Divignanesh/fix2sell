@@ -29,11 +29,7 @@ export default function Footer() {
         <div className="footer__brand">
           <div className="footer__logos">
             <Link to="/" className="footer__logo">
-              <HouseIcon />
-              <div className="footer__logo-text">
-                <span className="footer__logo-name">MS REALTY</span>
-                <span className="footer__logo-tagline">Authenticity is Perpetual</span>
-              </div>
+              <img src="/logo.jpeg" alt="MS Realty - Authenticity is Perpetual" className="footer__logo-img" />
             </Link>
             <div className="footer__exp-logo">
               <span className="footer__exp-text">eXp</span>

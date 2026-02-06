@@ -44,7 +44,7 @@ export default function Header() {
         </nav>
         
         <Link to="/" className="header__logo" aria-label="MS Realty Home">
-          <span className="header__logo-text">MS Realty</span>
+          <img src="/logo.jpeg" alt="MS Realty" className="header__logo-img" />
         </Link>
         
         <nav className="header__nav header__nav--right">

@@ -27,34 +27,15 @@
 }
 
 .footer__logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
   color: var(--color-white);
 }
 
-.footer__logo svg {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-}
-
-.footer__logo-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.footer__logo-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.footer__logo-tagline {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-style: italic;
+.footer__logo-img {
+  display: block;
+  max-height: 48px;
+  width: auto;
+  object-fit: contain;
 }
 
 .footer__exp-logo {

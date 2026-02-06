@@ -300,9 +300,18 @@
     min-height: auto;
     align-items: flex-start;
   }
-  /* On portrait/narrow screens, favor top of video so 16:9 doesn’t crop the main subject */
+  /* On mobile: align video to center top when cropped (portrait) */
   .hero__video {
     object-position: center top;
+  }
+  /* Iframe: show top of embed when cropped (wrap has overflow: hidden) */
+  .hero__video--iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    min-height: 120%;
   }
   .hero__inner {
     grid-template-columns: 1fr;

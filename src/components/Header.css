@@ -56,13 +56,14 @@
 
 .header__logo {
   flex-shrink: 0;
+  display: block;
 }
 
-.header__logo-text {
-  font-size: 1.01rem;
-  font-weight: 700;
-  color: var(--color-navy);
-  letter-spacing: -0.02em;
+.header__logo-img {
+  display: block;
+  height: 38px;
+  width: auto;
+  object-fit: contain;
 }
 
 .header__cta {
@@ -181,8 +182,8 @@
     display: flex;
   }
 
-  .header__logo-text {
-    font-size: 0.95rem;
+  .header__logo-img {
+    height: 34px;
   }
 
   /* Mobile menu styles */
@@ -245,7 +246,7 @@
     padding: 8px 12px;
   }
 
-  .header__logo-text {
-    font-size: 0.88rem;
+  .header__logo-img {
+    height: 30px;
   }
 }
