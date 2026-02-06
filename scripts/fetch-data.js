@@ -24,6 +24,7 @@ const GIDS = {
   testimonials: '409592819',
   faq: '308847142',
   global: '0',
+  smartWay: '1199702927', // Replace with your SmartWay tab gid (from sheet URL #gid=... when you open the tab)
 }
 
 function fetchUrl(url, redirectCount = 0) {
@@ -129,6 +130,16 @@ function mapGlobal(rows) {
   return obj
 }
 
+function mapSmartWay(rows) {
+  return rows
+    .filter((r) => get(r, 'image') || get(r, 'link'))
+    .map((r) => ({
+      image: get(r, 'image'),
+      link: get(r, 'link'),
+      title: get(r, 'title') || '',
+    }))
+}
+
 async function main() {
   const data = {}
   const sheets = [
@@ -137,6 +148,7 @@ async function main() {
     { key: 'testimonials', gid: GIDS.testimonials, map: mapTestimonials },
     { key: 'faq', gid: GIDS.faq, map: mapFaq },
     { key: 'global', gid: GIDS.global, map: mapGlobal },
+    { key: 'smartWay', gid: GIDS.smartWay, map: mapSmartWay },
   ]
 
   for (const { key, gid, map } of sheets) {
@@ -147,6 +159,7 @@ async function main() {
     } catch (err) {
       console.warn(`Sheet ${key} (gid=${gid}):`, err.message)
       if (key === 'global') data[key] = {}
+      else if (key === 'smartWay') data[key] = []
       else data[key] = []
     }
   }

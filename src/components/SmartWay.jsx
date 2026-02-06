@@ -1,6 +1,12 @@
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
+import { useData } from '../context/DataContext'
 import './SmartWay.css'
+
+const DEFAULT_SLIDES = [
+  { image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80', link: '#', title: 'Reel thumbnail' },
+]
 
 const benefits = [
   { accent: "Sell for more", text: "— 8-10% above market average", icon: "chart" },
@@ -9,7 +15,29 @@ const benefits = [
   { accent: "Full Service", text: "— We handle all renovations for you", icon: "check" },
 ]
 
+const CAROUSEL_INTERVAL_MS = 4000
+
 export default function SmartWay() {
+  const { smartWay: dataSlides } = useData()
+  const slides = Array.isArray(dataSlides) && dataSlides.length > 0 ? dataSlides : DEFAULT_SLIDES
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const slide = slides[currentIndex]
+
+  useEffect(() => {
+    const t = setInterval(() => setCurrentIndex((i) => (i + 1) % slides.length), CAROUSEL_INTERVAL_MS)
+    return () => clearInterval(t)
+  }, [slides.length])
+
+  const handlePlayClick = () => {
+    const url = (slide && slide.link) ? slide.link.trim() : null
+    if (!url) return
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      window.open(url, '_blank', 'noopener,noreferrer')
+    } else if (url.startsWith('#')) {
+      window.location.hash = url
+    }
+  }
+
   return (
     <section className="smart-way">
       <AnimatedSection className="smart-way__inner">
@@ -21,13 +49,45 @@ export default function SmartWay() {
           transition={{ duration: 0.5 }}
         >
           <div className="smart-way__image-container">
-            <div className="smart-way__oval-inner">
-              <img 
-                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" 
-                alt="Beautiful home exterior - reel thumbnail"
-                className="smart-way__house-img"
-              />
+            <div
+              className="smart-way__thumbnail-clickable"
+              onClick={handlePlayClick}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePlayClick(); } }}
+              role="button"
+              tabIndex={0}
+              aria-label={`Play – ${slide.title || 'Watch'}`}
+            >
+              <div className="smart-way__oval-inner smart-way__carousel-wrap">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.img
+                    key={currentIndex}
+                    src={slide.image}
+                    alt={slide.title || `Slide ${currentIndex + 1}`}
+                    className="smart-way__house-img"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35 }}
+                  />
+                </AnimatePresence>
+              </div>
+              <span className="smart-way__play-btn" aria-hidden>
+                <PlayIcon />
+              </span>
             </div>
+            {slides.length > 1 && (
+              <div className="smart-way__carousel-dots">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`smart-way__carousel-dot ${i === currentIndex ? 'smart-way__carousel-dot--active' : ''}`}
+                    onClick={() => setCurrentIndex(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+            )}
             {/* Offer badges */}
             <div className="smart-way__badge smart-way__badge--highest">
               <span className="smart-way__badge-label">Highest offer</span>
@@ -139,6 +199,15 @@ function ArrowIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 10h11.67M10 4.17l5.83 5.83-5.83 5.83" />
+    </svg>
+  )
+}
+
+function PlayIcon() {
+  return (
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <circle cx="32" cy="32" r="32" fill="rgba(0,0,0,0.5)" />
+      <path d="M26 20v24l18-12-18-12z" fill="#fff" />
     </svg>
   )
 }
