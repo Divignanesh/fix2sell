@@ -50,6 +50,12 @@ export default function Hero() {
   const { global: globalData } = useData()
   const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
   const heroBackgroundVideoUrl = (globalData && globalData.heroBackgroundVideoUrl) ? globalData.heroBackgroundVideoUrl.trim() : ''
+  const heroVideoOnMobile = (() => {
+    const v = globalData && globalData.heroVideoOnMobile
+    if (v === undefined || v === null) return false
+    const s = String(v).trim().toLowerCase()
+    return s === 'true' || s === '1' || s === 'yes'
+  })()
   const [badgeIndex, setBadgeIndex] = useState(0)
   const [locationText, setLocationText] = useState(DEFAULT_LOCATION_TEXT)
   const [isMobile, setIsMobile] = useState(true)
@@ -107,7 +113,7 @@ export default function Hero() {
     }
   }, [])
 
-  const showBackgroundVideo = isValidVideoUrl(heroBackgroundVideoUrl) && !isMobile
+  const showBackgroundVideo = isValidVideoUrl(heroBackgroundVideoUrl) && (!isMobile || heroVideoOnMobile)
 
   return (
     <section id="home" className="hero">
