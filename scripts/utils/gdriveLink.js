@@ -73,4 +73,4 @@ function convertDriveLinksInObject(obj) {
   return obj
 }
 
-export { toDirectDriveUrl, toPreviewDriveUrl, convertDriveLinksInObject }
+export { getDriveFileId, toDirectDriveUrl, toPreviewDriveUrl, convertDriveLinksInObject }

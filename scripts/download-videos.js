@@ -1,0 +1,164 @@
+/**
+ * Reads public/data.json, downloads all video URLs to public/downloaded-videos/,
+ * then rewrites data.json to use local paths. On each run, old files in
+ * downloaded-videos/ are removed so when the sheet is updated we get fresh files.
+ *
+ * Run after fetch-data.js (e.g. in build: fetch-data && download-videos && vite build).
+ */
+
+import https from 'https'
+import http from 'http'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { getDriveFileId } from './utils/gdriveLink.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const ROOT = path.resolve(__dirname, '..')
+const PUBLIC_DIR = path.join(ROOT, 'public')
+const VIDEOS_DIR = path.join(PUBLIC_DIR, 'downloaded-videos')
+const DATA_JSON = path.join(PUBLIC_DIR, 'data.json')
+
+/** Build download URL: for Drive use export=download, else use as-is */
+function getDownloadUrl(url) {
+  if (!url || typeof url !== 'string') return null
+  const u = url.trim()
+  const fileId = getDriveFileId(u)
+  if (fileId) return `https://drive.google.com/uc?export=download&id=${fileId}`
+  return u
+}
+
+/** Fetch URL and return { buffer, contentType } or null if failed / not a video */
+function fetchBinary(url, redirectCount = 0) {
+  const maxRedirects = 5
+  return new Promise((resolve, reject) => {
+    let u
+    try {
+      u = new URL(url)
+    } catch {
+      return resolve(null)
+    }
+    const opts = {
+      hostname: u.hostname,
+      path: u.pathname + u.search,
+      method: 'GET',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; download-videos/1.0)' },
+    }
+    const protocol = u.protocol === 'https:' ? https : http
+    const req = protocol.get(opts, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && redirectCount < maxRedirects) {
+        const next = res.headers.location.startsWith('http') ? res.headers.location : new URL(res.headers.location, url).href
+        return fetchBinary(next, redirectCount + 1).then(resolve).catch(reject)
+      }
+      if (res.statusCode !== 200) {
+        return resolve(null)
+      }
+      const chunks = []
+      res.on('data', (chunk) => chunks.push(chunk))
+      res.on('end', () => {
+        const buffer = Buffer.concat(chunks)
+        const contentType = (res.headers['content-type'] || '').toLowerCase()
+        resolve({ buffer, contentType })
+      })
+    })
+    req.on('error', () => resolve(null))
+  })
+}
+
+/** Return true if response looks like binary video (not HTML virus scan page etc.) */
+function isLikelyVideo(buffer, contentType) {
+  if (!buffer || buffer.length < 4) return false
+  if (contentType && (contentType.includes('video/') || contentType.includes('application/octet-stream'))) return true
+  if (contentType && contentType.includes('text/html')) return false
+  const sig = buffer.slice(0, 12)
+  if (sig[0] === 0x00 && sig[1] === 0x00 && (sig[2] === 0x00 || sig[2] === 0x01)) return true
+  if (sig[0] === 0x1a && sig[1] === 0x45 && sig[2] === 0xdf && sig[3] === 0xa3) return true
+  if (sig.toString('ascii', 0, 4) === 'ftyp') return true
+  if (buffer[0] === 0x3c && buffer[1] === 0x21) return false
+  if (buffer[0] === 0x3c && buffer[1] === 0x68) return false
+  return true
+}
+
+function getExtension(contentType, url) {
+  if (contentType && contentType.includes('webm')) return '.webm'
+  if (contentType && contentType.includes('ogg')) return '.ogv'
+  const u = (url || '').toLowerCase()
+  if (u.includes('.webm')) return '.webm'
+  if (u.includes('.ogv')) return '.ogv'
+  return '.mp4'
+}
+
+async function downloadOne(url, name) {
+  const downloadUrl = getDownloadUrl(url)
+  if (!downloadUrl) return null
+  const result = await fetchBinary(downloadUrl)
+  if (!result || !isLikelyVideo(result.buffer, result.contentType)) return null
+  const ext = getExtension(result.contentType, url)
+  const filename = name + ext
+  const outPath = path.join(VIDEOS_DIR, filename)
+  fs.writeFileSync(outPath, result.buffer)
+  return '/' + path.relative(PUBLIC_DIR, outPath).replace(/\\/g, '/')
+}
+
+function collectVideoEntries(data) {
+  const entries = []
+  if (data.global && data.global.heroBackgroundVideoUrl) {
+    entries.push({ url: data.global.heroBackgroundVideoUrl, set: (p) => { data.global.heroBackgroundVideoUrl = p }, name: 'hero-bg' })
+  }
+  if (Array.isArray(data.transformation)) {
+    data.transformation.forEach((item, i) => {
+      if (item.beforeType === 'video' && item.before) entries.push({ url: item.before, set: (p) => { item.before = p }, name: `transformation-${i}-before` })
+      if (item.afterType === 'video' && item.after) entries.push({ url: item.after, set: (p) => { item.after = p }, name: `transformation-${i}-after` })
+    })
+  }
+  if (Array.isArray(data.thousandsGained)) {
+    data.thousandsGained.forEach((item, i) => {
+      if (item.imageType === 'video' && item.image) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `thousands-${i}` })
+    })
+  }
+  if (Array.isArray(data.testimonials)) {
+    data.testimonials.forEach((item, i) => {
+      if (item.imageType === 'video' && item.image) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `testimonial-${i}` })
+    })
+  }
+  return entries
+}
+
+async function main() {
+  if (!fs.existsSync(DATA_JSON)) {
+    console.warn('download-videos: data.json not found, run fetch-data first')
+    process.exit(0)
+  }
+
+  const data = JSON.parse(fs.readFileSync(DATA_JSON, 'utf8'))
+
+  if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true })
+  if (fs.existsSync(VIDEOS_DIR)) {
+    for (const f of fs.readdirSync(VIDEOS_DIR)) {
+      fs.unlinkSync(path.join(VIDEOS_DIR, f))
+    }
+  } else {
+    fs.mkdirSync(VIDEOS_DIR, { recursive: true })
+  }
+
+  const entries = collectVideoEntries(data)
+
+  for (const { url, set, name } of entries) {
+    const localPath = await downloadOne(url, name)
+    if (localPath) {
+      set(localPath)
+      console.log('Downloaded:', name, '->', localPath)
+    } else {
+      console.warn('Skipped (keep remote URL):', name)
+    }
+  }
+
+  fs.writeFileSync(DATA_JSON, JSON.stringify(data, null, 2), 'utf8')
+  console.log('Updated', DATA_JSON)
+  process.exit(0)
+}
+
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})

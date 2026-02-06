@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/fetch-data.js && node node_modules/vite/bin/vite.js build",
+    "build": "node scripts/fetch-data.js && node scripts/download-videos.js && node node_modules/vite/bin/vite.js build",
     "preview": "vite preview",
-    "fetch-data": "node scripts/fetch-data.js"
+    "fetch-data": "node scripts/fetch-data.js",
+    "download-videos": "node scripts/download-videos.js"
   },
   "dependencies": {
     "framer-motion": "^11.0.0",

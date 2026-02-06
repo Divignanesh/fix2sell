@@ -4,18 +4,20 @@
       "label": "Kitchen Transformation",
       "before": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=800&q=60",
       "after": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=60",
+      "beforeType": "image",
+      "afterType": "image",
       "stats": [
         {
           "value": "$18,500",
-          "label": ""
+          "label": "Investment"
         },
         {
-          "value": "Investment",
-          "label": "$52,000"
-        },
-        {
-          "value": "",
+          "value": "$52,000",
           "label": "Value Increase"
+        },
+        {
+          "value": "4 days",
+          "label": "To Sell"
         }
       ]
     },
@@ -23,18 +25,20 @@
       "label": "Bathroom Transformation",
       "before": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=800&q=60",
       "after": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=800&q=60",
+      "beforeType": "image",
+      "afterType": "image",
       "stats": [
         {
           "value": "$12,200",
-          "label": ""
+          "label": "Investment"
         },
         {
-          "value": "Investment",
-          "label": "$28,000"
-        },
-        {
-          "value": "",
+          "value": "$28,000",
           "label": "Value Increase"
+        },
+        {
+          "value": "3 days",
+          "label": "To Sell"
         }
       ]
     },
@@ -42,18 +46,20 @@
       "label": "Living Room Transformation",
       "before": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=60",
       "after": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=60",
+      "beforeType": "image",
+      "afterType": "image",
       "stats": [
         {
           "value": "$15,000",
-          "label": ""
+          "label": "Investment"
         },
         {
-          "value": "Investment",
-          "label": "$35,000"
-        },
-        {
-          "value": "",
+          "value": "$35,000",
           "label": "Value Increase"
+        },
+        {
+          "value": "5 days",
+          "label": "To Sell"
         }
       ]
     }
@@ -61,69 +67,79 @@
   "thousandsGained": [
     {
       "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&h=533&q=70",
+      "imageType": "image",
       "renovation": "$44,605",
-      "profit": "",
-      "location": "$30,395"
+      "profit": "$30,395",
+      "location": "Riverside"
     },
     {
       "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&h=533&q=70",
+      "imageType": "image",
       "renovation": "$38,200",
-      "profit": "",
-      "location": "$41,800"
+      "profit": "$41,800",
+      "location": "Fremont"
     },
     {
       "image": "https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?auto=format&fit=crop&w=400&h=533&q=70",
+      "imageType": "image",
       "renovation": "$52,100",
-      "profit": "",
-      "location": "$28,900"
+      "profit": "$28,900",
+      "location": "Panorama City"
     },
     {
       "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&h=533&q=70",
+      "imageType": "image",
       "renovation": "$41,350",
-      "profit": "",
-      "location": "$35,650"
+      "profit": "$35,650",
+      "location": "Costa Mesa"
     },
     {
       "image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=400&h=533&q=70",
+      "imageType": "image",
       "renovation": "$61,200",
-      "profit": "",
-      "location": "$48,800"
+      "profit": "$48,800",
+      "location": "San Francisco"
     },
     {
       "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=400&h=533&q=70",
+      "imageType": "image",
       "renovation": "$35,900",
-      "profit": "",
-      "location": "$27,100"
+      "profit": "$27,100",
+      "location": "Oakland"
     }
   ],
   "testimonials": [
     {
       "id": 1,
-      "quote": "\"To them it's not about the sale, it's about trying to help families move on. They treated me like I was their only client, and I had that one-on-one attention.\" with \"thisis the first test \"\" with \"\"test\"",
-      "name": "",
-      "location": "Charlisa Boyd",
-      "image": "Sold to Opendoor in Raleigh, NC"
+      "quote": "To them it's not about the sale, it's about trying to help families move on. They treated me like I was their only client, and I had that one-on-one attention.\" with \"thisis the first test",
+      "name": "Charlisa Boyd",
+      "location": "Sold to Opendoor in Raleigh, NC",
+      "image": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=200&h=200&q=80",
+      "imageType": "image"
     },
     {
       "id": 2,
       "quote": "Opendoor's offer came in right near our appraisal, but we never had to list the house or do showings. For the kind of value Opendoor gives you, it's just a no-brainer.",
-      "name": "",
-      "location": "Adam Leon",
-      "image": "Sold to Opendoor in Phoenix, AZ"
+      "name": "Adam Leon",
+      "location": "Sold to Opendoor in Phoenix, AZ",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80",
+      "imageType": "image"
     },
     {
       "id": 3,
       "quote": "The whole process was incredibly smooth. Fix2Sell handled everything from renovations to staging. We sold for 15% more than expected!",
       "name": "Sarah Mitchell",
       "location": "Sold in Austin, TX",
-      "image": ""
+      "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80",
+      "imageType": "image"
     },
     {
       "id": 4,
       "quote": "I was skeptical at first, but the team delivered beyond my expectations. The renovation suggestions were spot-on and the ROI was amazing.",
-      "name": "",
-      "location": "Michael Chen",
-      "image": "Sold in San Francisco, CA"
+      "name": "Michael Chen",
+      "location": "Sold in San Francisco, CA",
+      "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&h=200&q=80",
+      "imageType": "image"
     }
   ],
   "faq": [
@@ -150,12 +166,19 @@
     {
       "q": "What kind of upgrades qualify for Fix2Sell?",
       "a": "We focus on value-boosting improvements: kitchens, baths, flooring, paint, staging, and key repairs that increase sale price."
+    },
+    {
+      "q": "test",
+      "a": "Test"
     }
   ],
   "global": {
     "bookAMeetingUrl": "/#inquire",
     "bookAMeetingLabel": "Book A Meeting",
     "unlockPotentialUrl": "#inquire",
-    "unlockPotentialLabel": "CLICK TO UNLOCK YOUR HOME POTENTIAL"
+    "unlockPotentialLabel": "UNLOCK YOUR HOME POTENTIAL",
+    "formIframeUrl": "",
+    "renogradeFormIframeUrl": "https://docs.google.com/forms/d/e/1FAIpQLSckZ6NkD_eemdYXwv-aIgM26kbLQZv3xfE8HioYtxSeVsR9CQ/viewform?embedded=true",
+    "heroBackgroundVideoUrl": "/downloaded-videos/hero-bg.mp4"
   }
 }
