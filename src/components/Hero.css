@@ -10,10 +10,13 @@
   overflow: hidden;
 }
 
-/* Full-section background video (blue shows when no URL or while loading) */
+/* Full-section background video; starts below navbar so overlay isn’t on nav */
 .hero__video-wrap {
   position: absolute;
-  inset: 0;
+  top: 63px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
   background: var(--color-navy);
 }
@@ -36,10 +39,13 @@
   border: none;
 }
 
-/* Dark overlay on top of video */
+/* Dark overlay on top of video; below navbar only */
 .hero__video-overlay {
   position: absolute;
-  inset: 0;
+  top: 63px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
   background: #000;
   opacity: 0.5;
@@ -299,6 +305,10 @@
     padding-top: 54px;
     min-height: auto;
     align-items: flex-start;
+  }
+  .hero__video-wrap,
+  .hero__video-overlay {
+    top: 54px;
   }
   /* On mobile: align video to center top when cropped (portrait) */
   .hero__video {
