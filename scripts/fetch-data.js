@@ -24,7 +24,8 @@ const GIDS = {
   testimonials: '409592819',
   faq: '308847142',
   global: '0',
-  smartWay: '1199702927', // Replace with your SmartWay tab gid (from sheet URL #gid=... when you open the tab)
+  smartWay: '1199702927',
+  footer: '1129856376', // Footer tab: section | label | url | icon (icon only for Social: facebook, instagram, linkedin, twitter, whatsapp)
 }
 
 function fetchUrl(url, redirectCount = 0) {
@@ -89,12 +90,12 @@ function mapTransformation(rows) {
 
 function mapThousandsGained(rows) {
   return rows
-    .filter((r) => get(r, 'image') || get(r, 'renovation') || get(r, 'location') || get(r, 'profit'))
+    .filter((r) => get(r, 'image') || get(r, 'value1') || get(r, 'value2') || get(r, 'location'))
     .map((r) => ({
       image: get(r, 'image'),
       imageType: mediaType(r, 'imagetype'),
-      renovation: get(r, 'renovation'),
-      profit: get(r, 'profit'),
+      renovation: get(r, 'value1'),
+      profit: get(r, 'value2'),
       location: get(r, 'location'),
     }))
 }
@@ -140,6 +141,17 @@ function mapSmartWay(rows) {
     }))
 }
 
+function mapFooter(rows) {
+  return rows
+    .filter((r) => get(r, 'section') && (get(r, 'label') || get(r, 'url')))
+    .map((r) => ({
+      section: get(r, 'section'),
+      label: get(r, 'label'),
+      url: get(r, 'url'),
+      icon: get(r, 'icon'),
+    }))
+}
+
 async function main() {
   const data = {}
   const sheets = [
@@ -149,6 +161,7 @@ async function main() {
     { key: 'faq', gid: GIDS.faq, map: mapFaq },
     { key: 'global', gid: GIDS.global, map: mapGlobal },
     { key: 'smartWay', gid: GIDS.smartWay, map: mapSmartWay },
+    { key: 'footer', gid: GIDS.footer, map: mapFooter },
   ]
 
   for (const { key, gid, map } of sheets) {
@@ -159,10 +172,14 @@ async function main() {
     } catch (err) {
       console.warn(`Sheet ${key} (gid=${gid}):`, err.message)
       if (key === 'global') data[key] = {}
-      else if (key === 'smartWay') data[key] = []
+      else if (key === 'smartWay' || key === 'footer') data[key] = []
       else data[key] = []
     }
   }
+
+  // Merge Copy into Global: all copy keys + global keys in one object. Global overrides for same key.
+  const mergedGlobal = { ...(data.copy || {}), ...(data.global || {}) }
+  data.global = mergedGlobal
 
   const withDriveLinks = convertDriveLinksInObject(data)
 

@@ -88,29 +88,6 @@ export default function SmartWay() {
                 ))}
               </div>
             )}
-            {/* Offer badges */}
-            <div className="smart-way__badge smart-way__badge--highest">
-              <span className="smart-way__badge-label">Highest offer</span>
-              <span className="smart-way__badge-value">$452K</span>
-            </div>
-            <div className="smart-way__badge smart-way__badge--cash">
-              <div className="smart-way__badge-avatar">
-                <AvatarIcon />
-              </div>
-              <div className="smart-way__badge-info">
-                <span className="smart-way__badge-label">Cash offer</span>
-                <span className="smart-way__badge-value">$438K</span>
-              </div>
-            </div>
-            <div className="smart-way__badge smart-way__badge--new">
-              <div className="smart-way__badge-avatar smart-way__badge-avatar--small">
-                <AvatarIcon />
-              </div>
-              <div className="smart-way__badge-info">
-                <span className="smart-way__badge-label">New offer</span>
-                <span className="smart-way__badge-value">$446K</span>
-              </div>
-            </div>
           </div>
         </motion.div>
         <motion.div
