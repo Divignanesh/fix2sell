@@ -179,10 +179,8 @@ async function main() {
 
   const withDriveLinks = convertDriveLinksInObject(data)
 
-  // Convert Drive video URLs to preview format (for iframe); images stay as uc?id=
-  if (withDriveLinks.global && withDriveLinks.global.heroBackgroundVideoUrl) {
-    withDriveLinks.global.heroBackgroundVideoUrl = toPreviewDriveUrl(withDriveLinks.global.heroBackgroundVideoUrl)
-  }
+  // Hero background video: keep as direct Drive URL so download-videos.js can download it and replace with local path.
+  // Other video URLs (transformation, etc.) convert to preview for iframe embed.
   if (Array.isArray(withDriveLinks.transformation)) {
     withDriveLinks.transformation.forEach((item) => {
       if (item.beforeType === 'video' && item.before) item.before = toPreviewDriveUrl(item.before)
