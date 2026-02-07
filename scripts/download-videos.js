@@ -28,7 +28,18 @@ function getDownloadUrl(url) {
   return u
 }
 
-/** Fetch URL and return { buffer, contentType } or null if failed / not a video */
+/** Returns true if this looks like a real Drive or http(s) video URL (not a placeholder) */
+function isDownloadableUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim()
+  if (u.startsWith('http://') || u.startsWith('https://')) {
+    if (u.includes('drive.google.com')) return !!getDriveFileId(u)
+    return true
+  }
+  return false
+}
+
+/** Fetch URL and return { buffer, contentType } or null if failed */
 function fetchBinary(url, redirectCount = 0) {
   const maxRedirects = 5
   return new Promise((resolve, reject) => {
@@ -42,7 +53,7 @@ function fetchBinary(url, redirectCount = 0) {
       hostname: u.hostname,
       path: u.pathname + u.search,
       method: 'GET',
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; download-videos/1.0)' },
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' },
     }
     const protocol = u.protocol === 'https:' ? https : http
     const req = protocol.get(opts, (res) => {
@@ -63,6 +74,33 @@ function fetchBinary(url, redirectCount = 0) {
     })
     req.on('error', () => resolve(null))
   })
+}
+
+/**
+ * Download from Google Drive, handling virus-scan confirmation for large files.
+ * First request may return HTML with confirm token; second request with token returns the file.
+ */
+async function fetchDriveFile(fileId) {
+  const baseUrl = `https://drive.google.com/uc?export=download&id=${fileId}`
+  const first = await fetchBinary(baseUrl)
+  if (!first) return null
+  const ct = (first.contentType || '').toLowerCase()
+  const buf = first.buffer
+  if (ct.includes('text/html') || (buf && buf.length > 0 && buf[0] === 0x3c)) {
+    const html = buf.toString('utf8')
+    const confirmMatch = html.match(/confirm=([^&"'\s]+)/)
+    const token = confirmMatch ? confirmMatch[1] : null
+    if (token) {
+      const withConfirm = `${baseUrl}&confirm=${token}`
+      const second = await fetchBinary(withConfirm)
+      if (second && second.buffer && second.buffer.length > 0) {
+        const isHtml = (second.contentType || '').includes('text/html') || second.buffer[0] === 0x3c
+        if (!isHtml) return second
+      }
+    }
+    return null
+  }
+  return first
 }
 
 /** Return true if response looks like binary video (not HTML virus scan page etc.) */
@@ -89,10 +127,12 @@ function getExtension(contentType, url) {
 }
 
 async function downloadOne(url, name) {
-  const downloadUrl = getDownloadUrl(url)
-  if (!downloadUrl) return null
-  const result = await fetchBinary(downloadUrl)
-  if (!result || !isLikelyVideo(result.buffer, result.contentType)) return null
+  if (!isDownloadableUrl(url)) return null
+  const fileId = getDriveFileId(url)
+  const result = fileId
+    ? await fetchDriveFile(fileId)
+    : await fetchBinary(url.trim())
+  if (!result || !result.buffer || !isLikelyVideo(result.buffer, result.contentType)) return null
   const ext = getExtension(result.contentType, url)
   const filename = name + ext
   const outPath = path.join(VIDEOS_DIR, filename)
@@ -102,23 +142,23 @@ async function downloadOne(url, name) {
 
 function collectVideoEntries(data) {
   const entries = []
-  if (data.global && data.global.heroBackgroundVideoUrl) {
+  if (data.global && data.global.heroBackgroundVideoUrl && isDownloadableUrl(data.global.heroBackgroundVideoUrl)) {
     entries.push({ url: data.global.heroBackgroundVideoUrl, set: (p) => { data.global.heroBackgroundVideoUrl = p }, name: 'hero-bg' })
   }
   if (Array.isArray(data.transformation)) {
     data.transformation.forEach((item, i) => {
-      if (item.beforeType === 'video' && item.before) entries.push({ url: item.before, set: (p) => { item.before = p }, name: `transformation-${i}-before` })
-      if (item.afterType === 'video' && item.after) entries.push({ url: item.after, set: (p) => { item.after = p }, name: `transformation-${i}-after` })
+      if (item.beforeType === 'video' && item.before && isDownloadableUrl(item.before)) entries.push({ url: item.before, set: (p) => { item.before = p }, name: `transformation-${i}-before` })
+      if (item.afterType === 'video' && item.after && isDownloadableUrl(item.after)) entries.push({ url: item.after, set: (p) => { item.after = p }, name: `transformation-${i}-after` })
     })
   }
   if (Array.isArray(data.thousandsGained)) {
     data.thousandsGained.forEach((item, i) => {
-      if (item.imageType === 'video' && item.image) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `thousands-${i}` })
+      if (item.imageType === 'video' && item.image && isDownloadableUrl(item.image)) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `thousands-${i}` })
     })
   }
   if (Array.isArray(data.testimonials)) {
     data.testimonials.forEach((item, i) => {
-      if (item.imageType === 'video' && item.image) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `testimonial-${i}` })
+      if (item.imageType === 'video' && item.image && isDownloadableUrl(item.image)) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `testimonial-${i}` })
     })
   }
   return entries
@@ -147,14 +187,14 @@ async function main() {
     const localPath = await downloadOne(url, name)
     if (localPath) {
       set(localPath)
-      console.log('Downloaded:', name, '->', localPath)
+      console.log('Downloaded:', name, '->', localPath, '(replaced in data.json)')
     } else {
-      console.warn('Skipped (keep remote URL):', name)
+      console.warn('Skipped (download failed or not a video):', name, '- data.json keeps current URL')
     }
   }
 
   fs.writeFileSync(DATA_JSON, JSON.stringify(data, null, 2), 'utf8')
-  console.log('Updated', DATA_JSON)
+  console.log('Wrote', DATA_JSON, '- video URLs above were replaced with local paths')
   process.exit(0)
 }
 
