@@ -134,9 +134,6 @@ export default function RefreshPage() {
       .then(() => {
         const withDriveLinks = convertDriveLinksInObject(data)
         if (setData) setData(withDriveLinks)
-        try {
-          localStorage.setItem('app-data', JSON.stringify(withDriveLinks))
-        } catch (_) {}
         setStatus('ok')
         setMessage('Data refreshed. You can go back to the home page.')
       })

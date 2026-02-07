@@ -71,6 +71,7 @@ function fetchBinary(url, redirectCount = 0) {
         const contentType = (res.headers['content-type'] || '').toLowerCase()
         resolve({ buffer, contentType })
       })
+
     })
     req.on('error', () => resolve(null))
   })
