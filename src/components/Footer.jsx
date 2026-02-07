@@ -3,8 +3,8 @@ import { motion } from 'framer-motion'
 import { useData } from '../context/DataContext'
 import './Footer.css'
 
-function getCopy(copy, key, fallback) {
-  const v = copy && copy[key]
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
   return v !== undefined && v !== null ? String(v).trim() : fallback
 }
 
@@ -57,7 +57,6 @@ function SocialIcon({ name, ariaLabel }) {
 
 export default function Footer() {
   const { global: globalData, footer: footerRows } = useData()
-  const copyData = globalData
   const footerList = Array.isArray(footerRows) ? footerRows : []
   const norm = (s) => (s || '').trim().toLowerCase().replace(/\s+/g, ' ').replace(/\s*&\s*/g, ' and ')
   const quickLinks = footerList.filter((r) => norm(r.section) === 'quick links').length
@@ -68,16 +67,16 @@ export default function Footer() {
     : FALLBACK_HELP_LINKS
   const socialLinks = footerList.filter((r) => norm(r.section) === 'social').map((r) => ({ label: r.label || '', url: r.url || '#', icon: (r.icon || '').toLowerCase() }))
 
-  const logoAlt = getCopy(copyData, 'footerLogoAlt', 'MS Realty')
-  const headingQuickLinks = getCopy(copyData, 'footerHeadingQuickLinks', 'Quick Links')
-  const headingHelp = getCopy(copyData, 'footerHeadingHelp', 'Help & Support')
-  const headingContact = getCopy(copyData, 'footerHeadingContact', 'Contact Details')
-  const address = getCopy(copyData, 'footerAddress', '123 Main Street, Hamilton, ON L8P 1A1')
-  const phone = getCopy(copyData, 'footerPhone', '(123) 456-7890')
-  const email = getCopy(copyData, 'footerEmail', 'info@msrealty.com')
-  const copyright = getCopy(copyData, 'footerCopyright', '© 2026 MS Realty. All rights reserved.')
-  const disclaimerGoogle = getCopy(copyData, 'footerDisclaimerGoogle', '')
-  const disclaimerMeta = getCopy(copyData, 'footerDisclaimerMeta', '')
+  const logoAlt = getCopy(globalData, 'footerLogoAlt', 'MS Realty')
+  const headingQuickLinks = getCopy(globalData, 'footerHeadingQuickLinks', 'Quick Links')
+  const headingHelp = getCopy(globalData, 'footerHeadingHelp', 'Help & Support')
+  const headingContact = getCopy(globalData, 'footerHeadingContact', 'Contact Details')
+  const address = getCopy(globalData, 'footerAddress', '123 Main Street, Hamilton, ON L8P 1A1')
+  const phone = getCopy(globalData, 'footerPhone', '(123) 456-7890')
+  const email = getCopy(globalData, 'footerEmail', 'info@msrealty.com')
+  const copyright = getCopy(globalData, 'footerCopyright', '© 2026 MS Realty. All rights reserved.')
+  const disclaimerGoogle = getCopy(globalData, 'footerDisclaimerGoogle', '')
+  const disclaimerMeta = getCopy(globalData, 'footerDisclaimerMeta', '')
 
   const renderLink = (item) => {
     const isInternal = item.url.startsWith('/') && !item.url.startsWith('//')

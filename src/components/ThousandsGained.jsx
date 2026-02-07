@@ -24,20 +24,19 @@ function MapPinIcon() {
   )
 }
 
-function getCopy(copy, key, fallback) {
-  const v = copy && copy[key]
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
   return v !== undefined && v !== null ? String(v).trim() : fallback
 }
 
 export default function ThousandsGained() {
   const { thousandsGained: dataCards, global: globalData } = useData()
-  const copyData = globalData
   const cards = Array.isArray(dataCards) && dataCards.length > 0 ? dataCards : defaultCards
   const scrollRef = useRef(null)
   const ctaHref = (globalData && globalData.unlockPotentialUrl) || '#inquire'
   const ctaLabel = (globalData && globalData.unlockPotentialLabel) || 'CLICK TO UNLOCK YOUR HOME POTENTIAL'
-  const figureRenovationLabel = getCopy(copyData, 'thousandsFigureRenovation', 'Renovation')
-  const figureProfitLabel = getCopy(copyData, 'thousandsFigureProfit', 'Profit')
+  const figureRenovationLabel = getCopy(globalData, 'thousandsFigureRenovation', 'Renovation')
+  const figureProfitLabel = getCopy(globalData, 'thousandsFigureProfit', 'Profit')
 
   useEffect(() => {
     const el = scrollRef.current

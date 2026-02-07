@@ -12,8 +12,8 @@ const FALLBACK_LIST_ITEMS = [
   { label: 'Stress', accent: 'ZERO' },
 ]
 
-function getCopy(copy, key, fallback) {
-  const v = copy && copy[key]
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
   return v !== undefined && v !== null ? String(v).trim() : fallback
 }
 
@@ -46,7 +46,6 @@ function drivePreviewUrlWithAutoplay(url) {
 
 export default function Hero() {
   const { global: globalData } = useData()
-  const copyData = globalData
   const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
   const heroBackgroundVideoUrl = (globalData && globalData.heroBackgroundVideoUrl) ? globalData.heroBackgroundVideoUrl.trim() : ''
   const heroVideoOnMobile = (() => {
@@ -67,14 +66,14 @@ export default function Hero() {
   const [isMobile, setIsMobile] = useState(true)
 
   const badgeTexts = (() => {
-    const raw = getCopy(copyData, 'heroRotatingWords', '')
+    const raw = getCopy(globalData, 'heroRotatingWords', '')
     return raw ? raw.split(',').map((s) => s.trim()).filter(Boolean) : FALLBACK_BADGE_TEXTS
   })()
 
   const listItems = [
-    { label: getCopy(copyData, 'heroList1Label', FALLBACK_LIST_ITEMS[0].label), accent: getCopy(copyData, 'heroList1Accent', FALLBACK_LIST_ITEMS[0].accent) },
-    { label: getCopy(copyData, 'heroList2Label', FALLBACK_LIST_ITEMS[1].label), accent: getCopy(copyData, 'heroList2Accent', FALLBACK_LIST_ITEMS[1].accent) },
-    { label: getCopy(copyData, 'heroList3Label', FALLBACK_LIST_ITEMS[2].label), accent: getCopy(copyData, 'heroList3Accent', FALLBACK_LIST_ITEMS[2].accent) },
+    { label: getCopy(globalData, 'heroList1Label', FALLBACK_LIST_ITEMS[0].label), accent: getCopy(globalData, 'heroList1Accent', FALLBACK_LIST_ITEMS[0].accent) },
+    { label: getCopy(globalData, 'heroList2Label', FALLBACK_LIST_ITEMS[1].label), accent: getCopy(globalData, 'heroList2Accent', FALLBACK_LIST_ITEMS[1].accent) },
+    { label: getCopy(globalData, 'heroList3Label', FALLBACK_LIST_ITEMS[2].label), accent: getCopy(globalData, 'heroList3Accent', FALLBACK_LIST_ITEMS[2].accent) },
   ]
 
   useEffect(() => {
@@ -176,8 +175,8 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="hero__badge-accent">{getCopy(copyData, 'heroBrand', '#Fix2Sell')}</span>
-            <span className="hero__badge-separator">{getCopy(copyData, 'heroBadgeIsYour', ' is your ')}</span>
+            <span className="hero__badge-accent">{getCopy(globalData, 'heroBrand', '#Fix2Sell')}</span>
+            <span className="hero__badge-separator">{getCopy(globalData, 'heroBadgeIsYour', ' is your ')}</span>
             <AnimatePresence mode="wait">
               <motion.span
                 key={badgeIndex}
@@ -190,7 +189,7 @@ export default function Hero() {
                 {badgeTexts[badgeIndex]}
               </motion.span>
             </AnimatePresence>
-            <span className="hero__badge-separator">{getCopy(copyData, 'heroPartnerSuffix', ' partner')}</span>
+            <span className="hero__badge-separator">{getCopy(globalData, 'heroPartnerSuffix', ' partner')}</span>
           </motion.div>
           <motion.h1
             className="hero__title"
@@ -198,9 +197,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {getCopy(copyData, 'heroTitleLine1', 'Sell Your Home for ')}{' '}
-            <span className="hero__title-highlight">{getCopy(copyData, 'heroTitleHighlight1', '8-10% More Than')}</span>{' '}
-            {getCopy(copyData, 'heroTitleLine2', 'Current Market Price ')}
+            {getCopy(globalData, 'heroTitleLine1', 'Sell Your Home for ')}{' '}
+            <span className="hero__title-highlight">{getCopy(globalData, 'heroTitleHighlight1', '8-10% More Than')}</span>{' '}
+            {getCopy(globalData, 'heroTitleLine2', 'Current Market Price ')}
             <span className="hero__title-highlight">{locationText}</span>
           </motion.h1>
           <motion.p
@@ -209,7 +208,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.45 }}
           >
-            {getCopy(copyData, 'heroDesc', "Transform your home's appeal with smart, value-boosting improvements all at zero upfront cost. From design to closing, we handle everything to get you maximum profit.")}
+            {getCopy(globalData, 'heroDesc', "Transform your home's appeal with smart, value-boosting improvements all at zero upfront cost. From design to closing, we handle everything to get you maximum profit.")}
           </motion.p>
           <motion.ul
             className="hero__list"
@@ -247,8 +246,8 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <div className="hero__card-inner">
-            <h3 className="hero__card-title">{getCopy(copyData, 'heroFormTitle', 'Inquire Now')}</h3>
-            <p className="hero__card-subtitle">{getCopy(copyData, 'heroFormSubtitle', 'Get your free home evaluation today')}</p>
+            <h3 className="hero__card-title">{getCopy(globalData, 'heroFormTitle', 'Inquire Now')}</h3>
+            <p className="hero__card-subtitle">{getCopy(globalData, 'heroFormSubtitle', 'Get your free home evaluation today')}</p>
             {isValidIframeUrl(formIframeUrl) ? (
               <div className="hero__form-iframe-wrap">
                 <iframe
@@ -259,14 +258,14 @@ export default function Hero() {
               </div>
             ) : (
               <form className="hero__form" onSubmit={(e) => e.preventDefault()}>
-                <input type="text" placeholder={getCopy(copyData, 'heroPlaceholderName', 'Full Name')} className="hero__input" aria-label="Full name" />
-                <input type="email" placeholder={getCopy(copyData, 'heroPlaceholderEmail', 'Email Address')} className="hero__input" aria-label="Email" />
-                <input type="tel" placeholder={getCopy(copyData, 'heroPlaceholderPhone', 'Phone Number')} className="hero__input" aria-label="Phone" />
+                <input type="text" placeholder={getCopy(globalData, 'heroPlaceholderName', 'Full Name')} className="hero__input" aria-label="Full name" />
+                <input type="email" placeholder={getCopy(globalData, 'heroPlaceholderEmail', 'Email Address')} className="hero__input" aria-label="Email" />
+                <input type="tel" placeholder={getCopy(globalData, 'heroPlaceholderPhone', 'Phone Number')} className="hero__input" aria-label="Phone" />
                 <button type="submit" className="hero__submit">
-                  {getCopy(copyData, 'heroSubmitLabel', 'Get My Estimate')}
+                  {getCopy(globalData, 'heroSubmitLabel', 'Get My Estimate')}
                 </button>
                 <p className="hero__form-note">
-                  {getCopy(copyData, 'heroFormNote', 'By submitting, you agree to our Privacy Policy and Terms of Service.')}
+                  {getCopy(globalData, 'heroFormNote', 'By submitting, you agree to our Privacy Policy and Terms of Service.')}
                 </p>
               </form>
             )}

@@ -177,10 +177,6 @@ async function main() {
     }
   }
 
-  // Merge Copy into Global: all copy keys + global keys in one object. Global overrides for same key.
-  const mergedGlobal = { ...(data.copy || {}), ...(data.global || {}) }
-  data.global = mergedGlobal
-
   const withDriveLinks = convertDriveLinksInObject(data)
 
   // Convert Drive video URLs to preview format (for iframe); images stay as uc?id=
