@@ -176,7 +176,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <span className="hero__badge-accent">{getCopy(globalData, 'heroBrand', '#Fix2Sell')}</span>
-            <span className="hero__badge-separator">{getCopy(globalData, 'heroBadgeIsYour', ' is your ')}</span>
+            <span className="hero__badge-separator">{' '}{getCopy(globalData, 'heroBadgeIsYour', 'is your').trim()}{' '}</span>
             <AnimatePresence mode="wait">
               <motion.span
                 key={badgeIndex}
@@ -189,7 +189,7 @@ export default function Hero() {
                 {badgeTexts[badgeIndex]}
               </motion.span>
             </AnimatePresence>
-            <span className="hero__badge-separator">{getCopy(globalData, 'heroPartnerSuffix', ' partner')}</span>
+            <span className="hero__badge-separator">{' '}{getCopy(globalData, 'heroPartnerSuffix', 'partner').trim()}</span>
           </motion.div>
           <motion.h1
             className="hero__title"
@@ -197,9 +197,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {getCopy(globalData, 'heroTitleLine1', 'Sell Your Home for ')}{' '}
-            <span className="hero__title-highlight">{getCopy(globalData, 'heroTitleHighlight1', '8-10% More Than')}</span>{' '}
-            {getCopy(globalData, 'heroTitleLine2', 'Current Market Price ')}
+            {getCopy(globalData, 'heroTitleLine1', 'Sell Your Home for').trim()}{' '}
+            <span className="hero__title-highlight">{getCopy(globalData, 'heroTitleHighlight1', '8-10% More Than').trim()}</span>{' '}
+            {getCopy(globalData, 'heroTitleLine2', 'Current Market Price').trim()}{' '}
             <span className="hero__title-highlight">{locationText}</span>
           </motion.h1>
           <motion.p
