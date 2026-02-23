@@ -19,11 +19,40 @@ function parseGlobalFlag(value) {
   return s === 'true' || s === '1' || s === 'yes'
 }
 
+/** Read boolean from global; try exact key then normalized (lowercase, no spaces) for sheet export variations */
+function getGlobalFlag(globalData, key) {
+  if (!globalData || typeof globalData !== 'object') return false
+  const exact = globalData[key]
+  const normalizedKey = key.replace(/\s+/g, '').toLowerCase()
+  const fromNormalized = Object.keys(globalData).find((k) => k.replace(/\s+/g, '').toLowerCase() === normalizedKey)
+  const value = exact ?? (fromNormalized != null ? globalData[fromNormalized] : undefined)
+  return parseGlobalFlag(value)
+}
+
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
+function checkScrollThreshold(openPopup) {
+  try {
+    if (sessionStorage.getItem(STORAGE_SCROLL) === '1') return
+    const scrollTop = window.scrollY || document.documentElement.scrollTop
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+    if (scrollHeight <= 0) return
+    const pct = scrollTop / scrollHeight
+    if (pct >= SCROLL_THRESHOLD) {
+      sessionStorage.setItem(STORAGE_SCROLL, '1')
+      openPopup()
+    }
+  } catch (_) {}
+}
+
 export default function InquirePopup() {
   const { global: globalData } = useData()
   const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
-  const showScrollPopup = parseGlobalFlag(globalData && globalData.showScrollPopup)
-  const showExitIntentPopup = parseGlobalFlag(globalData && globalData.showExitIntentPopup)
+  const showScrollPopup = getGlobalFlag(globalData, 'showScrollPopup')
+  const showExitIntentPopup = getGlobalFlag(globalData, 'showExitIntentPopup')
 
   const [open, setOpen] = useState(false)
 
@@ -31,22 +60,11 @@ export default function InquirePopup() {
 
   const closePopup = useCallback(() => setOpen(false), [])
 
-  // Scroll: show at 85%
+  // Scroll: show at 85%. Run check once when effect runs so we catch user who already scrolled before data loaded.
   useEffect(() => {
     if (!showScrollPopup) return
-    const onScroll = () => {
-      try {
-        if (sessionStorage.getItem(STORAGE_SCROLL) === '1') return
-        const scrollTop = window.scrollY || document.documentElement.scrollTop
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
-        if (scrollHeight <= 0) return
-        const pct = scrollTop / scrollHeight
-        if (pct >= SCROLL_THRESHOLD) {
-          sessionStorage.setItem(STORAGE_SCROLL, '1')
-          openPopup()
-        }
-      } catch (_) {}
-    }
+    const onScroll = () => checkScrollThreshold(openPopup)
+    checkScrollThreshold(openPopup)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [showScrollPopup, openPopup])
@@ -98,8 +116,8 @@ export default function InquirePopup() {
               <CloseIcon />
             </button>
             <div className="inquire-popup__inner">
-              <h2 id="inquire-popup-title" className="inquire-popup__title">Inquire Now</h2>
-              <p className="inquire-popup__subtitle">Get your free home evaluation today</p>
+              <h2 id="inquire-popup-title" className="inquire-popup__title">{getCopy(globalData, 'inquirePopupTitle', 'Inquire Now')}</h2>
+              <p className="inquire-popup__subtitle">{getCopy(globalData, 'inquirePopupSubtitle', 'Get your free home evaluation today')}</p>
               {isValidIframeUrl(formIframeUrl) ? (
                 <div className="inquire-popup__iframe-wrap">
                   <iframe
@@ -110,14 +128,14 @@ export default function InquirePopup() {
                 </div>
               ) : (
                 <form className="inquire-popup__form" onSubmit={(e) => e.preventDefault()}>
-                  <input type="text" placeholder="Full Name" className="inquire-popup__input" aria-label="Full name" />
-                  <input type="email" placeholder="Email Address" className="inquire-popup__input" aria-label="Email" />
-                  <input type="tel" placeholder="Phone Number" className="inquire-popup__input" aria-label="Phone" />
+                  <input type="text" placeholder={getCopy(globalData, 'heroPlaceholderName', 'Full Name')} className="inquire-popup__input" aria-label="Full name" />
+                  <input type="email" placeholder={getCopy(globalData, 'heroPlaceholderEmail', 'Email Address')} className="inquire-popup__input" aria-label="Email" />
+                  <input type="tel" placeholder={getCopy(globalData, 'heroPlaceholderPhone', 'Phone Number')} className="inquire-popup__input" aria-label="Phone" />
                   <button type="submit" className="inquire-popup__submit">
-                    Get My Estimate
+                    {getCopy(globalData, 'inquirePopupSubmitLabel', 'Get My Estimate')}
                   </button>
                   <p className="inquire-popup__note">
-                    By submitting, you agree to our <a href="#privacy">Privacy Policy</a> and <a href="#terms">Terms of Service</a>.
+                    {getCopy(globalData, 'inquirePopupFormNote', 'By submitting, you agree to our Privacy Policy and Terms of Service.')}
                   </p>
                 </form>
               )}

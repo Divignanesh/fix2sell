@@ -1,15 +1,26 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
+import { useData } from '../context/DataContext'
 import './RenoGrader.css'
 
-const features = [
-  { text: 'ROI analysis for every improvement', icon: 'chart', color: '#F59E0B' },
-  { text: 'Budget optimization strategies', icon: 'budget', color: '#10B981' },
-  { text: 'Timeline and cost projections', icon: 'clock', color: '#3B82F6' },
-  { text: 'Market comparison insights', icon: 'person', color: '#F97316' },
-]
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
+const FEATURE_ICONS = ['chart', 'budget', 'clock', 'person']
+const FEATURE_COLORS = ['#F59E0B', '#10B981', '#3B82F6', '#F97316']
 
 export default function RenoGrader() {
+  const { global: globalData } = useData()
+  const features = [
+    { text: getCopy(globalData, 'renoGraderFeature1', 'ROI analysis for every improvement'), icon: FEATURE_ICONS[0], color: FEATURE_COLORS[0] },
+    { text: getCopy(globalData, 'renoGraderFeature2', 'Budget optimization strategies'), icon: FEATURE_ICONS[1], color: FEATURE_COLORS[1] },
+    { text: getCopy(globalData, 'renoGraderFeature3', 'Timeline and cost projections'), icon: FEATURE_ICONS[2], color: FEATURE_COLORS[2] },
+    { text: getCopy(globalData, 'renoGraderFeature4', 'Market comparison insights'), icon: FEATURE_ICONS[3], color: FEATURE_COLORS[3] },
+  ]
+
   return (
     <div className="reno-grader">
       <AnimatedSection className="reno-grader__inner">
@@ -21,7 +32,7 @@ export default function RenoGrader() {
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
           >
-            Exclusive Tool
+            {getCopy(globalData, 'renoGraderBadge', 'Exclusive Tool')}
           </motion.span>
           <motion.h2
             className="reno-grader__title"
@@ -30,7 +41,10 @@ export default function RenoGrader() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Introducing the <span className="reno-grader__title-highlight">Reno-Grader</span>
+            <Link to="/renograde#renograde-hero" className="reno-grader__title-link">
+              {getCopy(globalData, 'renoGraderTitlePrefix', 'Introducing the')}{' '}
+              <span className="reno-grader__title-highlight">{getCopy(globalData, 'renoGraderTitleHighlight', 'Reno-Grader')}</span>
+            </Link>
           </motion.h2>
           <motion.p
             className="reno-grader__text"
@@ -39,7 +53,7 @@ export default function RenoGrader() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Our proprietary Reno-Grader tool analyzes your property and local market data to recommend the exact renovations that will deliver the highest return on investment. No guesswork, just proven results.
+            {getCopy(globalData, 'renoGraderBody', 'Our proprietary Reno-Grader tool analyzes your property and local market data to recommend the exact renovations that will deliver the highest return on investment. No guesswork, just proven results.')}
           </motion.p>
           <ul className="reno-grader__list">
             {features.map((item, i) => (
@@ -58,9 +72,7 @@ export default function RenoGrader() {
               </motion.li>
             ))}
           </ul>
-          <motion.a
-            href="#inquire"
-            className="reno-grader__cta"
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -68,8 +80,10 @@ export default function RenoGrader() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            Try Reno-Grade for Free Estimate
-          </motion.a>
+            <Link to="/renograde#renograde-hero" className="reno-grader__cta">
+              {getCopy(globalData, 'renoGraderCta', 'Try Reno-Grade for Free Estimate')}
+            </Link>
+          </motion.div>
         </div>
         <motion.div
           className="reno-grader__images"

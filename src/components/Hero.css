@@ -106,7 +106,7 @@
 
 .hero__title {
   margin: 0;
-  font-size: 2.7rem;
+  font-size: 3rem;
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -125,44 +125,44 @@
   max-width: 468px;
 }
 
-.hero__list {
-  margin: 7px 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
+/* Hero stats – 3 cards: optional prefix, value, label; reserve space when prefix empty */
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 8px;
 }
 
-.hero__list-item {
+.hero__stat-card {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-md, 8px);
+  padding: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 9px;
-  font-size: 0.9rem;
+  justify-content: flex-start;
+  text-align: center;
+  min-height: 100px;
 }
 
-.hero__list-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  color: var(--color-orange);
-  flex-shrink: 0;
+.hero__stat-prefix {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  min-height: 1.25rem;
+  margin-bottom: 4px;
 }
 
-.hero__list-icon svg {
-  width: 16px;
-  height: 16px;
-}
-
-.hero__list-accent {
-  color: var(--color-orange);
-  font-weight: 600;
-}
-
-.hero__list-label {
+.hero__stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
   color: var(--color-white);
+  line-height: 1.2;
+}
+
+.hero__stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 4px;
 }
 
 /* Card (inquire form) */
@@ -287,10 +287,23 @@
     max-width: 432px;
   }
   .hero__title {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
   }
   .hero__desc {
     font-size: 0.9rem;
+  }
+  .hero__stats {
+    gap: 12px;
+  }
+  .hero__stat-card {
+    padding: 12px;
+    min-height: 88px;
+  }
+  .hero__stat-value {
+    font-size: 1.5rem;
+  }
+  .hero__stat-label {
+    font-size: 0.8rem;
   }
   .hero__card {
     max-width: 350px;
@@ -340,18 +353,25 @@
     font-size: 0.78rem;
   }
   .hero__title {
-    font-size: 1.8rem;
+    font-size: 2rem;
     line-height: 1.2;
   }
   .hero__desc {
     font-size: 0.9rem;
   }
-  .hero__list {
-    flex-direction: column;
+  .hero__stats {
+    grid-template-columns: 1fr;
     gap: 10px;
   }
-  .hero__list-item {
-    font-size: 0.84rem;
+  .hero__stat-card {
+    min-height: 80px;
+    padding: 14px;
+  }
+  .hero__stat-value {
+    font-size: 1.4rem;
+  }
+  .hero__stat-label {
+    font-size: 0.8rem;
   }
   .hero__card {
     max-width: none;
@@ -387,10 +407,13 @@
     padding: 36px 14px 42px;
   }
   .hero__title {
-    font-size: 1.575rem;
+    font-size: 1.75rem;
   }
   .hero__desc {
     font-size: 0.84rem;
+  }
+  .hero__stat-value {
+    font-size: 1.25rem;
   }
   .hero__badge {
     flex-wrap: wrap;

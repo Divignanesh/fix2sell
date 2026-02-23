@@ -1,9 +1,10 @@
 /**
- * Reads public/data.json, downloads all video URLs to public/downloaded-videos/,
- * then rewrites data.json to use local paths. On each run, old files in
- * downloaded-videos/ are removed so when the sheet is updated we get fresh files.
+ * Reads public/data.json, downloads all video and image URLs (including Google Drive
+ * links like https://drive.google.com/file/d/ID/view?usp=sharing) to
+ * public/downloaded-videos/ and public/downloaded-images/, then rewrites data.json
+ * to use local paths. On each run, old files in those dirs are removed.
  *
- * Run after fetch-data.js (e.g. in build: fetch-data && download-videos && vite build).
+ * Run after fetch-data.js (e.g. in build: fetch-data && download-media && vite build).
  */
 
 import https from 'https'
@@ -17,6 +18,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 const PUBLIC_DIR = path.join(ROOT, 'public')
 const VIDEOS_DIR = path.join(PUBLIC_DIR, 'downloaded-videos')
+const IMAGES_DIR = path.join(PUBLIC_DIR, 'downloaded-images')
 const DATA_JSON = path.join(PUBLIC_DIR, 'data.json')
 
 /** Build download URL: for Drive use export=download, else use as-is */
@@ -127,6 +129,38 @@ function getExtension(contentType, url) {
   return '.mp4'
 }
 
+/** Return true if response looks like an image (not HTML / virus scan page) */
+function isLikelyImage(buffer, contentType) {
+  if (!buffer || buffer.length < 4) return false
+  if (contentType && contentType.includes('text/html')) return false
+  if (contentType && (contentType.includes('image/') || contentType.includes('application/octet-stream'))) return true
+  const sig = buffer.slice(0, 12)
+  if (buffer[0] === 0x3c && (buffer[1] === 0x21 || buffer[1] === 0x68)) return false
+  if (sig[0] === 0xff && sig[1] === 0xd8) return true
+  if (sig.toString('ascii', 0, 4) === '\x89PNG') return true
+  if (sig[0] === 0x47 && sig[1] === 0x49 && sig[2] === 0x46) return true
+  if (sig.toString('ascii', 0, 4) === 'RIFF' && sig.toString('ascii', 8, 12) === 'WEBP') return true
+  if (sig[0] === 0x00 && sig[1] === 0x00 && (sig[2] === 0x00 || sig[2] === 0x01)) return false
+  if (sig[0] === 0x1a && sig[1] === 0x45 && sig[2] === 0xdf && sig[3] === 0xa3) return false
+  if (sig.toString('ascii', 0, 4) === 'ftyp') return false
+  return true
+}
+
+function getImageExtension(contentType, url) {
+  const u = (url || '').toLowerCase()
+  if (contentType) {
+    if (contentType.includes('png')) return '.png'
+    if (contentType.includes('gif')) return '.gif'
+    if (contentType.includes('webp')) return '.webp'
+    if (contentType.includes('svg')) return '.svg'
+  }
+  if (/\.[a-z0-9]+(\?|$)/i.test(url)) {
+    const m = url.match(/\.(jpe?g|png|gif|webp|svg)(\?|$)/i)
+    if (m) return '.' + m[1].toLowerCase().replace('jpeg', 'jpg')
+  }
+  return '.jpg'
+}
+
 async function downloadOne(url, name) {
   if (!isDownloadableUrl(url)) return null
   const fileId = getDriveFileId(url)
@@ -137,6 +171,20 @@ async function downloadOne(url, name) {
   const ext = getExtension(result.contentType, url)
   const filename = name + ext
   const outPath = path.join(VIDEOS_DIR, filename)
+  fs.writeFileSync(outPath, result.buffer)
+  return '/' + path.relative(PUBLIC_DIR, outPath).replace(/\\/g, '/')
+}
+
+async function downloadOneImage(url, name) {
+  if (!isDownloadableUrl(url)) return null
+  const fileId = getDriveFileId(url)
+  const result = fileId
+    ? await fetchDriveFile(fileId)
+    : await fetchBinary(url.trim())
+  if (!result || !result.buffer || !isLikelyImage(result.buffer, result.contentType)) return null
+  const ext = getImageExtension(result.contentType, url)
+  const filename = name + ext
+  const outPath = path.join(IMAGES_DIR, filename)
   fs.writeFileSync(outPath, result.buffer)
   return '/' + path.relative(PUBLIC_DIR, outPath).replace(/\\/g, '/')
 }
@@ -157,9 +205,33 @@ function collectVideoEntries(data) {
       if (item.imageType === 'video' && item.image && isDownloadableUrl(item.image)) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `thousands-${i}` })
     })
   }
-  if (Array.isArray(data.testimonials)) {
-    data.testimonials.forEach((item, i) => {
-      if (item.imageType === 'video' && item.image && isDownloadableUrl(item.image)) entries.push({ url: item.image, set: (p) => { item.image = p }, name: `testimonial-${i}` })
+  return entries
+}
+
+function collectImageEntries(data) {
+  const entries = []
+  if (Array.isArray(data.transformation)) {
+    data.transformation.forEach((item, i) => {
+      if (item.beforeType !== 'video' && item.before && isDownloadableUrl(item.before)) {
+        entries.push({ url: item.before, set: (p) => { item.before = p }, name: `transformation-${i}-before` })
+      }
+      if (item.afterType !== 'video' && item.after && isDownloadableUrl(item.after)) {
+        entries.push({ url: item.after, set: (p) => { item.after = p }, name: `transformation-${i}-after` })
+      }
+    })
+  }
+  if (Array.isArray(data.thousandsGained)) {
+    data.thousandsGained.forEach((item, i) => {
+      if (item.imageType !== 'video' && item.image && isDownloadableUrl(item.image)) {
+        entries.push({ url: item.image, set: (p) => { item.image = p }, name: `thousands-${i}` })
+      }
+    })
+  }
+  if (Array.isArray(data.smartWay)) {
+    data.smartWay.forEach((item, i) => {
+      if (item.image && isDownloadableUrl(item.image)) {
+        entries.push({ url: item.image, set: (p) => { item.image = p }, name: `smartway-${i}` })
+      }
     })
   }
   return entries
@@ -167,7 +239,7 @@ function collectVideoEntries(data) {
 
 async function main() {
   if (!fs.existsSync(DATA_JSON)) {
-    console.warn('download-videos: data.json not found, run fetch-data first')
+    console.warn('download-media: data.json not found, run fetch-data first')
     process.exit(0)
   }
 
@@ -181,21 +253,38 @@ async function main() {
   } else {
     fs.mkdirSync(VIDEOS_DIR, { recursive: true })
   }
+  if (fs.existsSync(IMAGES_DIR)) {
+    for (const f of fs.readdirSync(IMAGES_DIR)) {
+      fs.unlinkSync(path.join(IMAGES_DIR, f))
+    }
+  } else {
+    fs.mkdirSync(IMAGES_DIR, { recursive: true })
+  }
 
-  const entries = collectVideoEntries(data)
-
-  for (const { url, set, name } of entries) {
+  const videoEntries = collectVideoEntries(data)
+  for (const { url, set, name } of videoEntries) {
     const localPath = await downloadOne(url, name)
     if (localPath) {
       set(localPath)
-      console.log('Downloaded:', name, '->', localPath, '(replaced in data.json)')
+      console.log('Downloaded video:', name, '->', localPath)
     } else {
-      console.warn('Skipped (download failed or not a video):', name, '- data.json keeps current URL')
+      console.warn('Skipped (not a video or failed):', name)
+    }
+  }
+
+  const imageEntries = collectImageEntries(data)
+  for (const { url, set, name } of imageEntries) {
+    const localPath = await downloadOneImage(url, name)
+    if (localPath) {
+      set(localPath)
+      console.log('Downloaded image:', name, '->', localPath)
+    } else {
+      console.warn('Skipped (not an image or failed):', name)
     }
   }
 
   fs.writeFileSync(DATA_JSON, JSON.stringify(data, null, 2), 'utf8')
-  console.log('Wrote', DATA_JSON, '- video URLs above were replaced with local paths')
+  console.log('Wrote', DATA_JSON, '- media URLs above were replaced with local paths')
   process.exit(0)
 }
 

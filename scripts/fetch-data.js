@@ -108,8 +108,6 @@ function mapTestimonials(rows) {
       quote: get(r, 'quote'),
       name: get(r, 'name'),
       location: get(r, 'location'),
-      image: get(r, 'image'),
-      imageType: mediaType(r, 'imagetype'),
     }))
 }
 
@@ -192,12 +190,6 @@ async function main() {
       if (item.imageType === 'video' && item.image) item.image = toPreviewDriveUrl(item.image)
     })
   }
-  if (Array.isArray(withDriveLinks.testimonials)) {
-    withDriveLinks.testimonials.forEach((item) => {
-      if (item.imageType === 'video' && item.image) item.image = toPreviewDriveUrl(item.image)
-    })
-  }
-
   if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true })
   fs.writeFileSync(DATA_JSON, JSON.stringify(withDriveLinks, null, 2), 'utf8')
   console.log('Wrote', DATA_JSON)

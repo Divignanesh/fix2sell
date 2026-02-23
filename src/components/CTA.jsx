@@ -4,6 +4,11 @@ import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
 import './CTA.css'
 
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
 export default function CTA() {
   const location = useLocation()
   const { global: globalData } = useData()
@@ -21,7 +26,7 @@ export default function CTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Ready To Maximize Your Home's Value?
+          {getCopy(globalData, 'ctaTitle', "Ready To Maximize Your Home's Value?")}
         </motion.h2>
         <motion.p
           className="cta__text"
@@ -30,7 +35,7 @@ export default function CTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Join hundreds of homeowners who've sold for 8-10% above market value with Fix2Sell. Get your free home evaluation and personalized renovation plan today.
+          {getCopy(globalData, 'ctaText', "Join hundreds of homeowners who've sold for 8-10% above market value with Fix2Sell. Get your free home evaluation and personalized renovation plan today.")}
         </motion.p>
         <motion.a
           href={inquireHref}

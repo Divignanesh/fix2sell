@@ -5,6 +5,11 @@ import { useData } from '../context/DataContext'
 import { MediaAsset } from './MediaAsset'
 import './Transformation.css'
 
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
 const AUTO_SCROLL_INTERVAL_MS = 3000
 
 const defaultSlides = [
@@ -56,20 +61,32 @@ function ArrowRightIcon() {
   )
 }
 
-export default function Transformation() {
-  const { transformation: dataSlides } = useData()
-  const slides = Array.isArray(dataSlides) && dataSlides.length > 0 ? dataSlides : defaultSlides
-  const [currentIndex, setCurrentIndex] = useState(0)
+function isValidSlide(item) {
+  return item && typeof item === 'object' && (item.before != null || item.after != null || item.label)
+}
 
-  const goPrev = () => setCurrentIndex((i) => (i === 0 ? slides.length - 1 : i - 1))
-  const goNext = () => setCurrentIndex((i) => (i === slides.length - 1 ? 0 : i + 1))
+export default function Transformation() {
+  const { transformation: dataSlides, global: globalData } = useData()
+  const rawSlides = Array.isArray(dataSlides) && dataSlides.length > 0 ? dataSlides : defaultSlides
+  const slides = rawSlides.filter(isValidSlide)
+  const safeSlides = slides.length > 0 ? slides : defaultSlides
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const index = Math.min(currentIndex, safeSlides.length - 1)
+  const slide = safeSlides[index]
+
+  const isCarousel = safeSlides.length > 1
+  const goPrev = () => setCurrentIndex((i) => (i === 0 ? safeSlides.length - 1 : i - 1))
+  const goNext = () => setCurrentIndex((i) => (i === safeSlides.length - 1 ? 0 : i + 1))
 
   useEffect(() => {
+    if (!isCarousel) return
     const timer = setInterval(goNext, AUTO_SCROLL_INTERVAL_MS)
     return () => clearInterval(timer)
-  }, [])
+  }, [isCarousel])
 
-  const slide = slides[currentIndex]
+  useEffect(() => {
+    setCurrentIndex((prev) => Math.min(prev, safeSlides.length - 1))
+  }, [safeSlides.length])
 
   return (
     <AnimatedSection className="transformation">
@@ -82,7 +99,7 @@ export default function Transformation() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            See The Transformation
+            {getCopy(globalData, 'transformationTitle', 'See The Transformation')}
           </motion.h2>
           <motion.p
             className="transformation__subtitle"
@@ -91,7 +108,7 @@ export default function Transformation() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Strategic renovations that dramatically increase home value and sell faster
+            {getCopy(globalData, 'transformationSubtitle', 'Strategic renovations that dramatically increase home value and sell faster')}
           </motion.p>
         </div>
 
@@ -107,58 +124,64 @@ export default function Transformation() {
             >
               <div className="transformation__images">
                 <div className="transformation__image-card transformation__image-card--before">
-                  <MediaAsset url={slide.before} type={slide.beforeType} alt="Before" />
-                  <span className="transformation__image-label">Before</span>
+                  <MediaAsset url={slide.before} type={slide.beforeType} alt={getCopy(globalData, 'transformationLabelBefore', 'Before')} />
+                  <span className="transformation__image-label">{getCopy(globalData, 'transformationLabelBefore', 'Before')}</span>
                 </div>
                 <div className="transformation__image-card transformation__image-card--after">
-                  <MediaAsset url={slide.after} type={slide.afterType} alt="After" />
-                  <span className="transformation__image-label">After</span>
+                  <MediaAsset url={slide.after} type={slide.afterType} alt={getCopy(globalData, 'transformationLabelAfter', 'After')} />
+                  <span className="transformation__image-label">{getCopy(globalData, 'transformationLabelAfter', 'After')}</span>
                 </div>
               </div>
               <p className="transformation__section-label">{slide.label}</p>
               <div className="transformation__stats">
-                {slide.stats.map((stat) => (
-                  <div key={stat.label} className="transformation__stat">
-                    <span className="transformation__stat-value">{stat.value}</span>
-                    <span className="transformation__stat-label">{stat.label}</span>
+                {(Array.isArray(slide.stats) ? slide.stats : []).map((stat, idx) => (
+                  <div key={stat?.label ?? stat?.value ?? idx} className="transformation__stat">
+                    <span className="transformation__stat-value">{stat?.value}</span>
+                    <span className="transformation__stat-label">{stat?.label}</span>
                   </div>
                 ))}
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Mobile: small left/right buttons to show it's a carousel */}
-          <button
-            type="button"
-            className="transformation__nav-btn transformation__nav-btn--left"
-            onClick={(e) => { e.stopPropagation(); goPrev() }}
-            aria-label="Previous slide"
-          >
-            <ArrowLeftIcon />
-          </button>
-          <button
-            type="button"
-            className="transformation__nav-btn transformation__nav-btn--right"
-            onClick={(e) => { e.stopPropagation(); goNext() }}
-            aria-label="Next slide"
-          >
-            <ArrowRightIcon />
-          </button>
+          {isCarousel && (
+            <>
+              <button
+                type="button"
+                className="transformation__nav-btn transformation__nav-btn--left"
+                onClick={(e) => { e.stopPropagation(); goPrev() }}
+                aria-label="Previous slide"
+              >
+                <ArrowLeftIcon />
+              </button>
+              <button
+                type="button"
+                className="transformation__nav-btn transformation__nav-btn--right"
+                onClick={(e) => { e.stopPropagation(); goNext() }}
+                aria-label="Next slide"
+              >
+                <ArrowRightIcon />
+              </button>
+            </>
+          )}
         </div>
 
-        {/* Zones cover full section (header + carousel); left/right = orange arrow cursor */}
-        <button
-          type="button"
-          className="transformation__zone transformation__zone--left"
-          onClick={goPrev}
-          aria-label="Previous slide"
-        />
-        <button
-          type="button"
-          className="transformation__zone transformation__zone--right"
-          onClick={goNext}
-          aria-label="Next slide"
-        />
+        {isCarousel && (
+          <>
+            <button
+              type="button"
+              className="transformation__zone transformation__zone--left"
+              onClick={goPrev}
+              aria-label="Previous slide"
+            />
+            <button
+              type="button"
+              className="transformation__zone transformation__zone--right"
+              onClick={goNext}
+              aria-label="Next slide"
+            />
+          </>
+        )}
       </div>
     </AnimatedSection>
   )

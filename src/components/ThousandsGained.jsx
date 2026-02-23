@@ -66,8 +66,8 @@ export default function ThousandsGained() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <span className="thousands-gained__title-orange">Thousands</span>{' '}
-          <span className="thousands-gained__title-blue">gained by homeowners</span>
+          <span className="thousands-gained__title-orange">{getCopy(globalData, 'thousandsTitlePart1', 'Thousands')}</span>{' '}
+          <span className="thousands-gained__title-blue">{getCopy(globalData, 'thousandsTitlePart2', 'gained by homeowners')}</span>
         </motion.h2>
       </div>
 

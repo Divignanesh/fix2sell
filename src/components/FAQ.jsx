@@ -4,6 +4,11 @@ import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
 import './FAQ.css'
 
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
 const defaultItems = [
   { q: 'Do I need to pay anything upfront?', a: 'No. Fix2Sell covers all renovation costs upfront. You only pay when your home sells, from the sale proceeds.' },
   { q: "What if my home doesn't sell for more after the upgrades?", a: 'We work with you to set realistic targets. Our Reno-Grader and market analysis help ensure upgrades are chosen for maximum ROI in your area.' },
@@ -14,7 +19,7 @@ const defaultItems = [
 ]
 
 export default function FAQ() {
-  const { faq: dataFaq } = useData()
+  const { faq: dataFaq, global: globalData } = useData()
   const items = Array.isArray(dataFaq) && dataFaq.length > 0 ? dataFaq : defaultItems
   const [openIndex, setOpenIndex] = useState(null)
 
@@ -28,7 +33,7 @@ export default function FAQ() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Frequently Asked Questions
+          {getCopy(globalData, 'faqTitle', 'Frequently Asked Questions')}
         </motion.h2>
         <motion.p
           className="faq__subtitle"
@@ -37,7 +42,7 @@ export default function FAQ() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Short, straight answers to the most common questions sellers ask before they use Fix2Sell and request their RenoGrade™ score.
+          {getCopy(globalData, 'faqSubtitle', 'Short, straight answers to the most common questions sellers ask before they use Fix2Sell and request their RenoGrade™ score.')}
         </motion.p>
         <div className="faq__list">
           {items.map((item, i) => (

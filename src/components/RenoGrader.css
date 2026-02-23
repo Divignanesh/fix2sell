@@ -43,6 +43,16 @@
   line-height: 1.2;
 }
 
+.reno-grader__title-link {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.reno-grader__title-link:hover {
+  opacity: 0.85;
+}
+
 .reno-grader__title-highlight {
   color: var(--color-orange);
 }
@@ -105,6 +115,10 @@
 .reno-grader__cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(249, 140, 31, 0.3);
+}
+
+.reno-grader__cta {
+  text-decoration: none;
 }
 
 /* Overlapping images - reduced by 15% */

@@ -8,18 +8,23 @@ const DEFAULT_SLIDES = [
   { image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80', link: '#', title: 'Reel thumbnail' },
 ]
 
-const benefits = [
-  { accent: "Sell for more", text: "— 8-10% above market average", icon: "chart" },
-  { accent: "Faster Sales", text: "— Properties move 4x faster post-reno", icon: "clock" },
-  { accent: "Risk-Free", text: "— Pay nothing until your home sells", icon: "shield" },
-  { accent: "Full Service", text: "— We handle all renovations for you", icon: "check" },
-]
-
+const BENEFIT_ICONS = ['chart', 'clock', 'shield', 'check']
 const CAROUSEL_INTERVAL_MS = 4000
 
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
 export default function SmartWay() {
-  const { smartWay: dataSlides } = useData()
+  const { smartWay: dataSlides, global: globalData } = useData()
   const slides = Array.isArray(dataSlides) && dataSlides.length > 0 ? dataSlides : DEFAULT_SLIDES
+  const benefits = [
+    { accent: getCopy(globalData, 'smartWayBenefit1Accent', 'Sell for more'), text: getCopy(globalData, 'smartWayBenefit1Text', '— 8-10% above market average'), icon: BENEFIT_ICONS[0] },
+    { accent: getCopy(globalData, 'smartWayBenefit2Accent', 'Faster Sales'), text: getCopy(globalData, 'smartWayBenefit2Text', '— Properties move 4x faster post-reno'), icon: BENEFIT_ICONS[1] },
+    { accent: getCopy(globalData, 'smartWayBenefit3Accent', 'Risk-Free'), text: getCopy(globalData, 'smartWayBenefit3Text', '— Pay nothing until your home sells'), icon: BENEFIT_ICONS[2] },
+    { accent: getCopy(globalData, 'smartWayBenefit4Accent', 'Full Service'), text: getCopy(globalData, 'smartWayBenefit4Text', '— We handle all renovations for you'), icon: BENEFIT_ICONS[3] },
+  ]
   const [currentIndex, setCurrentIndex] = useState(0)
   const slide = slides[currentIndex]
 
@@ -98,10 +103,11 @@ export default function SmartWay() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="smart-way__title">
-            The Smart Way to <span className="smart-way__title-highlight">Sell For More</span>
+            {getCopy(globalData, 'smartWayTitle', 'The Smart Way to')}{' '}
+            <span className="smart-way__title-highlight">{getCopy(globalData, 'smartWayTitleHighlight', 'Sell For More')}</span>
           </h2>
           <p className="smart-way__text">
-            Fix2Sell helps you increase your home's value before listing it for sale. We make the right upgrades to improve its appeal and selling price — without you paying any renovation costs upfront.
+            {getCopy(globalData, 'smartWayBody', "Fix2Sell helps you increase your home's value before listing it for sale. We make the right upgrades to improve its appeal and selling price — without you paying any renovation costs upfront.")}
           </p>
           <ul className="smart-way__list">
             {benefits.map((item, i) => (
@@ -124,7 +130,7 @@ export default function SmartWay() {
             ))}
           </ul>
           <a href="#inquire" className="smart-way__cta">
-            Learn More About Fix2Sell
+            {getCopy(globalData, 'smartWayCta', 'Learn More About Fix2Sell')}
             <ArrowIcon />
           </a>
         </motion.div>

@@ -1,64 +1,211 @@
 {
   "transformation": [
     {
-      "label": "Kitchen Transformation",
-      "before": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=800&q=60",
-      "after": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=60",
+      "label": "Flooring, Paint & Kitchen Transformation",
+      "before": "/downloaded-images/transformation-0-before.jpg",
+      "after": "/downloaded-images/transformation-0-after.jpg",
       "beforeType": "image",
       "afterType": "image",
       "stats": [
         {
-          "value": "$18,500",
+          "value": "$15,500",
+          "label": "Investmen"
+        },
+        {
+          "value": "$55,005",
+          "label": "Value Increas"
+        },
+        {
+          "value": "29 dayss",
+          "label": "To Selll"
+        }
+      ]
+    },
+    {
+      "label": "Complete Interior Upscaling",
+      "before": "/downloaded-images/transformation-1-before.jpg",
+      "after": "/downloaded-images/transformation-1-after.jpg",
+      "beforeType": "image",
+      "afterType": "image",
+      "stats": [
+        {
+          "value": "$37,800",
           "label": "Investment"
         },
         {
-          "value": "$52,000",
+          "value": "$86,500",
           "label": "Value Increase"
         },
         {
-          "value": "4 days",
+          "value": "30 days",
           "label": "To Sell"
         }
       ]
     },
     {
-      "label": "Bathroom Transformation",
-      "before": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=800&q=60",
-      "after": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=800&q=60",
+      "label": "Paint and QFE Transformation",
+      "before": "/downloaded-images/transformation-2-before.jpg",
+      "after": "/downloaded-images/transformation-2-after.jpg",
       "beforeType": "image",
       "afterType": "image",
       "stats": [
         {
-          "value": "$12,200",
+          "value": "$2,300",
           "label": "Investment"
         },
         {
-          "value": "$28,000",
+          "value": "$9,500",
           "label": "Value Increase"
         },
         {
-          "value": "3 days",
+          "value": "35 days",
           "label": "To Sell"
         }
       ]
     },
     {
-      "label": "Living Room Transformation",
-      "before": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=60",
-      "after": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=60",
+      "label": "Flooring, Interior and Basement Transformation",
+      "before": "/downloaded-images/transformation-3-before.jpg",
+      "after": "/downloaded-images/transformation-3-after.jpg",
       "beforeType": "image",
       "afterType": "image",
       "stats": [
         {
-          "value": "$15,000",
+          "value": "$15,700",
           "label": "Investment"
         },
         {
-          "value": "$35,000",
+          "value": "$39,000",
           "label": "Value Increase"
         },
         {
-          "value": "5 days",
+          "value": "21 days",
+          "label": "To Sell"
+        }
+      ]
+    },
+    {
+      "label": "Paint, Kitchen and Flooring Transformation",
+      "before": "/downloaded-images/transformation-4-before.jpg",
+      "after": "/downloaded-images/transformation-4-after.jpg",
+      "beforeType": "image",
+      "afterType": "image",
+      "stats": [
+        {
+          "value": "$13,500",
+          "label": "Investment"
+        },
+        {
+          "value": "$67,000",
+          "label": "Value Increase"
+        },
+        {
+          "value": "26 days",
+          "label": "To Sell"
+        }
+      ]
+    },
+    {
+      "label": "Bathroom, Kitchen and Flooring Transformation",
+      "before": "/downloaded-images/transformation-5-before.jpg",
+      "after": "/downloaded-images/transformation-5-after.jpg",
+      "beforeType": "image",
+      "afterType": "image",
+      "stats": [
+        {
+          "value": "$9,800",
+          "label": "Investment"
+        },
+        {
+          "value": "$47,000",
+          "label": "Value Increase"
+        },
+        {
+          "value": "14 days",
+          "label": "To Sell"
+        }
+      ]
+    },
+    {
+      "label": "Kitchen, flooring and Paint Transformation",
+      "before": "/downloaded-images/transformation-6-before.jpg",
+      "after": "/downloaded-images/transformation-6-after.jpg",
+      "beforeType": "image",
+      "afterType": "image",
+      "stats": [
+        {
+          "value": "$21,800",
+          "label": "Investment"
+        },
+        {
+          "value": "$53,000",
+          "label": "Value Increase"
+        },
+        {
+          "value": "30 days",
+          "label": "To Sell"
+        }
+      ]
+    },
+    {
+      "label": "Paint, electrical lighting and flooring transformation",
+      "before": "/downloaded-images/transformation-7-before.jpg",
+      "after": "/downloaded-images/transformation-7-after.jpg",
+      "beforeType": "image",
+      "afterType": "image",
+      "stats": [
+        {
+          "value": "$7,000",
+          "label": "Investment"
+        },
+        {
+          "value": "$26,000",
+          "label": "Value Increase"
+        },
+        {
+          "value": "30 days",
+          "label": "To Sell"
+        }
+      ]
+    },
+    {
+      "label": "Full Scale Interior Transformation",
+      "before": "/downloaded-images/transformation-8-before.jpg",
+      "after": "/downloaded-images/transformation-8-after.jpg",
+      "beforeType": "image",
+      "afterType": "image",
+      "stats": [
+        {
+          "value": "$107,000",
+          "label": "Investment"
+        },
+        {
+          "value": "$70,000",
+          "label": "Value Increase"
+        },
+        {
+          "value": "45 days",
+          "label": "To Sell"
+        }
+      ]
+    },
+    {
+      "label": "QFE & electrical lighting transformation",
+      "before": "/downloaded-images/transformation-9-before.jpg",
+      "after": "/downloaded-images/transformation-9-after.jpg",
+      "beforeType": "image",
+      "afterType": "image",
+      "stats": [
+        {
+          "value": "$4,000",
+          "label": "Investment"
+        },
+        {
+          "value": "$19,000",
+          "label": "Value Increase"
+        },
+        {
+          "value": "52 days",
           "label": "To Sell"
         }
       ]
@@ -66,46 +213,74 @@
   ],
   "thousandsGained": [
     {
-      "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&h=533&q=70",
+      "image": "173 Kne After.jpeg",
       "imageType": "image",
-      "renovation": "$44,605",
-      "profit": "$30,395",
-      "location": "Riverside"
+      "renovation": "$17,500",
+      "profit": "$37,500",
+      "location": "173 Kane Ave, Toronto"
     },
     {
-      "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&h=533&q=70",
+      "image": "/downloaded-images/thousands-1.jpg",
       "imageType": "image",
-      "renovation": "$38,200",
-      "profit": "$41,800",
-      "location": "Fremont"
+      "renovation": "$37,800",
+      "profit": "$48,700",
+      "location": "33 Hartrick Pl, Whitby"
     },
     {
-      "image": "https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?auto=format&fit=crop&w=400&h=533&q=70",
+      "image": "/downloaded-images/thousands-2.jpg",
       "imageType": "image",
-      "renovation": "$52,100",
-      "profit": "$28,900",
-      "location": "Panorama City"
+      "renovation": "$2,300",
+      "profit": "$9,500",
+      "location": "1611-48 Power St, Toronto"
     },
     {
-      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&h=533&q=70",
+      "image": "/downloaded-images/thousands-3.jpg",
       "imageType": "image",
-      "renovation": "$41,350",
-      "profit": "$35,650",
-      "location": "Costa Mesa"
+      "renovation": "$15,700",
+      "profit": "$23,300",
+      "location": "203 Grovehill Cres, Kitchener"
     },
     {
-      "image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=400&h=533&q=70",
+      "image": "/downloaded-images/thousands-4.jpg",
       "imageType": "image",
-      "renovation": "$61,200",
-      "profit": "$48,800",
-      "location": "San Francisco"
+      "renovation": "$13,500",
+      "profit": "$53,500",
+      "location": "10 Hillary Ave, Toronto"
     },
     {
-      "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=400&h=533&q=70",
+      "image": "/downloaded-images/thousands-5.jpg",
       "imageType": "image",
-      "renovation": "$35,900",
-      "profit": "$27,100",
-      "location": "Oakland"
+      "renovation": "$9,800",
+      "profit": "$37,200",
+      "location": "49 Hillary Ave, Toronto"
+    },
+    {
+      "image": "/downloaded-images/thousands-6.jpg",
+      "imageType": "image",
+      "renovation": "$21,800",
+      "profit": "$31,200",
+      "location": "181 Kenilworth Ave,\nHamilton"
+    },
+    {
+      "image": "/downloaded-images/thousands-7.jpg",
+      "imageType": "image",
+      "renovation": "$7,000",
+      "profit": "$19,000",
+      "location": "139 Remembrance Rd, Brampton"
+    },
+    {
+      "image": "/downloaded-images/thousands-8.jpg",
+      "imageType": "image",
+      "renovation": "$107,000",
+      "profit": "$70,000",
+      "location": "402 Upper Paradise Rd, Hamilton"
+    },
+    {
+      "image": "/downloaded-images/thousands-9.jpg",
+      "imageType": "image",
+      "renovation": "$4,000",
+      "profit": "$15,000",
+      "location": "26-30 Bryan Crt, Kitchener"
     }
   ],
   "testimonials": [
@@ -113,33 +288,25 @@
       "id": 1,
       "quote": "To them it's not about the sale, it's about trying to help families move on. They treated me like I was their only client, and I had that one-on-one attention.\" with \"thisis the first test",
       "name": "Charlisa Boyd",
-      "location": "Sold to Opendoor in Raleigh, NC",
-      "image": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=200&h=200&q=80",
-      "imageType": "image"
+      "location": "Sold to Opendoor in Raleigh, NC"
     },
     {
       "id": 2,
       "quote": "Opendoor's offer came in right near our appraisal, but we never had to list the house or do showings. For the kind of value Opendoor gives you, it's just a no-brainer.",
       "name": "Adam Leon",
-      "location": "Sold to Opendoor in Phoenix, AZ",
-      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80",
-      "imageType": "image"
+      "location": "Sold to Opendoor in Phoenix, AZ"
     },
     {
       "id": 3,
       "quote": "The whole process was incredibly smooth. Fix2Sell handled everything from renovations to staging. We sold for 15% more than expected!",
       "name": "Sarah Mitchell",
-      "location": "Sold in Austin, TX",
-      "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80",
-      "imageType": "image"
+      "location": "Sold in Austin, TX"
     },
     {
       "id": 4,
       "quote": "I was skeptical at first, but the team delivered beyond my expectations. The renovation suggestions were spot-on and the ROI was amazing.",
       "name": "Michael Chen",
-      "location": "Sold in San Francisco, CA",
-      "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&h=200&q=80",
-      "imageType": "image"
+      "location": "Sold in San Francisco, CA"
     }
   ],
   "faq": [
@@ -172,37 +339,210 @@
       "a": "Test"
     }
   ],
+  "global": {
+    "heroRotatingWords": "Reno, Listing & Selling, Reno Consulting, Renovations, Reno Financial",
+    "heroBrand": "#Fix2Sell",
+    "heroBadgeIsYour": "is your",
+    "heroPartnerSuffix": "partner",
+    "heroTitleLine1": "Sell Your Home for",
+    "heroTitleHighlight1": "8-10% More Than",
+    "heroTitleLine2": "Current Market Price",
+    "heroDesc": "Canada's Most Smartest Way to sell your home. Fix2Sell prepares your home with ROI-focused upgrades designed to attract stronger buyer offers.",
+    "key": "value",
+    "heroStat1Prefix": "",
+    "heroStat1Value": "$20M+",
+    "heroStat1Label": "Worth Home Sold",
+    "heroStat2Prefix": "(optional) e.g. Upto",
+    "heroStat2Value": "$20K",
+    "heroStat2Label": "Average Reno Cost",
+    "heroStat3Prefix": "(optional) e.g. Upto",
+    "heroStat3Value": "$50K",
+    "heroStat3Label": "Profit Made",
+    "heroFormSubtitle": "No Obligation, free home evaluation today",
+    "heroSubmitLabel": "Get My Free Consultation",
+    "heroFormNote": "By submitting, you agree to our Privacy Policy and Terms of Service. \nResults vary by property & market conditions.",
+    "heroPlaceholderName": "Full Name",
+    "heroPlaceholderEmail": "Email Address",
+    "heroPlaceholderPhone": "Phone Number",
+    "transformationTitle": "Real Projects, Real People and Real Proofs",
+    "transformationSubtitle": "Strategic renovations that dramatically increase home value and sell faster",
+    "transformationLabelBefore": "Before",
+    "transformationLabelAfter": "After",
+    "thousandsTitlePart1": "Thousands",
+    "thousandsTitlePart2": "gained by homeowners",
+    "thousandsFigureRenovation": "Renovation",
+    "thousandsFigureProfit": "Profit",
+    "thousandsDisclaimer": "Individual results may vary. Testimonials are not intended to guarantee the same or similar results.",
+    "whySellTitle": "Why Most Homes Sell Below Market Value?",
+    "whySellIntro": "Sellers typically fall into one of these three categories. Fix2Sell solves all three problems.",
+    "whySellCard1Title": "Price assurance",
+    "whySellCard1Desc": "Feel secure knowing your project cost won't rise unexpectedly due to changes in material or labor prices.",
+    "whySellCard2Title": "Contractor Re-match",
+    "whySellCard2Desc": "In the rare event your contractor is unable to complete the job, we'll connect you with another qualified pro to keep your project on track.",
+    "whySellCard3Title": "Complete Accountability",
+    "whySellCard3Desc": "Should an issue arise, Fix2Sell is there to help resolve it smoothly and provide support.",
+    "whySellCard4Title": "Workmanship warranty",
+    "whySellCard4Desc": "Every contractor in our network stands behind their work by providing a workmanship warranty.",
+    "smartWayTitle": "The Smart Way to",
+    "smartWayTitleHighlight": "Sell For More",
+    "smartWayBody": "Fix2Sell helps you increase your home's value before listing it for sale. We make the right upgrades to improve its appeal and selling price — without you paying any renovation costs upfront.",
+    "smartWayBenefit1Accent": "Sell for more",
+    "smartWayBenefit1Text": "— 8-10% above market average",
+    "smartWayBenefit2Accent": "Faster Sales",
+    "smartWayBenefit2Text": "— Properties move 4x faster post-reno",
+    "smartWayBenefit3Accent": "Risk-Free",
+    "smartWayBenefit3Text": "— Pay nothing until your home sells",
+    "smartWayBenefit4Accent": "Full Service",
+    "smartWayBenefit4Text": "— We handle all renovations for you",
+    "smartWayCta": "Learn More About Fix2Sell",
+    "howItWorksTitle": "How",
+    "howItWorksTitleHighlight": "Fix2Sell",
+    "howItWorksTitleSuffix": "Works?",
+    "howItWorksSubtitle": "A simple, straightforward process to maximize your home's value",
+    "howItWorksStepLabel": "Step",
+    "howItWorksStep1Letter": "D",
+    "howItWorksStep1Title": "Discovery",
+    "howItWorksStep1Desc": "We guide you through the selling process, identifying essential upgrades to maximize your property's market value and appeal.",
+    "howItWorksStep2Letter": "E",
+    "howItWorksStep2Title": "Estimation",
+    "howItWorksStep2Desc": "Our professional team visits your home, takes precise measurements, and prepares accurate cost estimates for renovation work.",
+    "howItWorksStep3Letter": "A",
+    "howItWorksStep3Title": "Action",
+    "howItWorksStep3Desc": "We handle property upscaling, professional cleaning and staging, plus high-quality MLS listings with photos, videos, and compelling content.",
+    "howItWorksStep4Letter": "L",
+    "howItWorksStep4Title": "Listing",
+    "howItWorksStep4Desc": "We manage all agreements, launch a tailored selling strategy, handle buyer offers, lead negotiations, and finalize the sale.",
+    "testimonialsTitlePart1": "Join our customers",
+    "testimonialsTitlePart2": "and move without the hassle",
+    "testimonialsReadMore": "Read more",
+    "testimonialsShowLess": "Show less",
+    "ctaTitle": "Ready To Maximize Your Home's Value?",
+    "ctaText": "Join hundreds of homeowners who've sold for 8-10% above market value with Fix2Sell. Get your free home evaluation and personalized renovation plan today.",
+    "renoGraderBadge": "Exclusive Tool",
+    "renoGraderTitlePrefix": "Introducing the",
+    "renoGraderTitleHighlight": "Reno-Grader",
+    "renoGraderBody": "Our proprietary Reno-Grader tool analyzes your property and local market data to recommend the exact renovations that will deliver the highest return on investment. No guesswork, just proven results.",
+    "renoGraderFeature1": "ROI analysis for every improvement",
+    "renoGraderFeature2": "Budget optimization strategies",
+    "renoGraderFeature3": "Timeline and cost projections",
+    "renoGraderFeature4": "Market comparison insights",
+    "renoGraderCta": "Try Reno-Grade for Free Estimate",
+    "renoGradeHeroLine1": "No Cost. No Obligation.",
+    "renoGradeHeroLine2": "Big Insight.",
+    "renoGradeHeroSubtitle": "Learning what buyers want after they list.",
+    "renoGradeHeroDesc": "Reno-Grade shows you first so you list with confidence and control.",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Short, straight answers to the most common questions sellers ask before they use Fix2Sell and request their RenoGrade™ score.",
+    "inquirePopupTitle": "Inquire Now",
+    "inquirePopupSubtitle": "Get your free home evaluation today",
+    "inquirePopupSubmitLabel": "Get My Estimate",
+    "inquirePopupFormNote": "By submitting, you agree to our Privacy Policy and Terms of Service.",
+    "footerLogoAlt": "MS Realty - Authenticity is Perpetual",
+    "footerHeadingQuickLinks": "Quick Links",
+    "footerHeadingHelp": "Help & Support",
+    "footerHeadingContact": "Contact Details",
+    "footerAddress": "123 Main Street, Hamilton, ON L8P 1A1",
+    "footerPhone": "(123) 456-7890",
+    "footerEmail": "info@msrealty.com",
+    "footerCopyright": "© 2026 MS Realty. All rights reserved.",
+    "footerDisclaimerGoogle": "[Google disclaimer – e.g. This business is not endorsed by or affiliated with Google.]",
+    "footerDisclaimerMeta": "[Meta disclaimer – e.g. This business is not endorsed by or affiliated with Meta.]",
+    "bannerStripCta": "CLICK TO UNLOCK YOUR HOME POTENTIAL",
+    "formIframeUrl": "https://api.followuphub.ai/widget/form/SeDhJKlVwC7kTmD1Sxy9",
+    "renogradeFormIframeUrl": "https://api.followuphub.ai/widget/form/ggnXVn9NlHCQJQehjt6L",
+    "heroBackgroundVideoUrl": "/downloaded-videos/hero-bg.mp4",
+    "heroVideoOnMobile": "FALSE",
+    "heroLocationDefault": "in Toronto & GTA",
+    "collectUserLocation": "TRUE",
+    "showScrollPopup": "TRUE",
+    "showExitIntentPopup": "TRUE",
+    "bookAMeetingUrl": "https://api.followuphub.ai/widget/bookings/meetwithmanish",
+    "bookAMeetingLabel": "Book A Meeting",
+    "unlockPotentialUrl": "#inquire",
+    "unlockPotentialLabel": "CLICK TO UNLOCK YOUR HOME POTENTIAL"
+  },
   "smartWay": [
     {
-      "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+      "image": "/downloaded-images/smartway-0.jpg",
       "link": "https://www.youtube.com",
-      "title": "Home exterior – before & after"
+      "title": "Home exterior reel"
     },
     {
-      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+      "image": "/downloaded-images/smartway-1.jpg",
       "link": "https://www.youtube.com",
-      "title": "Living room transformation reel"
+      "title": "Living room reel"
     },
     {
-      "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80",
+      "image": "/downloaded-images/smartway-2.jpg",
       "link": "https://www.youtube.com",
-      "title": "Kitchen upgrade reel"
+      "title": "Kitchen reel"
     },
     {
-      "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "image": "/downloaded-images/smartway-3.jpg",
       "link": "https://www.youtube.com",
       "title": "Curb appeal reel"
     }
   ],
-  "global": {
-    "bookAMeetingUrl": "/#inquire",
-    "bookAMeetingLabel": "Book A Meeting",
-    "unlockPotentialUrl": "#inquire",
-    "unlockPotentialLabel": "UNLOCK YOUR HOME POTENTIAL",
-    "formIframeUrl": "",
-    "renogradeFormIframeUrl": "https://docs.google.com/forms/d/e/1FAIpQLSckZ6NkD_eemdYXwv-aIgM26kbLQZv3xfE8HioYtxSeVsR9CQ/viewform?embedded=true",
-    "heroBackgroundVideoUrl": "/downloaded-videos/hero-bg.mp4",
-    "showScrollPopup": "true",
-    "showExitIntentPopup": "true"
-  }
+  "footer": [
+    {
+      "section": "Quick Links",
+      "label": "Home",
+      "url": "/#home",
+      "icon": ""
+    },
+    {
+      "section": "Quick Links",
+      "label": "Programs",
+      "url": "/#projects",
+      "icon": ""
+    },
+    {
+      "section": "Quick Links",
+      "label": "How It Works",
+      "url": "/#how-it-works",
+      "icon": ""
+    },
+    {
+      "section": "Quick Links",
+      "label": "Testimonials",
+      "url": "/#reviews",
+      "icon": ""
+    },
+    {
+      "section": "Quick Links",
+      "label": "FAQ",
+      "url": "/#faq",
+      "icon": ""
+    },
+    {
+      "section": "Help & Support",
+      "label": "Privacy Policy",
+      "url": "#",
+      "icon": ""
+    },
+    {
+      "section": "Help & Support",
+      "label": "Terms of Service",
+      "url": "#",
+      "icon": ""
+    },
+    {
+      "section": "Help & Support",
+      "label": "Contact Support",
+      "url": "/#contact",
+      "icon": ""
+    },
+    {
+      "section": "Social",
+      "label": "Facebook",
+      "url": "https://facebook.com/",
+      "icon": "facebook"
+    },
+    {
+      "section": "Social",
+      "label": "Instagram",
+      "url": "https://instagram.com/",
+      "icon": "instagram"
+    }
+  ]
 }

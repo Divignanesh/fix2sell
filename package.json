@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/fetch-data.js && node scripts/download-videos.js && vite",
     "build": "node scripts/fetch-data.js && node scripts/download-videos.js && node node_modules/vite/bin/vite.js build",
     "preview": "vite preview",
     "fetch-data": "node scripts/fetch-data.js",
-    "download-videos": "node scripts/download-videos.js"
+    "download-videos": "node scripts/download-videos.js",
+    "download-media": "node scripts/download-videos.js"
   },
   "dependencies": {
     "framer-motion": "^11.0.0",

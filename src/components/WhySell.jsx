@@ -1,31 +1,33 @@
 import { motion } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
+import { useData } from '../context/DataContext'
 import './WhySell.css'
 
-const cards = [
-  {
-    title: 'Price assurance',
-    description: 'Feel secure knowing your project cost won\'t rise unexpectedly due to changes in material or labor prices.',
-    icon: 'price',
-  },
-  {
-    title: 'Contractor re-match',
-    description: 'In the rare event your contractor is unable to complete the job, we\'ll connect you with another qualified pro to keep your project on track.',
-    icon: 'contractor',
-  },
-  {
-    title: 'Customer Support',
-    description: 'Should an issue arise, Fix2Sell is there to help resolve it smoothly and provide support.',
-    icon: 'support',
-  },
-  {
-    title: 'Workmanship warranty',
-    description: 'Every contractor in our network stands behind their work by providing a workmanship warranty.',
-    icon: 'warranty',
-  },
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
+const DEFAULT_TITLE = 'Why Most Homes Sell Below Market Value?'
+const DEFAULT_INTRO = 'Sellers typically fall into one of these three categories. Fix2Sell solves all three problems.'
+const DEFAULT_CARDS = [
+  { title: 'Price assurance', desc: 'Feel secure knowing your project cost won\'t rise unexpectedly due to changes in material or labor prices.', icon: 'price' },
+  { title: 'Contractor re-match', desc: 'In the rare event your contractor is unable to complete the job, we\'ll connect you with another qualified pro to keep your project on track.', icon: 'contractor' },
+  { title: 'Customer Support', desc: 'Should an issue arise, Fix2Sell is there to help resolve it smoothly and provide support.', icon: 'support' },
+  { title: 'Workmanship warranty', desc: 'Every contractor in our network stands behind their work by providing a workmanship warranty.', icon: 'warranty' },
 ]
 
 export default function WhySell() {
+  const { global: globalData } = useData()
+  const title = getCopy(globalData, 'whySellTitle', DEFAULT_TITLE)
+  const intro = getCopy(globalData, 'whySellIntro', DEFAULT_INTRO)
+  const cards = [
+    { title: getCopy(globalData, 'whySellCard1Title', DEFAULT_CARDS[0].title), desc: getCopy(globalData, 'whySellCard1Desc', DEFAULT_CARDS[0].desc), icon: DEFAULT_CARDS[0].icon },
+    { title: getCopy(globalData, 'whySellCard2Title', DEFAULT_CARDS[1].title), desc: getCopy(globalData, 'whySellCard2Desc', DEFAULT_CARDS[1].desc), icon: DEFAULT_CARDS[1].icon },
+    { title: getCopy(globalData, 'whySellCard3Title', DEFAULT_CARDS[2].title), desc: getCopy(globalData, 'whySellCard3Desc', DEFAULT_CARDS[2].desc), icon: DEFAULT_CARDS[2].icon },
+    { title: getCopy(globalData, 'whySellCard4Title', DEFAULT_CARDS[3].title), desc: getCopy(globalData, 'whySellCard4Desc', DEFAULT_CARDS[3].desc), icon: DEFAULT_CARDS[3].icon },
+  ]
+
   return (
     <AnimatedSection className="why-sell">
       <div className="why-sell__inner">
@@ -39,12 +41,8 @@ export default function WhySell() {
           <div className="why-sell__icon-wrap">
             <IconChartDepreciation />
           </div>
-          <h2 className="why-sell__title">
-            Why Most Homes Sell Below Market Value?
-          </h2>
-          <p className="why-sell__text">
-            Sellers typically fall into one of these three categories. Fix2Sell solves all three problems.
-          </p>
+          <h2 className="why-sell__title">{title}</h2>
+          <p className="why-sell__text">{intro}</p>
         </motion.div>
         <div className="why-sell__cards">
           {cards.map((card, i) => (
@@ -60,7 +58,7 @@ export default function WhySell() {
                 <CardIcon name={card.icon} />
               </div>
               <h3 className="why-sell__card-title">{card.title}</h3>
-              <p className="why-sell__card-desc">{card.description}</p>
+              <p className="why-sell__card-desc">{card.desc}</p>
             </motion.article>
           ))}
         </div>

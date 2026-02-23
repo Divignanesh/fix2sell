@@ -1,36 +1,30 @@
 import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
+import { useData } from '../context/DataContext'
 import './HowItWorks.css'
 
-const steps = [
-  {
-    step: '1',
-    letter: 'D',
-    title: 'Discovery',
-    desc: "We guide you through the selling process, identifying essential upgrades to maximize your property's market value and appeal.",
-  },
-  {
-    step: '2',
-    letter: 'E',
-    title: 'Estimation',
-    desc: 'Our professional team visits your home, takes precise measurements, and prepares accurate cost estimates for renovation work.',
-  },
-  {
-    step: '3',
-    letter: 'A',
-    title: 'Action',
-    desc: 'We handle property upscaling, professional cleaning and staging, plus high-quality MLS listings with photos, videos, and compelling content.',
-  },
-  {
-    step: '4',
-    letter: 'L',
-    title: 'Listing',
-    desc: 'We manage all agreements, launch a tailored selling strategy, handle buyer offers, lead negotiations, and finalize the sale.',
-  },
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
+
+const DEFAULT_STEPS = [
+  { step: '1', letter: 'D', title: 'Discovery', desc: "We guide you through the selling process, identifying essential upgrades to maximize your property's market value and appeal." },
+  { step: '2', letter: 'E', title: 'Estimation', desc: 'Our professional team visits your home, takes precise measurements, and prepares accurate cost estimates for renovation work.' },
+  { step: '3', letter: 'A', title: 'Action', desc: 'We handle property upscaling, professional cleaning and staging, plus high-quality MLS listings with photos, videos, and compelling content.' },
+  { step: '4', letter: 'L', title: 'Listing', desc: 'We manage all agreements, launch a tailored selling strategy, handle buyer offers, lead negotiations, and finalize the sale.' },
 ]
 
 export default function HowItWorks() {
+  const { global: globalData } = useData()
+  const stepLabel = getCopy(globalData, 'howItWorksStepLabel', 'Step')
+  const steps = [
+    { step: '1', letter: getCopy(globalData, 'howItWorksStep1Letter', 'D'), title: getCopy(globalData, 'howItWorksStep1Title', DEFAULT_STEPS[0].title), desc: getCopy(globalData, 'howItWorksStep1Desc', DEFAULT_STEPS[0].desc) },
+    { step: '2', letter: getCopy(globalData, 'howItWorksStep2Letter', 'E'), title: getCopy(globalData, 'howItWorksStep2Title', DEFAULT_STEPS[1].title), desc: getCopy(globalData, 'howItWorksStep2Desc', DEFAULT_STEPS[1].desc) },
+    { step: '3', letter: getCopy(globalData, 'howItWorksStep3Letter', 'A'), title: getCopy(globalData, 'howItWorksStep3Title', DEFAULT_STEPS[2].title), desc: getCopy(globalData, 'howItWorksStep3Desc', DEFAULT_STEPS[2].desc) },
+    { step: '4', letter: getCopy(globalData, 'howItWorksStep4Letter', 'L'), title: getCopy(globalData, 'howItWorksStep4Title', DEFAULT_STEPS[3].title), desc: getCopy(globalData, 'howItWorksStep4Desc', DEFAULT_STEPS[3].desc) },
+  ]
   const timelineRef = useRef(null)
   const [isMobile, setIsMobile] = useState(false)
   
@@ -61,7 +55,9 @@ export default function HowItWorks() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            How <span className="how-it-works__title-highlight">Fix2Sell</span> Works?
+            {getCopy(globalData, 'howItWorksTitle', 'How')}{' '}
+            <span className="how-it-works__title-highlight">{getCopy(globalData, 'howItWorksTitleHighlight', 'Fix2Sell')}</span>{' '}
+            {getCopy(globalData, 'howItWorksTitleSuffix', 'Works?')}
           </motion.h2>
           <motion.p
             className="how-it-works__subtitle"
@@ -70,7 +66,7 @@ export default function HowItWorks() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            A simple, straightforward process to maximize your home's value
+            {getCopy(globalData, 'howItWorksSubtitle', "A simple, straightforward process to maximize your home's value")}
           </motion.p>
         </div>
         
@@ -111,7 +107,7 @@ export default function HowItWorks() {
               )}
               
               <article className="how-it-works__card">
-                <span className="how-it-works__card-step">Step {item.step}</span>
+                <span className="how-it-works__card-step">{stepLabel} {item.step}</span>
                 <div className="how-it-works__card-letter">
                   {item.letter}
                 </div>

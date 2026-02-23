@@ -6,14 +6,16 @@ import './Hero.css'
 const DEFAULT_LOCATION_TEXT = 'in Toronto & GTA'
 
 const FALLBACK_BADGE_TEXTS = ['Reno', 'Listing & Selling', 'Reno Consulting', 'Renovations', 'Reno Financial']
-const FALLBACK_LIST_ITEMS = [
-  { label: 'Upfront Cost', accent: 'ZERO' },
-  { label: 'Compromise', accent: 'ZERO' },
-  { label: 'Stress', accent: 'ZERO' },
+
+const FALLBACK_HERO_STATS = [
+  { prefix: '', value: '$20M+', label: 'Worth Home Sold' },
+  { prefix: '', value: '$20K', label: 'Average Reno Cost' },
+  { prefix: 'Upto', value: '$50K', label: 'Profit Made' },
 ]
 
 function getCopy(data, key, fallback) {
-  const v = data && data[key]
+  if (!data || typeof data !== 'object') return fallback
+  const v = data[key] ?? data[key?.toLowerCase?.()] ?? data[key?.charAt(0)?.toUpperCase() + key?.slice(1)]
   return v !== undefined && v !== null ? String(v).trim() : fallback
 }
 
@@ -54,13 +56,7 @@ export default function Hero() {
     const s = String(v).trim().toLowerCase()
     return s === 'true' || s === '1' || s === 'yes'
   })()
-  const collectUserLocation = (() => {
-    const v = globalData && globalData.collectUserLocation
-    if (v === undefined || v === null) return false
-    const s = String(v).trim().toLowerCase()
-    return s === 'true' || s === '1' || s === 'yes'
-  })()
-  const defaultLocation = (globalData && globalData.heroLocationDefault) ? String(globalData.heroLocationDefault).trim() : DEFAULT_LOCATION_TEXT
+  const defaultLocation = getCopy(globalData, 'heroLocationDefault', DEFAULT_LOCATION_TEXT) || DEFAULT_LOCATION_TEXT
   const [badgeIndex, setBadgeIndex] = useState(0)
   const [locationText, setLocationText] = useState(defaultLocation || DEFAULT_LOCATION_TEXT)
   const [isMobile, setIsMobile] = useState(true)
@@ -70,10 +66,22 @@ export default function Hero() {
     return raw ? raw.split(',').map((s) => s.trim()).filter(Boolean) : FALLBACK_BADGE_TEXTS
   })()
 
-  const listItems = [
-    { label: getCopy(globalData, 'heroList1Label', FALLBACK_LIST_ITEMS[0].label), accent: getCopy(globalData, 'heroList1Accent', FALLBACK_LIST_ITEMS[0].accent) },
-    { label: getCopy(globalData, 'heroList2Label', FALLBACK_LIST_ITEMS[1].label), accent: getCopy(globalData, 'heroList2Accent', FALLBACK_LIST_ITEMS[1].accent) },
-    { label: getCopy(globalData, 'heroList3Label', FALLBACK_LIST_ITEMS[2].label), accent: getCopy(globalData, 'heroList3Accent', FALLBACK_LIST_ITEMS[2].accent) },
+  const heroStats = [
+    {
+      prefix: getCopy(globalData, 'heroStat1Prefix', FALLBACK_HERO_STATS[0].prefix),
+      value: getCopy(globalData, 'heroStat1Value', FALLBACK_HERO_STATS[0].value),
+      label: getCopy(globalData, 'heroStat1Label', FALLBACK_HERO_STATS[0].label),
+    },
+    {
+      prefix: getCopy(globalData, 'heroStat2Prefix', FALLBACK_HERO_STATS[1].prefix),
+      value: getCopy(globalData, 'heroStat2Value', FALLBACK_HERO_STATS[1].value),
+      label: getCopy(globalData, 'heroStat2Label', FALLBACK_HERO_STATS[1].label),
+    },
+    {
+      prefix: getCopy(globalData, 'heroStat3Prefix', FALLBACK_HERO_STATS[2].prefix),
+      value: getCopy(globalData, 'heroStat3Value', FALLBACK_HERO_STATS[2].value),
+      label: getCopy(globalData, 'heroStat3Label', FALLBACK_HERO_STATS[2].label),
+    },
   ]
 
   useEffect(() => {
@@ -98,8 +106,8 @@ export default function Hero() {
     return () => clearInterval(interval)
   }, [badgeTexts.length])
 
+  // Run geolocation on mount (like original); only update for Canada so sheet default is kept otherwise
   useEffect(() => {
-    if (!collectUserLocation) return
     let cancelled = false
     let abortController = null
     if (!navigator.geolocation) return
@@ -135,7 +143,7 @@ export default function Hero() {
       cancelled = true
       if (abortController) abortController.abort()
     }
-  }, [collectUserLocation])
+  }, [])
 
   const showBackgroundVideo = isValidVideoUrl(heroBackgroundVideoUrl) && (!isMobile || heroVideoOnMobile)
 
@@ -210,33 +218,20 @@ export default function Hero() {
           >
             {getCopy(globalData, 'heroDesc', "Transform your home's appeal with smart, value-boosting improvements all at zero upfront cost. From design to closing, we handle everything to get you maximum profit.")}
           </motion.p>
-          <motion.ul
-            className="hero__list"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              visible: { transition: { staggerChildren: 0.08 } },
-              hidden: {},
-            }}
+          <motion.div
+            className="hero__stats"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
-            {listItems.map((item, i) => (
-              <motion.li
-                key={i}
-                className="hero__list-item"
-                variants={{
-                  hidden: { opacity: 0, x: -12 },
-                  visible: { opacity: 1, x: 0 },
-                }}
-                transition={{ duration: 0.4 }}
-              >
-                <span className="hero__list-icon" aria-hidden>
-                  <CheckCircleIcon />
-                </span>
-                <span className="hero__list-accent">{item.accent}</span>
-                <span className="hero__list-label">{item.label}</span>
-              </motion.li>
+            {heroStats.map((stat, i) => (
+              <div key={i} className="hero__stat-card">
+                <div className="hero__stat-prefix">{stat.prefix || '\u00A0'}</div>
+                <div className="hero__stat-value">{stat.value}</div>
+                <div className="hero__stat-label">{stat.label}</div>
+              </div>
             ))}
-          </motion.ul>
+          </motion.div>
         </div>
         <motion.div
           id="inquire"
@@ -273,14 +268,5 @@ export default function Hero() {
         </motion.div>
       </div>
     </section>
-  )
-}
-
-function CheckCircleIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="10" cy="10" r="8.33" stroke="currentColor" strokeWidth="1.67" />
-      <path d="M7.5 10l1.67 1.67 3.33-3.34" stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   )
 }
