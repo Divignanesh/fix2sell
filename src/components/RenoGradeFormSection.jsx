@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useData } from '../context/DataContext'
 import './RenoGradeFormSection.css'
@@ -123,6 +123,26 @@ export default function RenoGradeFormSection() {
     return Number.isFinite(n) && n > 0 ? n : 1482
   })()
   const [agreed, setAgreed] = useState(false)
+  const [iframeLoaded, setIframeLoaded] = useState(false)
+
+  useEffect(() => {
+    if (!renogradeFormIframeUrl) return
+    let origin
+    try {
+      origin = new URL(renogradeFormIframeUrl).origin
+    } catch {
+      return
+    }
+    const link = document.createElement('link')
+    link.rel = 'preconnect'
+    link.href = origin
+    document.head.appendChild(link)
+    return () => { link.parentNode?.removeChild(link) }
+  }, [renogradeFormIframeUrl])
+
+  useEffect(() => {
+    setIframeLoaded(false)
+  }, [renogradeFormIframeUrl])
 
   return (
     <section className="reno-grade-form">
@@ -131,12 +151,22 @@ export default function RenoGradeFormSection() {
         <div className="reno-grade-form__form-wrap">
           <div className="reno-grade-form__form-box">
             {isValidIframeUrl(renogradeFormIframeUrl) ? (
-              <iframe
-                src={renogradeFormIframeUrl}
-                className="reno-grade-form__iframe"
-                title="RenoGrade form"
-                height={renogradeFormIframeHeight}
-              />
+              <div className="reno-grade-form__iframe-wrap">
+                <iframe
+                  src={renogradeFormIframeUrl}
+                  className="reno-grade-form__iframe"
+                  title="RenoGrade form"
+                  height={renogradeFormIframeHeight}
+                  onLoad={() => setIframeLoaded(true)}
+                />
+                <div
+                  className={`reno-grade-form__iframe-loading ${iframeLoaded ? 'reno-grade-form__iframe-loading--done' : ''}`}
+                  aria-hidden={iframeLoaded}
+                >
+                  <span className="reno-grade-form__iframe-spinner" aria-hidden />
+                  <span className="reno-grade-form__iframe-loading-text">Loading form…</span>
+                </div>
+              </div>
             ) : (
             <form className="reno-grade-form__form" onSubmit={(e) => e.preventDefault()}>
               <div className="reno-grade-form__field reno-grade-form__field--search">

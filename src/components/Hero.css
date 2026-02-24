@@ -58,7 +58,7 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: var(--section-padding);
+  padding: 36px 34px;;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -169,9 +169,7 @@
 .hero__card {
   width: 100%;
   min-width: 0;
-  background: var(--color-white);
   border-radius: var(--radius-lg);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 
@@ -181,19 +179,20 @@
   margin: 0 0 5px;
   font-size: 1.24rem;
   font-weight: 600;
-  color: var(--color-navy-light);
+  color: var(--color-white);
   text-align: center;
 }
 
 .hero__card-subtitle {
   margin: 0 0 22px;
   font-size: 0.84rem;
-  color: var(--color-gray);
+  color: var(--color-white);
   text-align: center;
 }
 
 /* Form iframe container – sized to fit the form */
 .hero__form-iframe-wrap {
+  position: relative;
   width: 100%;
   overflow: visible;
 }
@@ -204,6 +203,44 @@
   height: 680px;
   border: none;
   display: block;
+}
+
+/* Loading overlay until iframe is ready (hides blank state) */
+.hero__form-iframe-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(242, 242, 242, 0.98);
+  color: var(--color-navy);
+  font-size: 0.95rem;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.hero__form-iframe-loading--done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero__form-iframe-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(20, 41, 82, 0.15);
+  border-top-color: var(--color-orange, #f98c1f);
+  border-radius: 50%;
+  animation: hero-iframe-spin 0.8s linear infinite;
+}
+
+@keyframes hero-iframe-spin {
+  to { transform: rotate(360deg); }
+}
+
+.hero__form-iframe-loading-text {
+  opacity: 0.85;
 }
 
 /* Fallback form (no iframe URL) */

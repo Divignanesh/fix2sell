@@ -53,6 +53,27 @@ export default function InquirePopup() {
   const formIframeUrl = (globalData && globalData.formIframeUrl) ? globalData.formIframeUrl.trim() : ''
   const showScrollPopup = getGlobalFlag(globalData, 'showScrollPopup')
   const showExitIntentPopup = getGlobalFlag(globalData, 'showExitIntentPopup')
+  const [iframeLoaded, setIframeLoaded] = useState(false)
+
+  // Preconnect to iframe origin so it loads faster
+  useEffect(() => {
+    if (!formIframeUrl) return
+    let origin
+    try {
+      origin = new URL(formIframeUrl).origin
+    } catch {
+      return
+    }
+    const link = document.createElement('link')
+    link.rel = 'preconnect'
+    link.href = origin
+    document.head.appendChild(link)
+    return () => { link.parentNode?.removeChild(link) }
+  }, [formIframeUrl])
+
+  useEffect(() => {
+    setIframeLoaded(false)
+  }, [formIframeUrl])
 
   const [open, setOpen] = useState(false)
 
@@ -116,15 +137,21 @@ export default function InquirePopup() {
               <CloseIcon />
             </button>
             <div className="inquire-popup__inner">
-              <h2 id="inquire-popup-title" className="inquire-popup__title">{getCopy(globalData, 'inquirePopupTitle', 'Inquire Now')}</h2>
-              <p className="inquire-popup__subtitle">{getCopy(globalData, 'inquirePopupSubtitle', 'Get your free home evaluation today')}</p>
               {isValidIframeUrl(formIframeUrl) ? (
                 <div className="inquire-popup__iframe-wrap">
                   <iframe
                     src={formIframeUrl}
                     className="inquire-popup__iframe"
                     title="Inquiry form"
+                    onLoad={() => setIframeLoaded(true)}
                   />
+                  <div
+                    className={`inquire-popup__iframe-loading ${iframeLoaded ? 'inquire-popup__iframe-loading--done' : ''}`}
+                    aria-hidden={iframeLoaded}
+                  >
+                    <span className="inquire-popup__iframe-spinner" aria-hidden />
+                    <span className="inquire-popup__iframe-loading-text">Loading form…</span>
+                  </div>
                 </div>
               ) : (
                 <form className="inquire-popup__form" onSubmit={(e) => e.preventDefault()}>

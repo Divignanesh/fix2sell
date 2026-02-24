@@ -60,6 +60,27 @@ export default function Hero() {
   const [badgeIndex, setBadgeIndex] = useState(0)
   const [locationText, setLocationText] = useState(defaultLocation || DEFAULT_LOCATION_TEXT)
   const [isMobile, setIsMobile] = useState(true)
+  const [iframeLoaded, setIframeLoaded] = useState(false)
+
+  // Preconnect to iframe origin so it loads faster
+  useEffect(() => {
+    if (!formIframeUrl) return
+    let origin
+    try {
+      origin = new URL(formIframeUrl).origin
+    } catch {
+      return
+    }
+    const link = document.createElement('link')
+    link.rel = 'preconnect'
+    link.href = origin
+    document.head.appendChild(link)
+    return () => { link.parentNode?.removeChild(link) }
+  }, [formIframeUrl])
+
+  useEffect(() => {
+    setIframeLoaded(false)
+  }, [formIframeUrl])
 
   const badgeTexts = (() => {
     const raw = getCopy(globalData, 'heroRotatingWords', '')
@@ -249,7 +270,15 @@ export default function Hero() {
                   src={formIframeUrl}
                   className="hero__form-iframe"
                   title="Inquiry form"
+                  onLoad={() => setIframeLoaded(true)}
                 />
+                <div
+                  className={`hero__form-iframe-loading ${iframeLoaded ? 'hero__form-iframe-loading--done' : ''}`}
+                  aria-hidden={iframeLoaded}
+                >
+                  <span className="hero__form-iframe-spinner" aria-hidden />
+                  <span className="hero__form-iframe-loading-text">Loading form…</span>
+                </div>
               </div>
             ) : (
               <form className="hero__form" onSubmit={(e) => e.preventDefault()}>
