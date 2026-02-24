@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
+import { getProxiedImageSrc } from '../utils/imageProxy'
 import './RenoGrader.css'
 
 function getCopy(data, key, fallback) {
@@ -93,14 +94,14 @@ export default function RenoGrader() {
           transition={{ duration: 0.5 }}
         >
           <div className="reno-grader__image reno-grader__image--main">
-            <img 
-              src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80" 
+            <img
+              src={getProxiedImageSrc('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80')}
               alt="Modern living room interior"
             />
           </div>
           <div className="reno-grader__image reno-grader__image--secondary">
-            <img 
-              src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80" 
+            <img
+              src={getProxiedImageSrc('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80')}
               alt="Beautiful kitchen interior"
             />
           </div>

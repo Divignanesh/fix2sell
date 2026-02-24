@@ -8,19 +8,22 @@
   justify-content: center;
   padding: 20px;
   box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .inquire-popup__box {
   position: relative;
   width: 100%;
   max-width: 420px;
-  max-height: 90vh;
+  margin: auto;
   background: var(--color-white, #fff);
   border-radius: var(--radius-lg, 16px);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .inquire-popup__close {
@@ -48,9 +51,9 @@
 
 .inquire-popup__inner {
   padding: 28px 24px 24px;
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
 }
 
 .inquire-popup__title {
@@ -70,14 +73,13 @@
 
 .inquire-popup__iframe-wrap {
   width: 100%;
-  max-height: 55vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
 }
 
 .inquire-popup__iframe {
   width: 100%;
-  min-height: 380px;
+  min-height: 680px;
+  height: 680px;
   border: none;
   display: block;
 }

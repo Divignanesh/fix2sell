@@ -175,9 +175,7 @@
   overflow: hidden;
 }
 
-.hero__card-inner {
-  padding: 28px;
-}
+
 
 .hero__card-title {
   margin: 0 0 5px;
@@ -194,18 +192,16 @@
   text-align: center;
 }
 
-/* Scrollable form/iframe container */
+/* Form iframe container – sized to fit the form */
 .hero__form-iframe-wrap {
   width: 100%;
-  max-height: 70vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
 }
 
 .hero__form-iframe {
   width: 100%;
-  min-height: 420px;
+  min-height: 680px;
+  height: 680px;
   border: none;
   display: block;
 }
@@ -308,9 +304,6 @@
   .hero__card {
     max-width: 350px;
   }
-  .hero__form-iframe-wrap {
-    max-height: 65vh;
-  }
 }
 
 @media (max-width: 768px) {
@@ -376,9 +369,7 @@
   .hero__card {
     max-width: none;
   }
-  .hero__card-inner {
-    padding: 24px 20px;
-  }
+  
   .hero__card-title {
     font-size: 1.125rem;
   }
@@ -386,11 +377,9 @@
     font-size: 0.78rem;
     margin-bottom: 18px;
   }
-  .hero__form-iframe-wrap {
-    max-height: 60vh;
-  }
   .hero__form-iframe {
-    min-height: 380px;
+    min-height: 620px;
+    height: 620px;
   }
   .hero__input {
     height: 41px;

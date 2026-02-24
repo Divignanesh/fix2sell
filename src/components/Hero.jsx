@@ -241,8 +241,8 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <div className="hero__card-inner">
-            <h3 className="hero__card-title">{getCopy(globalData, 'heroFormTitle', 'Inquire Now')}</h3>
-            <p className="hero__card-subtitle">{getCopy(globalData, 'heroFormSubtitle', 'Get your free home evaluation today')}</p>
+            <h3 className="hero__card-title">{getCopy(globalData, 'heroFormTitle', '')}</h3>
+            <p className="hero__card-subtitle">{getCopy(globalData, 'heroFormSubtitle', '')}</p>
             {isValidIframeUrl(formIframeUrl) ? (
               <div className="hero__form-iframe-wrap">
                 <iframe
@@ -259,9 +259,6 @@ export default function Hero() {
                 <button type="submit" className="hero__submit">
                   {getCopy(globalData, 'heroSubmitLabel', 'Get My Estimate')}
                 </button>
-                <p className="hero__form-note">
-                  {getCopy(globalData, 'heroFormNote', 'By submitting, you agree to our Privacy Policy and Terms of Service.')}
-                </p>
               </form>
             )}
           </div>

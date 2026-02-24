@@ -20,9 +20,8 @@
 
 .reno-grade-form__form-box {
   width: 100%;
-  background: #f2f2f2;
   border-radius: 14px;
-  padding: 32px 28px;
+  padding: 0;
 }
 
 .reno-grade-form__form-title {
@@ -33,18 +32,13 @@
   text-align: center;
 }
 
-/* Scrollable iframe container */
+/* No height/max-height so the iframe can take the space it needs (same as hero) */
 .reno-grade-form__iframe-wrap {
   width: 100%;
-  max-height: 70vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
 }
 
 .reno-grade-form__iframe {
   width: 100%;
-  min-height: 480px;
   border: none;
   display: block;
 }
@@ -364,13 +358,10 @@
     padding: var(--section-padding-mobile);
   }
   .reno-grade-form__form-box {
-    padding: 24px 20px;
+    padding: 0;
   }
   .reno-grade-form__row {
     grid-template-columns: 1fr;
-  }
-  .reno-grade-form__iframe-wrap {
-    max-height: 60vh;
   }
 }
 
@@ -380,8 +371,5 @@
   }
   .reno-grade-form__form-title {
     font-size: 1.2rem;
-  }
-  .reno-grade-form__iframe {
-    min-height: 400px;
   }
 }

@@ -34,6 +34,22 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Stack all slides; only active one visible. Inactive slides stay in DOM so embeds load ahead. */
+.smart-way__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+.smart-way__slide--active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
 .smart-way__oval-inner {
   position: absolute;
   inset: 0;
@@ -71,6 +87,26 @@
   display: block;
   object-fit: cover;
   object-position: center;
+}
+
+/* Fallback when Instagram image fails to load (e.g. proxy down) */
+.smart-way__img-placeholder {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.smart-way__img-placeholder--show {
+  opacity: 1;
+}
+
+/* Instagram link: thumbnail from /p/{id}/media/?size=l, click opens reel */
+.smart-way__instagram-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Center play button overlay (visual only; parent handles click) */

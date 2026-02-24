@@ -29,6 +29,12 @@ function getCopy(data, key, fallback) {
   return v !== undefined && v !== null ? String(v).trim() : fallback
 }
 
+function isValidCardLink(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim()
+  return u.startsWith('http://') || u.startsWith('https://') || u.startsWith('/')
+}
+
 export default function ThousandsGained() {
   const { thousandsGained: dataCards, global: globalData } = useData()
   const cards = Array.isArray(dataCards) && dataCards.length > 0 ? dataCards : defaultCards
@@ -78,40 +84,60 @@ export default function ThousandsGained() {
           role="region"
           aria-label="Homeowner results carousel"
         >
-          {cards.map((card, i) => (
-            <article key={i} className="thousands-gained__card">
-              <div className="thousands-gained__card-image-wrap">
-                <MediaAsset
-                  url={card.image}
-                  type={card.imageType}
-                  alt=""
-                  className="thousands-gained__card-image"
-                />
-                <div className="thousands-gained__card-overlay">
-                  <div className="thousands-gained__card-figures">
-                    <div className="thousands-gained__figure">
-                      <span className="thousands-gained__figure-value thousands-gained__figure-value--renovation">
-                        {card.renovation}
-                      </span>
-                      <span className="thousands-gained__figure-label">{figureRenovationLabel}</span>
-                    </div>
-                    <div className="thousands-gained__figure">
-                      <span className="thousands-gained__figure-value thousands-gained__figure-value--profit">
-                        {card.profit}
-                      </span>
-                      <span className="thousands-gained__figure-label">{figureProfitLabel}</span>
+          {cards.map((card, i) => {
+            const CardContent = () => (
+              <>
+                <div className="thousands-gained__card-image-wrap">
+                  <MediaAsset
+                    url={card.image}
+                    type={card.imageType}
+                    alt=""
+                    className="thousands-gained__card-image"
+                  />
+                  <div className="thousands-gained__card-overlay">
+                    <div className="thousands-gained__card-figures">
+                      <div className="thousands-gained__figure">
+                        <span className="thousands-gained__figure-value thousands-gained__figure-value--renovation">
+                          {card.renovation}
+                        </span>
+                        <span className="thousands-gained__figure-label">{figureRenovationLabel}</span>
+                      </div>
+                      <div className="thousands-gained__figure">
+                        <span className="thousands-gained__figure-value thousands-gained__figure-value--profit">
+                          {card.profit}
+                        </span>
+                        <span className="thousands-gained__figure-label">{figureProfitLabel}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="thousands-gained__card-location">
-                <span className="thousands-gained__card-pin" aria-hidden>
-                  <MapPinIcon />
-                </span>
-                <span>{card.location}</span>
-              </div>
-            </article>
-          ))}
+                <div className="thousands-gained__card-location">
+                  <span className="thousands-gained__card-pin" aria-hidden>
+                    <MapPinIcon />
+                  </span>
+                  <span>{card.location}</span>
+                </div>
+              </>
+            )
+            const hasLink = isValidCardLink(card.link)
+            return (
+              <article key={i} className="thousands-gained__card">
+                {hasLink ? (
+                  <a
+                    href={card.link}
+                    className="thousands-gained__card-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`View details – ${card.location}`}
+                  >
+                    <CardContent />
+                  </a>
+                ) : (
+                  <CardContent />
+                )}
+              </article>
+            )
+          })}
         </div>
       </div>
 

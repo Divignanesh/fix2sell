@@ -1,9 +1,11 @@
 /**
  * Renders image or video from sheet data.
- * - type 'image' → <img>
+ * - type 'image' → <img> (external URLs are proxied so they load when the source blocks hotlinking)
  * - type 'video' + Drive preview URL → <iframe> (Drive embed)
  * - type 'video' + direct URL → <video>
  */
+
+import { getProxiedImageSrc } from '../utils/imageProxy'
 
 function isDrivePreviewUrl(url) {
   if (!url || typeof url !== 'string') return false
@@ -43,5 +45,6 @@ export function MediaAsset({ url, type = 'image', alt = '', className, ...props 
     )
   }
 
-  return <img src={u} alt={alt} className={className} {...props} />
+  const imgSrc = getProxiedImageSrc(u) || u
+  return <img src={imgSrc} alt={alt} className={className} {...props} />
 }

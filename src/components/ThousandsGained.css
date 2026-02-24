@@ -124,6 +124,25 @@
   flex-direction: column;
 }
 
+.thousands-gained__card-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.thousands-gained__card-link:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.thousands-gained__card-link:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
 /* Image container: portrait aspect ratio, equally rounded corners */
 .thousands-gained__card-image-wrap {
   position: relative;

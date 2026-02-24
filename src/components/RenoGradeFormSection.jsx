@@ -116,6 +116,12 @@ function BenefitIcon({ name }) {
 export default function RenoGradeFormSection() {
   const { global: globalData } = useData()
   const renogradeFormIframeUrl = (globalData && globalData.renogradeFormIframeUrl) ? globalData.renogradeFormIframeUrl.trim() : ''
+  const renogradeFormIframeHeight = (() => {
+    const v = globalData && globalData.renogradeFormIframeHeight
+    if (v === undefined || v === null || v === '') return 1482
+    const n = parseInt(String(v).trim(), 10)
+    return Number.isFinite(n) && n > 0 ? n : 1482
+  })()
   const [agreed, setAgreed] = useState(false)
 
   return (
@@ -124,12 +130,12 @@ export default function RenoGradeFormSection() {
         {/* Left: Form or iframe */}
         <div className="reno-grade-form__form-wrap">
           <div className="reno-grade-form__form-box">
-            <h2 className="reno-grade-form__form-title">Please provide these information</h2>
             {isValidIframeUrl(renogradeFormIframeUrl) ? (
               <iframe
                 src={renogradeFormIframeUrl}
                 className="reno-grade-form__iframe"
                 title="RenoGrade form"
+                height={renogradeFormIframeHeight}
               />
             ) : (
             <form className="reno-grade-form__form" onSubmit={(e) => e.preventDefault()}>
@@ -240,10 +246,6 @@ export default function RenoGradeFormSection() {
               </button>
             </form>
             )}
-            <div className="reno-grade-form__legal">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
-            </div>
           </div>
         </div>
 

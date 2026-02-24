@@ -134,9 +134,6 @@ export default function InquirePopup() {
                   <button type="submit" className="inquire-popup__submit">
                     {getCopy(globalData, 'inquirePopupSubmitLabel', 'Get My Estimate')}
                   </button>
-                  <p className="inquire-popup__note">
-                    {getCopy(globalData, 'inquirePopupFormNote', 'By submitting, you agree to our Privacy Policy and Terms of Service.')}
-                  </p>
                 </form>
               )}
             </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { AnimatedSection } from './AnimatedSection'
 import { useData } from '../context/DataContext'
+import { isInstagramReelUrl, getInstagramImageSrc, getProxiedImageSrc } from '../utils/imageProxy'
 import './SmartWay.css'
 
 const DEFAULT_SLIDES = [
@@ -33,13 +34,14 @@ export default function SmartWay() {
     return () => clearInterval(t)
   }, [slides.length])
 
-  const handlePlayClick = () => {
-    const url = (slide && slide.link) ? slide.link.trim() : null
+  const handlePlayClick = (url) => {
     if (!url) return
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      window.open(url, '_blank', 'noopener,noreferrer')
-    } else if (url.startsWith('#')) {
-      window.location.hash = url
+    const u = typeof url === 'string' ? url.trim() : ''
+    if (!u) return
+    if (u.startsWith('http://') || u.startsWith('https://')) {
+      window.open(u, '_blank', 'noopener,noreferrer')
+    } else if (u.startsWith('#')) {
+      window.location.hash = u
     }
   }
 
@@ -54,32 +56,73 @@ export default function SmartWay() {
           transition={{ duration: 0.5 }}
         >
           <div className="smart-way__image-container">
-            <div
-              className="smart-way__thumbnail-clickable"
-              onClick={handlePlayClick}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePlayClick(); } }}
-              role="button"
-              tabIndex={0}
-              aria-label={`Play – ${slide.title || 'Watch'}`}
-            >
-              <div className="smart-way__oval-inner smart-way__carousel-wrap">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.img
-                    key={currentIndex}
-                    src={slide.image}
-                    alt={slide.title || `Slide ${currentIndex + 1}`}
-                    className="smart-way__house-img"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35 }}
-                  />
-                </AnimatePresence>
-              </div>
-              <span className="smart-way__play-btn" aria-hidden>
-                <PlayIcon />
-              </span>
-            </div>
+            {/* Render all slides so Instagram embeds start loading before slide is shown */}
+            {slides.map((s, i) => {
+              const active = i === currentIndex
+              const isInstagram = isInstagramReelUrl(s?.link)
+              return (
+                <div
+                  key={i}
+                  className={`smart-way__slide ${active ? 'smart-way__slide--active' : ''}`}
+                  aria-hidden={!active}
+                >
+                  {isInstagram && s?.link ? (
+                    <a
+                      href={s.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="smart-way__thumbnail-clickable smart-way__instagram-link"
+                      aria-label={`View on Instagram – ${s?.title || 'Reel'}`}
+                    >
+                      <div className="smart-way__oval-inner smart-way__carousel-wrap">
+                        <div className="smart-way__img-placeholder" aria-hidden />
+                        <img
+                          src={getInstagramImageSrc(s.link)}
+                          alt={s?.title || `Slide ${i + 1}`}
+                          className="smart-way__house-img"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            e.target.onerror = null
+                            e.target.style.visibility = 'hidden'
+                            const wrap = e.target.closest('.smart-way__carousel-wrap')
+                            const placeholder = wrap?.querySelector('.smart-way__img-placeholder')
+                            if (placeholder) placeholder.classList.add('smart-way__img-placeholder--show')
+                          }}
+                        />
+                      </div>
+                      <span className="smart-way__play-btn" aria-hidden>
+                        <PlayIcon />
+                      </span>
+                    </a>
+                  ) : (
+                    <div
+                      className="smart-way__thumbnail-clickable"
+                      onClick={() => handlePlayClick(s?.link)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          handlePlayClick(s?.link)
+                        }
+                      }}
+                      role="button"
+                      tabIndex={active ? 0 : -1}
+                      aria-label={`Play – ${s?.title || 'Watch'}`}
+                    >
+                      <div className="smart-way__oval-inner smart-way__carousel-wrap">
+                        <img
+                          src={s?.image ? getProxiedImageSrc(s.image) : ''}
+                          alt={s?.title || `Slide ${i + 1}`}
+                          className="smart-way__house-img"
+                        />
+                      </div>
+                      <span className="smart-way__play-btn" aria-hidden>
+                        <PlayIcon />
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
             {slides.length > 1 && (
               <div className="smart-way__carousel-dots">
                 {slides.map((_, i) => (
