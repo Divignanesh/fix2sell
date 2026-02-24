@@ -97,6 +97,7 @@ function mapThousandsGained(rows) {
       renovation: get(r, 'value1'),
       profit: get(r, 'value2'),
       location: get(r, 'location'),
+      link: get(r, 'link') || get(r, 'url') || '',
     }))
 }
 

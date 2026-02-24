@@ -213,74 +213,84 @@
   ],
   "thousandsGained": [
     {
-      "image": "173 Kne After.jpeg",
+      "image": "/downloaded-images/thousands-0.jpg",
       "imageType": "image",
       "renovation": "$17,500",
       "profit": "$37,500",
-      "location": "173 Kane Ave, Toronto"
+      "location": "173 Kane Ave, Toronto",
+      "link": "http://localhost:3001/dashboard/whatsapp/bulk-send"
     },
     {
       "image": "/downloaded-images/thousands-1.jpg",
       "imageType": "image",
       "renovation": "$37,800",
       "profit": "$48,700",
-      "location": "33 Hartrick Pl, Whitby"
+      "location": "33 Hartrick Pl, Whitby",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-2.jpg",
       "imageType": "image",
       "renovation": "$2,300",
       "profit": "$9,500",
-      "location": "1611-48 Power St, Toronto"
+      "location": "1611-48 Power St, Toronto",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-3.jpg",
       "imageType": "image",
       "renovation": "$15,700",
       "profit": "$23,300",
-      "location": "203 Grovehill Cres, Kitchener"
+      "location": "203 Grovehill Cres, Kitchener",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-4.jpg",
       "imageType": "image",
       "renovation": "$13,500",
       "profit": "$53,500",
-      "location": "10 Hillary Ave, Toronto"
+      "location": "10 Hillary Ave, Toronto",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-5.jpg",
       "imageType": "image",
       "renovation": "$9,800",
       "profit": "$37,200",
-      "location": "49 Hillary Ave, Toronto"
+      "location": "49 Hillary Ave, Toronto",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-6.jpg",
       "imageType": "image",
       "renovation": "$21,800",
       "profit": "$31,200",
-      "location": "181 Kenilworth Ave,\nHamilton"
+      "location": "181 Kenilworth Ave,\nHamilton",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-7.jpg",
       "imageType": "image",
       "renovation": "$7,000",
       "profit": "$19,000",
-      "location": "139 Remembrance Rd, Brampton"
+      "location": "139 Remembrance Rd, Brampton",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-8.jpg",
       "imageType": "image",
       "renovation": "$107,000",
       "profit": "$70,000",
-      "location": "402 Upper Paradise Rd, Hamilton"
+      "location": "402 Upper Paradise Rd, Hamilton",
+      "link": ""
     },
     {
       "image": "/downloaded-images/thousands-9.jpg",
       "imageType": "image",
       "renovation": "$4,000",
       "profit": "$15,000",
-      "location": "26-30 Bryan Crt, Kitchener"
+      "location": "26-30 Bryan Crt, Kitchener",
+      "link": ""
     }
   ],
   "testimonials": [
@@ -358,6 +368,7 @@
     "heroStat3Prefix": "(optional) e.g. Upto",
     "heroStat3Value": "$50K",
     "heroStat3Label": "Profit Made",
+    "heroFormTitle": "",
     "heroFormSubtitle": "No Obligation, free home evaluation today",
     "heroSubmitLabel": "Get My Free Consultation",
     "heroFormNote": "By submitting, you agree to our Privacy Policy and Terms of Service. \nResults vary by property & market conditions.",
@@ -463,24 +474,14 @@
   },
   "smartWay": [
     {
-      "image": "/downloaded-images/smartway-0.jpg",
-      "link": "https://www.youtube.com",
-      "title": "Home exterior reel"
+      "image": "",
+      "link": "https://www.instagram.com/reel/DUkb3wyDUUd/?igsh=MXc4ZXlibzd4bHpsOA==",
+      "title": ""
     },
     {
-      "image": "/downloaded-images/smartway-1.jpg",
-      "link": "https://www.youtube.com",
-      "title": "Living room reel"
-    },
-    {
-      "image": "/downloaded-images/smartway-2.jpg",
-      "link": "https://www.youtube.com",
-      "title": "Kitchen reel"
-    },
-    {
-      "image": "/downloaded-images/smartway-3.jpg",
-      "link": "https://www.youtube.com",
-      "title": "Curb appeal reel"
+      "image": "",
+      "link": "https://www.instagram.com/reel/DUNOEy5E507/?igsh=M3V6cW5oMWJwMXpl",
+      "title": ""
     }
   ],
   "footer": [

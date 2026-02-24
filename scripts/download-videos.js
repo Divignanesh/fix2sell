@@ -273,8 +273,13 @@ async function main() {
   }
 
   const imageEntries = collectImageEntries(data)
-  for (const { url, set, name } of imageEntries) {
-    const localPath = await downloadOneImage(url, name)
+  const imageResults = await Promise.all(
+    imageEntries.map(async ({ url, set, name }) => {
+      const localPath = await downloadOneImage(url, name)
+      return { set, name, localPath }
+    })
+  )
+  for (const { set, name, localPath } of imageResults) {
     if (localPath) {
       set(localPath)
       console.log('Downloaded image:', name, '->', localPath)
