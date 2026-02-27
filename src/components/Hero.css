@@ -70,6 +70,8 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
   gap: 22px;
 }
 
@@ -131,6 +133,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin-top: 8px;
+  width: 100%;
+  max-width: 480px;
 }
 
 .hero__stat-card {
@@ -370,9 +374,21 @@
     grid-template-columns: 1fr;
     padding: 42px 20px 54px;
     gap: 36px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .hero__content {
     gap: 16px;
+    max-width: none;
+    width: 100%;
+  }
+  .hero__desc {
+    max-width: 100%;
+  }
+  .hero__stats {
+    max-width: none;
+    width: 100%;
   }
   .hero__badge {
     padding: 7px 12px;
@@ -390,18 +406,25 @@
     font-size: 0.9rem;
   }
   .hero__stats {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
   }
   .hero__stat-card {
-    min-height: 80px;
-    padding: 14px;
+    min-height: auto;
+    padding: 8px 6px;
+  }
+  .hero__stat-prefix {
+    font-size: 0.6rem;
+    min-height: 1rem;
+    margin-bottom: 2px;
   }
   .hero__stat-value {
-    font-size: 1.4rem;
+    font-size: 1rem;
   }
   .hero__stat-label {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
+    margin-top: 2px;
+    line-height: 1.2;
   }
   .hero__card {
     max-width: none;
@@ -438,8 +461,20 @@
   .hero__desc {
     font-size: 0.84rem;
   }
+  .hero__stats {
+    gap: 4px;
+  }
+  .hero__stat-card {
+    padding: 6px 4px;
+  }
+  .hero__stat-prefix {
+    font-size: 0.55rem;
+  }
   .hero__stat-value {
-    font-size: 1.25rem;
+    font-size: 0.9rem;
+  }
+  .hero__stat-label {
+    font-size: 0.58rem;
   }
   .hero__badge {
     flex-wrap: wrap;
