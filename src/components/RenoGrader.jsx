@@ -18,7 +18,7 @@ const DEFAULT_IMAGE_2 = 'https://images.unsplash.com/photo-1556909114-f6e7ad7d31
 
 function getImageSrc(globalData, key, fallbackUrl) {
   const v = globalData && globalData[key]
-  if (!v || typeof v !== 'string') return getProxiedImageSrc(fallbackUrl)
+  if (!v || typeof v !== 'string') return fallbackUrl
   const u = v.trim()
   if (u.startsWith('/')) return u
   return getProxiedImageSrc(u)
