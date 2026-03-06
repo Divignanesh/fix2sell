@@ -13,8 +13,21 @@ function getCopy(data, key, fallback) {
 const FEATURE_ICONS = ['chart', 'budget', 'clock', 'person']
 const FEATURE_COLORS = ['#F59E0B', '#10B981', '#3B82F6', '#F97316']
 
+const DEFAULT_IMAGE_1 = 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80'
+const DEFAULT_IMAGE_2 = 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80'
+
+function getImageSrc(globalData, key, fallbackUrl) {
+  const v = globalData && globalData[key]
+  if (!v || typeof v !== 'string') return getProxiedImageSrc(fallbackUrl)
+  const u = v.trim()
+  if (u.startsWith('/')) return u
+  return getProxiedImageSrc(u)
+}
+
 export default function RenoGrader() {
   const { global: globalData } = useData()
+  const image1Src = getImageSrc(globalData, 'renoGraderImage1', DEFAULT_IMAGE_1)
+  const image2Src = getImageSrc(globalData, 'renoGraderImage2', DEFAULT_IMAGE_2)
   const features = [
     { text: getCopy(globalData, 'renoGraderFeature1', 'ROI analysis for every improvement'), icon: FEATURE_ICONS[0], color: FEATURE_COLORS[0] },
     { text: getCopy(globalData, 'renoGraderFeature2', 'Budget optimization strategies'), icon: FEATURE_ICONS[1], color: FEATURE_COLORS[1] },
@@ -95,13 +108,13 @@ export default function RenoGrader() {
         >
           <div className="reno-grader__image reno-grader__image--main">
             <img
-              src={getProxiedImageSrc('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80')}
+              src={image1Src}
               alt="Modern living room interior"
             />
           </div>
           <div className="reno-grader__image reno-grader__image--secondary">
             <img
-              src={getProxiedImageSrc('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80')}
+              src={image2Src}
               alt="Beautiful kitchen interior"
             />
           </div>

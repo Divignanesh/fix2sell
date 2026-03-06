@@ -235,6 +235,14 @@ function collectVideoEntries(data) {
 
 function collectImageEntries(data) {
   const entries = []
+  if (data.global) {
+    if (data.global.renoGraderImage1 && isDownloadableUrl(data.global.renoGraderImage1)) {
+      entries.push({ url: data.global.renoGraderImage1, set: (p) => { data.global.renoGraderImage1 = p }, name: 'reno-grader-1' })
+    }
+    if (data.global.renoGraderImage2 && isDownloadableUrl(data.global.renoGraderImage2)) {
+      entries.push({ url: data.global.renoGraderImage2, set: (p) => { data.global.renoGraderImage2 = p }, name: 'reno-grader-2' })
+    }
+  }
   if (Array.isArray(data.transformation)) {
     data.transformation.forEach((item, i) => {
       if (item.beforeType !== 'video' && item.before && isDownloadableUrl(item.before)) {
