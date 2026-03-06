@@ -77,7 +77,7 @@ export default function SmartWay() {
                       <div className="smart-way__oval-inner smart-way__carousel-wrap">
                         <div className="smart-way__img-placeholder" aria-hidden />
                         <img
-                          src={getInstagramImageSrc(s.link)}
+                          src={s?.image ? s.image : getInstagramImageSrc(s.link)}
                           alt={s?.title || `Slide ${i + 1}`}
                           className="smart-way__house-img"
                           referrerPolicy="no-referrer"

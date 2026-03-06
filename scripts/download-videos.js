@@ -41,6 +41,31 @@ function isDownloadableUrl(url) {
   return false
 }
 
+/** True if url is an Instagram reel or post URL */
+function isInstagramReelUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim().toLowerCase()
+  return (
+    (u.includes('instagram.com/reel/') || u.includes('instagram.com/p/')) &&
+    (u.startsWith('http://') || u.startsWith('https://'))
+  )
+}
+
+/** Get Instagram media image URL for download (same as frontend getInstagramMediaImageUrl). */
+function getInstagramMediaImageUrl(instagramUrl) {
+  if (!instagramUrl || typeof instagramUrl !== 'string') return ''
+  const u = instagramUrl.trim()
+  try {
+    const pathname = new URL(u).pathname
+    const match = pathname.match(/\/(?:reel|p)\/([A-Za-z0-9_-]+)/)
+    const id = match ? match[1] : ''
+    if (!id) return ''
+    return `https://www.instagram.com/p/${id}/media/?size=l`
+  } catch {
+    return ''
+  }
+}
+
 /** Fetch URL and return { buffer, contentType } or null if failed */
 function fetchBinary(url, redirectCount = 0) {
   const maxRedirects = 5
@@ -231,6 +256,11 @@ function collectImageEntries(data) {
     data.smartWay.forEach((item, i) => {
       if (item.image && isDownloadableUrl(item.image)) {
         entries.push({ url: item.image, set: (p) => { item.image = p }, name: `smartway-${i}` })
+      } else if (item.link && isInstagramReelUrl(item.link)) {
+        const mediaUrl = getInstagramMediaImageUrl(item.link)
+        if (mediaUrl) {
+          entries.push({ url: mediaUrl, set: (p) => { item.image = p }, name: `smartway-${i}` })
+        }
       }
     })
   }

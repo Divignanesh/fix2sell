@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useData } from '../context/DataContext'
 import './Hero.css'
@@ -61,6 +61,8 @@ export default function Hero() {
   const [locationText, setLocationText] = useState(defaultLocation || DEFAULT_LOCATION_TEXT)
   const [isMobile, setIsMobile] = useState(true)
   const [iframeLoaded, setIframeLoaded] = useState(false)
+  const [videoError, setVideoError] = useState(false)
+  const videoRef = useRef(null)
 
   // Preconnect to iframe origin so it loads faster
   useEffect(() => {
@@ -166,7 +168,17 @@ export default function Hero() {
     }
   }, [])
 
-  const showBackgroundVideo = isValidVideoUrl(heroBackgroundVideoUrl) && (!isMobile || heroVideoOnMobile)
+  const showBackgroundVideo =
+    isValidVideoUrl(heroBackgroundVideoUrl) && (!isMobile || heroVideoOnMobile) && !videoError
+
+  // Try to start playback (browsers may still block until user interaction)
+  useEffect(() => {
+    if (!showBackgroundVideo || isDrivePreviewUrl(heroBackgroundVideoUrl)) return
+    const el = videoRef.current
+    if (!el) return
+    const p = el.play()
+    if (p && typeof p.catch === 'function') p.catch(() => {})
+  }, [showBackgroundVideo, heroBackgroundVideoUrl])
 
   return (
     <section id="home" className="hero">
