@@ -58,21 +58,22 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 36px 34px;;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
+  padding: 36px 34px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   gap: 36px;
 }
 
 .hero__content {
-  width: 100%;
+  flex: 1 1 0%;
   min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: 22px;
+  margin-top: 35px;
+  gap: 14px;
 }
 
 .hero__badge {
@@ -171,7 +172,7 @@
 
 /* Card (inquire form) */
 .hero__card {
-  width: 100%;
+  flex: 1 1 0%;
   min-width: 0;
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -199,6 +200,7 @@
   position: relative;
   width: 100%;
   overflow: visible;
+  margin-top: 2rem;
 }
 
 .hero__form-iframe {
@@ -253,6 +255,7 @@
   flex-direction: column;
   align-items: center;
   gap: 14px;
+  margin-top: 2rem;
 }
 
 .hero__input {
@@ -371,7 +374,7 @@
     min-height: 120%;
   }
   .hero__inner {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     padding: 42px 20px 54px;
     gap: 36px;
     width: 100%;
