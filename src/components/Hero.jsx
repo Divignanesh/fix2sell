@@ -211,7 +211,6 @@ export default function Hero() {
                 src={heroBackgroundVideoUrl}
                 autoPlay
                 muted
-                defaultMuted
                 loop
                 playsInline
                 preload="auto"

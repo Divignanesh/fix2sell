@@ -242,6 +242,15 @@ function collectImageEntries(data) {
     if (data.global.renoGraderImage2 && isDownloadableUrl(data.global.renoGraderImage2)) {
       entries.push({ url: data.global.renoGraderImage2, set: (p) => { data.global.renoGraderImage2 = p }, name: 'reno-grader-2' })
     }
+    if (data.global.navbarLogo && isDownloadableUrl(data.global.navbarLogo)) {
+      entries.push({ url: data.global.navbarLogo, set: (p) => { data.global.navbarLogo = p }, name: 'navbar-logo' })
+    }
+    if (data.global.footerLogo && isDownloadableUrl(data.global.footerLogo)) {
+      entries.push({ url: data.global.footerLogo, set: (p) => { data.global.footerLogo = p }, name: 'footer-logo' })
+    }
+    if (data.global.expLogo && isDownloadableUrl(data.global.expLogo)) {
+      entries.push({ url: data.global.expLogo, set: (p) => { data.global.expLogo = p }, name: 'footer-exp-logo' })
+    }
   }
   if (Array.isArray(data.transformation)) {
     data.transformation.forEach((item, i) => {
