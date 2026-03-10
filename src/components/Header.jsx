@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useData } from '../context/DataContext'
@@ -27,10 +27,21 @@ const allNavLinks = [
   { label: 'Contact', href: '#contact', to: '/#contact' },
 ]
 
+const DEFAULT_LOGO = '/logo.jpeg'
+
 export default function Header() {
   const { global: globalData } = useData()
-  const logoUrl = getCopy(globalData, 'navbarLogo', '') || '/logo.jpeg'
+  const logoFromData = getCopy(globalData, 'navbarLogo', '') || DEFAULT_LOGO
+  const [logoUrl, setLogoUrl] = useState(logoFromData)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  useEffect(() => {
+    setLogoUrl(logoFromData)
+  }, [logoFromData])
+
+  const handleLogoError = () => {
+    setLogoUrl(DEFAULT_LOGO)
+  }
   
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const closeMenu = () => setIsMenuOpen(false)
@@ -52,7 +63,7 @@ export default function Header() {
         </nav>
         
         <Link to="/" className="header__logo" aria-label="Home">
-          <img src={logoUrl} alt="" className="header__logo-img" />
+          <img src={logoUrl} alt="" className="header__logo-img" onError={handleLogoError} />
         </Link>
         
         <nav className="header__nav header__nav--right">
