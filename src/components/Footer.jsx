@@ -50,7 +50,8 @@ export default function Footer() {
     : FALLBACK_HELP_LINKS
   const socialLinks = footerList.filter((r) => norm(r.section) === 'social').map((r) => ({ label: r.label || '', url: r.url || '#', icon: (r.icon || '').toLowerCase() }))
 
-  const logoAlt = getCopy(globalData, 'footerLogoAlt', 'MS Realty')
+  const footerLogoUrl = getCopy(globalData, 'footerLogo', '') || '/logo.jpeg'
+  const expLogoUrl = getCopy(globalData, 'expLogo', '')
   const headingQuickLinks = getCopy(globalData, 'footerHeadingQuickLinks', 'Quick Links')
   const headingHelp = getCopy(globalData, 'footerHeadingHelp', 'Help & Support')
   const headingContact = getCopy(globalData, 'footerHeadingContact', 'Contact Details')
@@ -79,8 +80,13 @@ export default function Footer() {
         <div className="footer__brand">
           <div className="footer__logos">
             <Link to="/" className="footer__logo">
-              <img src="/logo.jpeg" alt={logoAlt} className="footer__logo-img" />
+              <img src={footerLogoUrl} alt="" className="footer__logo-img" />
             </Link>
+            {expLogoUrl && (
+              <div className="footer__exp-logo">
+                <img src={expLogoUrl} alt="" className="footer__exp-logo-img" />
+              </div>
+            )}
           </div>
           {socialLinks.length > 0 && (
             <div className="footer__social">

@@ -41,7 +41,17 @@
 .footer__exp-logo {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   line-height: 1;
+}
+
+.footer__exp-logo-img {
+  display: block;
+  max-height: 56px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .footer__exp-text {

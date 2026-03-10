@@ -1,7 +1,13 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useData } from '../context/DataContext'
 import './Header.css'
+
+function getCopy(data, key, fallback) {
+  const v = data && data[key]
+  return v !== undefined && v !== null ? String(v).trim() : fallback
+}
 
 const navLinksLeft = [
   { label: 'Home', href: '#home', to: '/#home' },
@@ -22,6 +28,8 @@ const allNavLinks = [
 ]
 
 export default function Header() {
+  const { global: globalData } = useData()
+  const logoUrl = getCopy(globalData, 'navbarLogo', '') || '/logo.jpeg'
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
@@ -43,8 +51,8 @@ export default function Header() {
           ))}
         </nav>
         
-        <Link to="/" className="header__logo" aria-label="MS Realty Home">
-          <img src="/logo.jpeg" alt="MS Realty" className="header__logo-img" />
+        <Link to="/" className="header__logo" aria-label="Home">
+          <img src={logoUrl} alt="" className="header__logo-img" />
         </Link>
         
         <nav className="header__nav header__nav--right">
