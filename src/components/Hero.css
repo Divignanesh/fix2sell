@@ -375,6 +375,7 @@
   }
   .hero__inner {
     flex-direction: column;
+    align-items: center;
     padding: 42px 20px 54px;
     gap: 36px;
     width: 100%;
@@ -430,9 +431,20 @@
     line-height: 1.2;
   }
   .hero__card {
-    max-width: none;
+    width: 100%;
+    max-width: 100%;
   }
-  
+  .hero__card-inner {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero__form-iframe-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
   .hero__card-title {
     font-size: 1.125rem;
   }
@@ -441,8 +453,14 @@
     margin-bottom: 18px;
   }
   .hero__form-iframe {
+    width: 100%;
+    max-width: 100%;
     min-height: 620px;
     height: 620px;
+  }
+  .hero__form {
+    width: 100%;
+    max-width: 100%;
   }
   .hero__input {
     height: 41px;
