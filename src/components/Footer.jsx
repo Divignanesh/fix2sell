@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useData } from '../context/DataContext'
@@ -51,17 +50,8 @@ export default function Footer() {
     : FALLBACK_HELP_LINKS
   const socialLinks = footerList.filter((r) => norm(r.section) === 'social').map((r) => ({ label: r.label || '', url: r.url || '#', icon: (r.icon || '').toLowerCase() }))
 
-  const DEFAULT_LOGO = '/logo.jpeg'
-  const footerLogoFromData = getCopy(globalData, 'footerLogo', '') || DEFAULT_LOGO
-  const expLogoFromData = getCopy(globalData, 'expLogo', '')
-  const [footerLogoUrl, setFooterLogoUrl] = useState(footerLogoFromData)
-  const [expLogoUrl, setExpLogoUrl] = useState(expLogoFromData)
-
-  useEffect(() => {
-    setFooterLogoUrl(footerLogoFromData)
-    setExpLogoUrl(expLogoFromData)
-  }, [footerLogoFromData, expLogoFromData])
-
+  const footerLogoUrl = getCopy(globalData, 'footerLogo', '') || '/logo.jpeg'
+  const expLogoUrl = getCopy(globalData, 'expLogo', '')
   const headingQuickLinks = getCopy(globalData, 'footerHeadingQuickLinks', 'Quick Links')
   const headingHelp = getCopy(globalData, 'footerHeadingHelp', 'Help & Support')
   const headingContact = getCopy(globalData, 'footerHeadingContact', 'Contact Details')
@@ -90,21 +80,11 @@ export default function Footer() {
         <div className="footer__brand">
           <div className="footer__logos">
             <Link to="/" className="footer__logo">
-              <img
-                src={footerLogoUrl}
-                alt=""
-                className="footer__logo-img"
-                onError={() => setFooterLogoUrl(DEFAULT_LOGO)}
-              />
+              <img src={footerLogoUrl} alt="" className="footer__logo-img" />
             </Link>
             {expLogoUrl && (
               <div className="footer__exp-logo">
-                <img
-                  src={expLogoUrl}
-                  alt=""
-                  className="footer__exp-logo-img"
-                  onError={() => setExpLogoUrl('')}
-                />
+                <img src={expLogoUrl} alt="" className="footer__exp-logo-img" />
               </div>
             )}
           </div>
