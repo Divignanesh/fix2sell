@@ -19,6 +19,12 @@ function getCopy(data, key, fallback) {
   return v !== undefined && v !== null ? String(v).trim() : fallback
 }
 
+function parseGlobalFlag(value, defaultValue = false) {
+  if (value === undefined || value === null || value === '') return defaultValue
+  const s = String(value).trim().toLowerCase()
+  return s === 'true' || s === '1' || s === 'yes'
+}
+
 function isValidIframeUrl(url) {
   if (!url || typeof url !== 'string') return false
   const u = url.trim()
@@ -57,6 +63,7 @@ export default function Hero() {
     return s === 'true' || s === '1' || s === 'yes'
   })()
   const defaultLocation = getCopy(globalData, 'heroLocationDefault', DEFAULT_LOCATION_TEXT) || DEFAULT_LOCATION_TEXT
+  const collectUserLocation = parseGlobalFlag(globalData && globalData.collectUserLocation, false)
   const [badgeIndex, setBadgeIndex] = useState(0)
   const [locationText, setLocationText] = useState(defaultLocation || DEFAULT_LOCATION_TEXT)
   const [isMobile, setIsMobile] = useState(true)
@@ -129,8 +136,12 @@ export default function Hero() {
     return () => clearInterval(interval)
   }, [badgeTexts.length])
 
-  // Run geolocation on mount (like original); only update for Canada so sheet default is kept otherwise
+  const hasGlobalData = !!(globalData && Object.keys(globalData).length > 0)
+
+  // Run geolocation on mount only when enabled from sheet and after global data is loaded;
+  // only update for Canada so sheet default is kept otherwise
   useEffect(() => {
+    if (!hasGlobalData || !collectUserLocation) return
     let cancelled = false
     let abortController = null
     if (!navigator.geolocation) return
@@ -166,7 +177,7 @@ export default function Hero() {
       cancelled = true
       if (abortController) abortController.abort()
     }
-  }, [])
+  }, [hasGlobalData, collectUserLocation])
 
   const showBackgroundVideo =
     isValidVideoUrl(heroBackgroundVideoUrl) && (!isMobile || heroVideoOnMobile) && !videoError
@@ -191,17 +202,29 @@ export default function Hero() {
                 className="hero__video hero__video--iframe"
                 title=""
                 aria-hidden
-                allow="autoplay; encrypted-media"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
               />
             ) : (
               <video
+                ref={videoRef}
                 className="hero__video"
                 src={heroBackgroundVideoUrl}
                 autoPlay
                 muted
+                defaultMuted
                 loop
                 playsInline
+                preload="auto"
                 aria-hidden
+                onCanPlay={() => {
+                  const el = videoRef.current
+                  if (el && el.paused) {
+                    el.muted = true
+                    const p = el.play()
+                    if (p && typeof p.catch === 'function') p.catch(() => {})
+                  }
+                }}
+                onError={() => setVideoError(true)}
               />
             )}
           </div>

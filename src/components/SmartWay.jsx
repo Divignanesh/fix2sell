@@ -29,8 +29,17 @@ export default function SmartWay() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const slide = slides[currentIndex]
 
+  const goNext = () => {
+    setCurrentIndex((i) => (i + 1) % slides.length)
+  }
+
+  const goPrev = () => {
+    setCurrentIndex((i) => (i - 1 + slides.length) % slides.length)
+  }
+
   useEffect(() => {
-    const t = setInterval(() => setCurrentIndex((i) => (i + 1) % slides.length), CAROUSEL_INTERVAL_MS)
+    if (slides.length <= 1) return
+    const t = setInterval(goNext, CAROUSEL_INTERVAL_MS)
     return () => clearInterval(t)
   }, [slides.length])
 
@@ -124,17 +133,35 @@ export default function SmartWay() {
               )
             })}
             {slides.length > 1 && (
-              <div className="smart-way__carousel-dots">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className={`smart-way__carousel-dot ${i === currentIndex ? 'smart-way__carousel-dot--active' : ''}`}
-                    onClick={() => setCurrentIndex(i)}
-                    aria-label={`Go to slide ${i + 1}`}
-                  />
-                ))}
-              </div>
+              <>
+                <button
+                  type="button"
+                  className="smart-way__nav-btn smart-way__nav-btn--left"
+                  onClick={goPrev}
+                  aria-label="Previous slide"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className="smart-way__nav-btn smart-way__nav-btn--right"
+                  onClick={goNext}
+                  aria-label="Next slide"
+                >
+                  ›
+                </button>
+                <div className="smart-way__carousel-dots">
+                  {slides.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`smart-way__carousel-dot ${i === currentIndex ? 'smart-way__carousel-dot--active' : ''}`}
+                      onClick={() => setCurrentIndex(i)}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </motion.div>

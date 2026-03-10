@@ -163,6 +163,57 @@
   transform: scale(1.2);
 }
 
+/* Carousel arrow buttons */
+.smart-way__nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.smart-way__nav-btn--left {
+  left: 0px;
+}
+
+.smart-way__nav-btn--right {
+  right: 0px;
+}
+
+.smart-way__nav-btn:hover {
+  background: rgba(0, 0, 0, 0.65);
+  transform: translateY(-50%) scale(1.05);
+}
+
+@media (max-width: 640px) {
+  .smart-way__nav-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1.2rem;
+  }
+
+  .smart-way__nav-btn--left {
+    left: -10px;
+  }
+
+  .smart-way__nav-btn--right {
+    right: -10px;
+  }
+}
+
 /* Offer badges */
 .smart-way__badge {
   position: absolute;

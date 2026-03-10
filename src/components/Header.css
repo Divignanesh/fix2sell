@@ -36,7 +36,7 @@
 }
 
 .header__link {
-  font-size: 0.81rem;
+  font-size: 1.08rem;
   font-weight: 500;
   color: var(--color-navy-light);
   transition: color 0.2s;
@@ -59,7 +59,7 @@
 
 .header__logo-img {
   display: block;
-  height: 38px;
+  height: 53px;
   width: auto;
   object-fit: contain;
 }
@@ -181,7 +181,7 @@
   }
 
   .header__logo-img {
-    height: 34px;
+    height: 47px;
   }
 
   /* Mobile menu styles */
@@ -243,6 +243,6 @@
   }
 
   .header__logo-img {
-    height: 30px;
+    height: 41px;
   }
 }

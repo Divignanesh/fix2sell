@@ -67,9 +67,11 @@ function isValidSlide(item) {
 
 export default function Transformation() {
   const { transformation: dataSlides, global: globalData } = useData()
-  const rawSlides = Array.isArray(dataSlides) && dataSlides.length > 0 ? dataSlides : defaultSlides
+  const isDataFromSheet = Array.isArray(dataSlides) && dataSlides.length > 0
+  const rawSlides = isDataFromSheet ? dataSlides : defaultSlides
   const slides = rawSlides.filter(isValidSlide)
   const safeSlides = slides.length > 0 ? slides : defaultSlides
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const index = Math.min(currentIndex, safeSlides.length - 1)
   const slide = safeSlides[index]
@@ -78,11 +80,12 @@ export default function Transformation() {
   const goPrev = () => setCurrentIndex((i) => (i === 0 ? safeSlides.length - 1 : i - 1))
   const goNext = () => setCurrentIndex((i) => (i === safeSlides.length - 1 ? 0 : i + 1))
 
+  // Re-run when slide count changes so interval uses current length (e.g. when data loads and goes from 3 → 10)
   useEffect(() => {
     if (!isCarousel) return
     const timer = setInterval(goNext, AUTO_SCROLL_INTERVAL_MS)
     return () => clearInterval(timer)
-  }, [isCarousel])
+  }, [isCarousel, safeSlides.length])
 
   useEffect(() => {
     setCurrentIndex((prev) => Math.min(prev, safeSlides.length - 1))
