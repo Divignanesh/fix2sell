@@ -28,6 +28,8 @@ export default function RenoGrader() {
   const { global: globalData } = useData()
   const image1Src = getImageSrc(globalData, 'renoGraderImage1', DEFAULT_IMAGE_1)
   const image2Src = getImageSrc(globalData, 'renoGraderImage2', DEFAULT_IMAGE_2)
+  const ctaUrl = getCopy(globalData, 'renoGraderCtaUrl', '') || getCopy(globalData, 'renoGraderCtaLink', '') || '/renograde#renograde-hero'
+  const ctaIsInternal = ctaUrl.startsWith('/') && !ctaUrl.startsWith('//')
   const features = [
     { text: getCopy(globalData, 'renoGraderFeature1', 'ROI analysis for every improvement'), icon: FEATURE_ICONS[0], color: FEATURE_COLORS[0] },
     { text: getCopy(globalData, 'renoGraderFeature2', 'Budget optimization strategies'), icon: FEATURE_ICONS[1], color: FEATURE_COLORS[1] },
@@ -55,10 +57,17 @@ export default function RenoGrader() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <Link to="/renograde#renograde-hero" className="reno-grader__title-link">
-              {getCopy(globalData, 'renoGraderTitlePrefix', 'Introducing the')}{' '}
-              <span className="reno-grader__title-highlight">{getCopy(globalData, 'renoGraderTitleHighlight', 'Reno-Grader')}</span>
-            </Link>
+            {ctaIsInternal ? (
+              <Link to={ctaUrl} className="reno-grader__title-link">
+                {getCopy(globalData, 'renoGraderTitlePrefix', 'Introducing the')}{' '}
+                <span className="reno-grader__title-highlight">{getCopy(globalData, 'renoGraderTitleHighlight', 'Reno-Grader')}</span>
+              </Link>
+            ) : (
+              <a href={ctaUrl} className="reno-grader__title-link" target="_blank" rel="noopener noreferrer">
+                {getCopy(globalData, 'renoGraderTitlePrefix', 'Introducing the')}{' '}
+                <span className="reno-grader__title-highlight">{getCopy(globalData, 'renoGraderTitleHighlight', 'Reno-Grader')}</span>
+              </a>
+            )}
           </motion.h2>
           <motion.p
             className="reno-grader__text"
@@ -94,9 +103,15 @@ export default function RenoGrader() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Link to="/renograde#renograde-hero" className="reno-grader__cta">
-              {getCopy(globalData, 'renoGraderCta', 'Try Reno-Grade for Free Estimate')}
-            </Link>
+            {ctaIsInternal ? (
+              <Link to={ctaUrl} className="reno-grader__cta">
+                {getCopy(globalData, 'renoGraderCta', 'Try Reno-Grade for Free Estimate')}
+              </Link>
+            ) : (
+              <a href={ctaUrl} className="reno-grader__cta" target="_blank" rel="noopener noreferrer">
+                {getCopy(globalData, 'renoGraderCta', 'Try Reno-Grade for Free Estimate')}
+              </a>
+            )}
           </motion.div>
         </div>
         <motion.div
