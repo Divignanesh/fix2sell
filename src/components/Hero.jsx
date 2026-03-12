@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useData } from '../context/DataContext'
 import './Hero.css'
@@ -182,14 +182,45 @@ export default function Hero() {
   const showBackgroundVideo =
     isValidVideoUrl(heroBackgroundVideoUrl) && (!isMobile || heroVideoOnMobile) && !videoError
 
-  // Try to start playback (browsers may still block until user interaction)
-  useEffect(() => {
+  // Try to play video (muted for Safari autoplay); call whenever in view or tab focused
+  const tryPlayVideo = useCallback(() => {
     if (!showBackgroundVideo || isDrivePreviewUrl(heroBackgroundVideoUrl)) return
     const el = videoRef.current
-    if (!el) return
+    if (!el || el.paused === false) return
+    el.muted = true
     const p = el.play()
     if (p && typeof p.catch === 'function') p.catch(() => {})
   }, [showBackgroundVideo, heroBackgroundVideoUrl])
+
+  useEffect(() => {
+    tryPlayVideo()
+  }, [tryPlayVideo])
+
+  // When video is in view (Intersection Observer), play it – helps Safari
+  useEffect(() => {
+    if (!showBackgroundVideo || isDrivePreviewUrl(heroBackgroundVideoUrl)) return
+    const wrap = videoRef.current?.parentElement
+    if (!wrap) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [e] = entries
+        if (e?.isIntersecting) tryPlayVideo()
+      },
+      { threshold: 0.25, rootMargin: '0px' }
+    )
+    observer.observe(wrap)
+    return () => observer.disconnect()
+  }, [showBackgroundVideo, heroBackgroundVideoUrl, tryPlayVideo])
+
+  // When tab becomes visible again, try play (e.g. user returns to tab)
+  useEffect(() => {
+    if (!showBackgroundVideo || isDrivePreviewUrl(heroBackgroundVideoUrl)) return
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') tryPlayVideo()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [showBackgroundVideo, heroBackgroundVideoUrl, tryPlayVideo])
 
   return (
     <section id="home" className="hero">
@@ -215,14 +246,8 @@ export default function Hero() {
                 playsInline
                 preload="auto"
                 aria-hidden
-                onCanPlay={() => {
-                  const el = videoRef.current
-                  if (el && el.paused) {
-                    el.muted = true
-                    const p = el.play()
-                    if (p && typeof p.catch === 'function') p.catch(() => {})
-                  }
-                }}
+                onCanPlay={tryPlayVideo}
+                onLoadedData={tryPlayVideo}
                 onError={() => setVideoError(true)}
               />
             )}
