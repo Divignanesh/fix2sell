@@ -39,18 +39,17 @@
   font-size: 1.08rem;
   font-weight: 500;
   color: var(--color-navy-light);
+  text-decoration: none;
   transition: color 0.2s;
   white-space: nowrap;
 }
 
 .header__link:hover {
   color: var(--color-orange);
+  text-decoration: none;
 }
 
-.header__link--active {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
+
 
 .header__logo {
   flex-shrink: 0;
